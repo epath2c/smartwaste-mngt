@@ -59,7 +59,7 @@ public class MqttSubscriber {
 				@Override
 				public void messageArrived(String topic, MqttMessage message) throws Exception {
 					System.out.println("Received Message from " + topic + ": " + new String(message.getPayload()));
-					// Console outpyt: Received Message from smartwaste/sensor/metadata: {"macAddress": "34:b7:da:5d:80:0c", "trigerPin1": 7, "echoPin1": 8, "trigerPin2": 12, "echoPin2": 4, "trigerPin3": 2, "echoPin3": 13}
+					// Console output: Received Message from smartwaste/sensor/metadata: {"macAddress": "34:b7:da:5d:80:0c", "trigerPin1": 7, "echoPin1": 8, "trigerPin2": 12, "echoPin2": 4, "trigerPin3": 2, "echoPin3": 13}
 					handleIncomingMessage(topic, message);
 				}
 

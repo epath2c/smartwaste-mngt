@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/sensors")
 @AllArgsConstructor
-public class SensorConroller {
+public class SensorController {
 
 	private SensorService sensorService;
 	
