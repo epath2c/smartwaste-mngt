@@ -150,4 +150,4 @@ JavaV17_Server/src/test*
 .angular/
 
 # Ignore secret env files
-.env
+secrets.properties

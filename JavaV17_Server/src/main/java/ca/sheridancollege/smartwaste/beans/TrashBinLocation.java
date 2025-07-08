@@ -15,4 +15,6 @@ public class TrashBinLocation {
     private Long geoID;
 
     private String address;
+//    private Double latitude;    // e.g., 43.656, -79.380
+//    private Double longitude;
 }

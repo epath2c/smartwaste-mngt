@@ -18,7 +18,7 @@ public class MailTestController {
     @GetMapping("/send-test-email")
     public ResponseEntity<String> sendTestEmail() {
         // Use a real Sheridan email address here
-        mailService.sendFullBinAlert("sichao.quan@sheridancollege.ca", "Test Bin");
+        mailService.sendFullBinAlert("sichao.quan@gmail.ca", "Test Bin");
         return ResponseEntity.ok("Email sent successfully!");
     }
 }
