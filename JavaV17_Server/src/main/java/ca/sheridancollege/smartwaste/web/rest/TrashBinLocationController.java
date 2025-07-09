@@ -2,6 +2,7 @@ package ca.sheridancollege.smartwaste.web.rest;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
@@ -40,4 +41,17 @@ public class TrashBinLocationController {
     public void deleteLocation(@PathVariable Long id) {
         locationService.delete(id);
     }
+
+    @GetMapping("/by-coordinates")
+    public ResponseEntity<TrashBinLocation> getByCoordinates(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude) {
+        TrashBinLocation location = locationService.findByLatitudeAndLongitude(latitude, longitude);
+        if (location != null) {
+            return ResponseEntity.ok(location);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

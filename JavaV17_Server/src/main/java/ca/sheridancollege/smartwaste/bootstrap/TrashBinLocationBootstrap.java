@@ -16,9 +16,24 @@ public class TrashBinLocationBootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (locationService.findAll().isEmpty()) {
-            locationService.save(TrashBinLocation.builder().address("Building A - Main Entrance").build());
-            locationService.save(TrashBinLocation.builder().address("Building B - Food Court").build());
-            locationService.save(TrashBinLocation.builder().address("Building C - Learning Commons").build());
+            locationService.save(TrashBinLocation.builder()
+                    .address("Building A - Main Entrance")
+                    .latitude(43.777001)
+                    .longitude(-79.231001)
+                    .build());
+
+            locationService.save(TrashBinLocation.builder()
+                    .address("Building B - Food Court")
+                    .latitude(43.777500)
+                    .longitude(-79.230500)
+                    .build());
+
+            locationService.save(TrashBinLocation.builder()
+                    .address("Building C - Learning Commons")
+                    .latitude(43.776800)
+                    .longitude(-79.229800)
+                    .build());
         }
+
     }
 }

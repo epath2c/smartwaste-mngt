@@ -46,4 +46,11 @@ public class TrashBinLocationServiceImpl implements TrashBinLocationService {
     public void delete(Long id) {
         locationRepository.deleteById(id);
     }
+
+
+    @Override
+    public TrashBinLocation findByLatitudeAndLongitude(Double latitude, Double longitude) {
+        return locationRepository.findByLatitudeAndLongitude(latitude, longitude).orElse(null);
+    }
+
 }
