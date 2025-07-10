@@ -41,7 +41,7 @@
       ></map-marker>
     </google-map>
 
-    <p><strong>Selected Coordinates:</strong> {{ trashbins.location }}</p>
+    <p><strong>Selected Coordinates:</strong> {{ trashbins.location!.address }}</p>
     <button class="btn btn-success mt-2" (click)="saveTrashbins()">Submit</button>
   </div>
 </div>

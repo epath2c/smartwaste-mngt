@@ -3,4 +3,8 @@ export class Trashbins {
     name!: string;
     height!: number;
     createdDate!: string;
-}
+    location?: {
+      address?: string;
+      latitude?: number;
+      longitude?: number;
+}}

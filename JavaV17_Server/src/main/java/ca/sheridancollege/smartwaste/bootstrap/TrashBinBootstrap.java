@@ -27,6 +27,7 @@ public class TrashBinBootstrap implements CommandLineRunner {
 
         List<Sensor> allSensors = sensorService.findAll();
         List<Long> usedSensorIds = trashBinService.findAll().stream()
+                .filter(bin -> bin.getSensor() != null)
                 .map(bin -> bin.getSensor().getId())
                 .collect(Collectors.toList());
 

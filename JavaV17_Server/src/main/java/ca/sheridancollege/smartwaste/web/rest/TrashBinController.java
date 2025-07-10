@@ -33,7 +33,11 @@ public class TrashBinController {
     // Add a new bin
     @PostMapping(headers = { "Content-type=application/json" })
     public TrashBin createBin(@RequestBody TrashBin bin) {
+        System.out.println("📥 Received location: " + bin.getLocation());
         bin.setBinID(null); // prevent accidental updates
+        if (bin.getLocation() != null) {
+            bin.getLocation().setGeoID(null);
+        }
         return trashBinService.save(bin);
     }
 

@@ -30,7 +30,7 @@ public class TrashBin {
     private TrashBinType type;
 
     // Many bins can be in the same location
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "geo_id")
     private TrashBinLocation location;
 

@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Trashbins } from '../trashbins';
 import { TrashbinsService } from '../trashbins.service';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
   selector: 'app-trashbins-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,GoogleMapsModule],
   templateUrl: './trashbins-list.component.html',
   styleUrl: './trashbins-list.component.css'
 })
@@ -26,6 +27,7 @@ export class TrashbinsListComponent implements OnInit {
   getTrashbins(): void {
     this.trashbinsService.getAll().subscribe({
       next: (data) => {
+        console.log("📦 Trashbin data from backend:", data);
         this.trashbins = data;
       },
       error: (err) => {
