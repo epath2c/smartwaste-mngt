@@ -148,3 +148,6 @@ JavaV17_Server/src/test*
 # Angular 
 *.tsbuildinfo
 .angular/
+
+# Ignore secret env files
+secrets.properties

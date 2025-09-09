@@ -1,0 +1,31 @@
+<h3>Add Cleaner</h3>
+<div class="submit-form">
+  <div class="form-group">
+    Name:
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      name="name"
+      [(ngModel)]="cleaner.name"
+    />
+    Email:
+    <input
+      class="form-control"
+      id="email"
+      type="text"
+      name="email"
+      [(ngModel)]="cleaner.email"
+    />
+    Phone Number:
+    <input
+      class="form-control"
+      id="phoneNumber"
+      type="text"
+      name="phoneNumber"
+      [(ngModel)]="cleaner.phoneNumber"
+    />
+    <button class="btn btn-success" (click)="saveCleaner()">Submit</button>
+  </div>
+</div>
+<p><a routerLink="/cleaners">Back to main page</a></p>

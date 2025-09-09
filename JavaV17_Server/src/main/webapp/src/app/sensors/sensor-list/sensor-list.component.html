@@ -13,7 +13,7 @@
       <td>{{ sensor.trigerPin }}</td>
       <td>{{ sensor.echoPin }}</td>
       <td>
-        <a [routerLink]="['/view', sensor.id, 'history']">Go to History</a>
+        <a [routerLink]="['/view/sensors', sensor.id, 'history']">Go to History</a>
       </td>
     </tr>
   }

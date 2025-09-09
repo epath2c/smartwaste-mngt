@@ -10,12 +10,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data                
-@NoArgsConstructor   
-@AllArgsConstructor  
-@Builder             
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Sensor {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,4 +24,5 @@ public class Sensor {
     private int trigerPin;
 
     private int echoPin;
+    private float threshold; // Threshold for distance measurement
 }

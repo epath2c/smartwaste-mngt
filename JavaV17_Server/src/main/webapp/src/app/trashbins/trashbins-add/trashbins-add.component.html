@@ -1,0 +1,48 @@
+<h3>Add Trashbin</h3>
+<div class="submit-form">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      name="name"
+      [(ngModel)]="trashbins.name"
+    />
+
+    <label for="height">Height (in cm):</label>
+    <input
+      class="form-control"
+      id="height"
+      type="number"
+      name="height"
+      [(ngModel)]="trashbins.height"
+    />
+
+    <label for="createdDate">Created Date:</label>
+    <input
+      class="form-control"
+      id="createdDate"
+      type="date"
+      name="createdDate"
+      [(ngModel)]="trashbins.createdDate"
+    />
+    <label>Select Location on Map:</label>
+    <google-map
+      height="300px"
+      width="100%"
+      [center]="center"
+      [zoom]="15"
+      (mapClick)="updateMarker($event)"
+    >
+      <map-marker
+        [position]="markerPosition"
+        [options]="{ draggable: false }"
+      ></map-marker>
+    </google-map>
+
+    <p><strong>Selected Coordinates:</strong> {{ trashbins.location!.address }}</p>
+    <button class="btn btn-success mt-2" (click)="saveTrashbins()">Submit</button>
+  </div>
+</div>
+<p><a routerLink="/trashbins">Back to main page</a></p>

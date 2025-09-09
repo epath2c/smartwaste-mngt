@@ -41,19 +41,27 @@ public class SensorServiceImpl implements SensorService {
 		sensorRepository.save(sensor);
 		return sensor;
 	}
-	
+
 	@Override
 	public Sensor update(Long id, Sensor updatedSensor) {
-	    return sensorRepository.findById(id).map(existingSensor -> {
-	        existingSensor.setMacAddress(updatedSensor.getMacAddress());
-	        existingSensor.setTrigerPin(updatedSensor.getTrigerPin());
-	        existingSensor.setEchoPin(updatedSensor.getEchoPin());
-	        return sensorRepository.save(existingSensor);
-	    }).orElse(null);
+		return sensorRepository.findById(id).map(existingSensor -> {
+			existingSensor.setMacAddress(updatedSensor.getMacAddress());
+			existingSensor.setTrigerPin(updatedSensor.getTrigerPin());
+			existingSensor.setEchoPin(updatedSensor.getEchoPin());
+			return sensorRepository.save(existingSensor);
+		}).orElse(null);
 	}
 
 	@Override
 	public void delete(Long id) {
-	    sensorRepository.deleteById(id);
+		sensorRepository.deleteById(id);
+	}
+
+	@Override
+	public boolean isFull(Sensor sensor, float distanceReading) {
+		float binHeight = 100.0f; // hardcoded bin height in cm
+		float filled = binHeight - distanceReading;
+		float fillPercentage = (filled / binHeight) * 100;
+		return fillPercentage >= sensor.getThreshold();
 	}
 }
