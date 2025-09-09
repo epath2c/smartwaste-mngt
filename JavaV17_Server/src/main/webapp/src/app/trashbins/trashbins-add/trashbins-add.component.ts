@@ -10,8 +10,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
   selector: 'app-Trashbins-add',
   standalone: true,
   imports: [GoogleMapsModule,FormsModule, RouterLink],
-  templateUrl: './Trashbins-add.component.html',
-  styleUrl: './Trashbins-add.component.css'
+  templateUrl: './trashbins-add.component.html',
+  styleUrl: './trashbins-add.component.css'
 })
 export class TrashbinsAddComponent {
   center = { lat: 43.4673, lng: -79.7000 };
