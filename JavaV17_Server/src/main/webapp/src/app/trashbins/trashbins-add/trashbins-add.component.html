@@ -27,6 +27,14 @@
       name="createdDate"
       [(ngModel)]="trashbins.createdDate"
     />
+    <label for="threshold">threshold (in %):</label>
+    <input
+      class="form-control"
+      id="threshold"
+      type="number"
+      name="threshold"
+      [(ngModel)]="trashbins.threshold"
+    />
     <label>Select Location on Map:</label>
     <google-map
       height="300px"

@@ -22,6 +22,8 @@ export class TrashbinsAddComponent {
     name:'',
     height:0,
     createdDate:'',
+    threshold: 0,
+    cleaners: [],
     location: {
       address: '',
       latitude: 0,
@@ -72,6 +74,8 @@ export class TrashbinsAddComponent {
       name: this.trashbins.name,
       height: this.trashbins.height,
       createdDate: this.trashbins.createdDate,
+      threshold: this.trashbins.threshold,
+      cleaners: this.trashbins.cleaners,
       location: {
         address: this.trashbins.location!.address,
         latitude: this.trashbins.location!.latitude,

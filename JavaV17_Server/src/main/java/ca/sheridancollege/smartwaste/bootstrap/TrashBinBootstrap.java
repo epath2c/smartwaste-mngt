@@ -47,6 +47,7 @@ public class TrashBinBootstrap implements CommandLineRunner {
                     .type(TrashBinType.RECYCLABLE)
                     .location(locations.get(0))
                     .height(120f)
+                    .threshold(75f)
                     .name("Bin A")
                     .createdDate(LocalDate.now())
                     .build();
@@ -56,6 +57,7 @@ public class TrashBinBootstrap implements CommandLineRunner {
                     .type(TrashBinType.GARBAGE)
                     .location(locations.get(0))
                     .height(100f)
+                    .threshold(75f)
                     .name("Bin B")
                     .createdDate(LocalDate.now())
                     .build();

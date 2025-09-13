@@ -38,4 +38,5 @@ public class TrashBin {
     private String name;
 
     private LocalDate createdDate;
+    private float threshold;
 }
