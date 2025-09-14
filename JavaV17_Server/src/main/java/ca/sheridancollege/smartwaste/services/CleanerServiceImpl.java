@@ -19,6 +19,11 @@ public class CleanerServiceImpl implements CleanerService {
 	}
 
 	@Override
+	public List<Cleaner> findAllById(List<Long> ids) {
+		return cleanerRepository.findAllById(ids);
+	}
+
+	@Override
 	public Cleaner findById(Long id) {
 		if (cleanerRepository.findById(id).isPresent())
 			return cleanerRepository.findById(id).get();
@@ -31,24 +36,23 @@ public class CleanerServiceImpl implements CleanerService {
 		return cleanerRepository.findByName(name).orElse(null);
 	}
 
-
 	@Override
 	public Cleaner save(Cleaner cleaner) {
 		return cleanerRepository.save(cleaner);
 	}
-	
+
 	@Override
 	public Cleaner update(Long id, Cleaner updatedCleaner) {
-	    return cleanerRepository.findById(id).map(existingCleaner -> {
-	        existingCleaner.setName(updatedCleaner.getName());
-	        existingCleaner.setEmail(updatedCleaner.getEmail());
-	        existingCleaner.setPhoneNumber(updatedCleaner.getPhoneNumber());
-	        return cleanerRepository.save(existingCleaner);
-	    }).orElse(null);
+		return cleanerRepository.findById(id).map(existingCleaner -> {
+			existingCleaner.setName(updatedCleaner.getName());
+			existingCleaner.setEmail(updatedCleaner.getEmail());
+			existingCleaner.setPhoneNumber(updatedCleaner.getPhoneNumber());
+			return cleanerRepository.save(existingCleaner);
+		}).orElse(null);
 	}
 
 	@Override
 	public void delete(Long id) {
-	    cleanerRepository.deleteById(id);
+		cleanerRepository.deleteById(id);
 	}
 }

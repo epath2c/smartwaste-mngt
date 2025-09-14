@@ -8,6 +8,7 @@ import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
+import ca.sheridancollege.smartwaste.services.CleanerService;
 import ca.sheridancollege.smartwaste.services.TrashBinService;
 import lombok.AllArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 public class TrashBinController {
 
     private TrashBinService trashBinService;
+    private CleanerService cleanerService;
 
     // Get all trash bins
     @GetMapping
@@ -37,6 +39,14 @@ public class TrashBinController {
         bin.setBinID(null); // prevent accidental updates
         if (bin.getLocation() != null) {
             bin.getLocation().setGeoID(null);
+        }
+        // Map cleanerIds to Cleaner entities
+        if (bin.getCleanerIds() != null && !bin.getCleanerIds().isEmpty()) {
+            List<Cleaner> cleaners = cleanerService.findAllById(bin.getCleanerIds());
+            bin.setCleaners(cleaners);
+            for (Cleaner c : cleaners) {
+                c.getBins().add(bin);
+            }
         }
         return trashBinService.save(bin);
     }

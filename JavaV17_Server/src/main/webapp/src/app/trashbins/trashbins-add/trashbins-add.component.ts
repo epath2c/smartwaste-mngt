@@ -56,6 +56,9 @@ export class TrashbinsAddComponent {
             console.error('Failed to load cleaners:', err);
           }
         });
+        this.cleanersSelected.valueChanges.subscribe(value => {
+          console.log('🖊️ Selected cleaner IDs changed:', value);
+        });
       }
 
   updateMarker(event: google.maps.MapMouseEvent) {

@@ -21,6 +21,9 @@ public class TrashBin {
     @ManyToMany(mappedBy = "bins")
     private List<Cleaner> cleaners;
 
+    @Transient
+    private List<Long> cleanerIds;
+
     // One sensor per bin
     @OneToOne
     @JoinColumn(name = "sensor_id")
