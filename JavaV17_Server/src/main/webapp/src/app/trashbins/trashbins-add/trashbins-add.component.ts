@@ -1,21 +1,30 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Trashbins} from '../trashbins';
 import { TrashbinsService } from '../trashbins.service';
 import { ActivatedRoute, RouterLink,Router  } from '@angular/router';
 import { GoogleMapsModule } from '@angular/google-maps';
-
+import { CommonModule } from '@angular/common';
+import { CleanerService } from '../../cleaners/cleaner.service';
+import { Cleaner } from '../../cleaners/cleaner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-Trashbins-add',
   standalone: true,
-  imports: [GoogleMapsModule,FormsModule, RouterLink],
+  imports: [GoogleMapsModule,FormsModule, RouterLink, CommonModule, MatFormFieldModule,MatSelectModule, ReactiveFormsModule],
   templateUrl: './trashbins-add.component.html',
   styleUrl: './trashbins-add.component.css'
 })
 export class TrashbinsAddComponent {
   center = { lat: 43.4673, lng: -79.7000 };
   markerPosition = { lat: 43.4673, lng: -79.7000 };
+  // store an array of selected cleaners
+  
+  cleanersSelected = new FormControl<number[] | null>([]);
+  //cleanersSelected = new FormControl<Cleaner[] | null>([]);
+  cleanerList: Cleaner[] = [];
 
   trashbins: Trashbins ={
     binId:0,
@@ -23,19 +32,31 @@ export class TrashbinsAddComponent {
     height:0,
     createdDate:'',
     threshold: 0,
-    cleaners: [],
+    cleanerIds: [],
+    //cleaners: [],
     location: {
       address: '',
       latitude: 0,
       longitude: 0
     }
-}
-
+  };
   //Connect to connect the Trashbins Service component
   constructor(
     private trashbinsService: TrashbinsService,
+    private cleanerService: CleanerService,
     private router: Router
   ) {}
+  ngOnInit(): void {
+        this.cleanerService.getAll().subscribe({
+          next: (data) => {
+            console.log('📋 cleaners loaded:', data);
+            this.cleanerList = data;
+          },
+          error: (err) => {
+            console.error('Failed to load cleaners:', err);
+          }
+        });
+      }
 
   updateMarker(event: google.maps.MapMouseEvent) {
     if (event.latLng) {
@@ -69,13 +90,15 @@ export class TrashbinsAddComponent {
   saveTrashbins(): void {
     console.log("🔄 Starting save process...");
     console.log("📝 Form data:", this.trashbins);
+    console.log("📝 Cleaner selected:", this.cleanersSelected.value,);
 
     const data = {
       name: this.trashbins.name,
       height: this.trashbins.height,
       createdDate: this.trashbins.createdDate,
       threshold: this.trashbins.threshold,
-      cleaners: this.trashbins.cleaners,
+      cleanerIds: this.cleanersSelected.value ?? [],
+      //cleaners: this.cleanersSelected.value ?? [],
       location: {
         address: this.trashbins.location!.address,
         latitude: this.trashbins.location!.latitude,

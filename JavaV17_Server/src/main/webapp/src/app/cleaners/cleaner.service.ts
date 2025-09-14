@@ -22,6 +22,9 @@ export class CleanerService {
     return this.http.get<Cleaner[]>(restUrl);
   }
 
+  getAllByIds(ids: number[]): Observable<Cleaner[]> {
+    return this.http.get<Cleaner[]>('${restUrl}/${ids.join(",")}');
+  }
   // Create a connection to the POST mapping in the rest controller. "data" will be the new Cleaner
   create(data:any):Observable<any>{
     return this.http.post(restUrl, data);

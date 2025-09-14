@@ -6,7 +6,8 @@ export class Trashbins {
     height!: number;
     createdDate!: string;
     threshold?: number;
-    cleaners?: Cleaner[];
+    cleanerIds?: number[]; 
+    //cleaners?: Cleaner[]; 
     location?: {
       address?: string;
       latitude?: number;

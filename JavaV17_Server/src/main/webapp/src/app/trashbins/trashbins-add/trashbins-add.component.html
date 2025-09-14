@@ -35,6 +35,16 @@
       name="threshold"
       [(ngModel)]="trashbins.threshold"
     />
+
+    <mat-form-field>
+      <mat-label>Selected Cleanrs:</mat-label>
+      <mat-select [formControl]="cleanersSelected" multiple>
+        @for (cleaner of cleanerList; track cleaner) {
+          <mat-option [value]="cleaner.id">{{cleaner.name}}</mat-option>
+        }
+    </mat-select>
+    </mat-form-field>
+    <p><strong>Selected cleaners:</strong> {{ trashbins.cleanerIds }}</p>
     <label>Select Location on Map:</label>
     <google-map
       height="300px"
