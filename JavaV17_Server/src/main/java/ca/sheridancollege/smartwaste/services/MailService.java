@@ -1,8 +1,7 @@
 package ca.sheridancollege.smartwaste.services;
 
-import org.springframework.stereotype.Service;
+import ca.sheridancollege.smartwaste.beans.TrashBin;
 
-@Service
 public interface MailService {
-    void sendFullBinAlert(String toEmail, String binName);
+    void sendThresholdAlertToCleaners(TrashBin bin, float fillLevel);
 }

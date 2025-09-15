@@ -14,12 +14,12 @@ public class CleanerBootstrap implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// this is for testing the data 
-		// if (cleanerService.findByName("cleaner1") == null) {
-		// 	cleanerService.save(Cleaner.builder().name("cleaner1").email("email1").phoneNumber("phonenumber1").build());
-		// 	cleanerService.save(Cleaner.builder().name("cleaner2").email("email2").phoneNumber("phonenumber2").build());
-		// 	cleanerService.save(Cleaner.builder().name("cleaner3").email("email3").phoneNumber("phonenumber3").build());
-		// }
+		// Create cleaners if they don't exist
+		if (cleanerService.findByName("cleaner1") == null) {
+			cleanerService.save(Cleaner.builder().name("cleaner1").email("essentialbriefs@gmail.com").phoneNumber("phonenumber1").build());
+			cleanerService.save(Cleaner.builder().name("cleaner2").email("essentialbriefs@gmail.com").phoneNumber("phonenumber2").build());
+			cleanerService.save(Cleaner.builder().name("cleaner3").email("essentialbriefs@gmail.com").phoneNumber("phonenumber3").build());
+		}
 	}
 
 

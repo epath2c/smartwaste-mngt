@@ -20,7 +20,4 @@ public interface SensorService {
 	public Sensor update(Long id, Sensor updatedSensor);
 
 	public void delete(Long id);
-
-	public boolean isFull(Sensor sensor, float currentLevel); // Check if the sensor indicates that the bin is full
-																// based on the current level
 }

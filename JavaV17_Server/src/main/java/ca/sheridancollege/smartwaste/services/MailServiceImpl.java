@@ -5,6 +5,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import ca.sheridancollege.smartwaste.beans.TrashBin;
+import ca.sheridancollege.smartwaste.beans.Cleaner;
+
 @Service
 public class MailServiceImpl implements MailService {
 
@@ -12,11 +15,20 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender mailSender;
 
     @Override
-    public void sendFullBinAlert(String toEmail, String binName) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Trash Bin Full Alert");
-        message.setText("The trash bin \"" + binName + "\" is full and needs to be emptied.");
-        mailSender.send(message);
+    public void sendThresholdAlertToCleaners(TrashBin bin, float fillLevel) {
+        for (Cleaner cleaner : bin.getCleaners()) {
+            if (cleaner.getEmail() != null) {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setTo(cleaner.getEmail());
+                message.setSubject("Trash Bin Alert");
+                message.setText("Trash bin " + bin.getName() + " is " + fillLevel + "% full. Please empty it.");
+                
+                try {
+                    mailSender.send(message);
+                } catch (Exception e) {
+                    System.out.println("Failed to send email to: " + cleaner.getEmail());
+                }
+            }
+        }
     }
 }

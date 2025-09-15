@@ -2,11 +2,12 @@ package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
 
+ 
 import org.springframework.stereotype.Service;
 
+import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.Sensor;
-import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
 import ca.sheridancollege.smartwaste.repositories.TrashBinRepository;
@@ -17,6 +18,8 @@ import lombok.AllArgsConstructor;
 public class TrashBinServiceImpl implements TrashBinService {
 
     private TrashBinRepository trashBinRepository;
+    
+    private MailService mailService;
 
     @Override
     public List<TrashBin> findAll() {
@@ -69,4 +72,14 @@ public class TrashBinServiceImpl implements TrashBinService {
         return trashBinRepository.findByCleaners(cleaner);
     }
 
+    @Override
+    public void trashBinFillAndAlert(Sensor sensor, float distanceReading) {
+        TrashBin bin = trashBinRepository.findBySensor(sensor);
+        if (bin != null) {
+            float fill = (bin.getHeight() - distanceReading) / bin.getHeight() * 100f;
+            if (fill >= bin.getThreshold()) {
+                mailService.sendThresholdAlertToCleaners(bin, fill);
+            }
+        }
+    }
 }

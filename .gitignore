@@ -151,3 +151,4 @@ JavaV17_Server/src/test*
 
 # Ignore secret env files
 secrets.properties
+application-local.properties

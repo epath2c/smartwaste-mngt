@@ -19,6 +19,7 @@ import ca.sheridancollege.smartwaste.beans.SensorReadingHistory;
 import ca.sheridancollege.smartwaste.repositories.SensorRepository;
 import ca.sheridancollege.smartwaste.services.SensorReadingHistoryService;
 import ca.sheridancollege.smartwaste.services.SensorService;
+import ca.sheridancollege.smartwaste.services.TrashBinService;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
@@ -35,6 +36,11 @@ public class MqttSubscriber {
 	
 	@Autowired
 	private SensorRepository sensorRepository;
+	
+	@Autowired
+	private TrashBinService trashBinService;
+	
+	
 
 	
 	private static final String BROKER_URL = "tcp://localhost:1883"; // Public broker or your own
@@ -157,6 +163,9 @@ public class MqttSubscriber {
 				
 				sensorReadingHistoryService.save(readingHistory);
 				System.out.println("Saved reading history: " + readingHistory);
+				
+				// realtime- TrashBin Fill and Alert
+				trashBinService.trashBinFillAndAlert(sensor, (float) distance);
 			} else {
 				System.out.println("Sensor not found for MAC: " + macAddress + ", trigerPin: " + trigerPin + ", echoPin: " + echoPin);
 			}

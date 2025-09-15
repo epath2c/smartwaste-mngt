@@ -24,5 +24,5 @@ public class Sensor {
     private int trigerPin;
 
     private int echoPin;
-    private float threshold; // Threshold for distance measurement
+   
 }

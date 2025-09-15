@@ -18,9 +18,6 @@ public class SensorBootstrap implements CommandLineRunner {
 		Sensor sensor1 = Sensor.builder().macAddress("34:b7:da:5d:80:0c").trigerPin(7).echoPin(8).build();
 		Sensor sensor2 = Sensor.builder().macAddress("34:b7:da:5d:80:0c").trigerPin(12).echoPin(13).build();
 		Sensor sensor3 = Sensor.builder().macAddress("34:b7:da:5d:80:0c").trigerPin(2).echoPin(4).build();
-		// Sensor sensor10 =
-		// Sensor.builder().macAddress("00:11:22:33:44:55").trigerPin(10).echoPin(10).threshold(90.0f)
-		// .build();
 
 		sensorService.save(sensor1);
 		sensorService.save(sensor2);

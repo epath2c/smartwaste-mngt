@@ -6,6 +6,7 @@ import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
+import ca.sheridancollege.smartwaste.beans.Sensor;
 
 public interface TrashBinRepository extends JpaRepository<TrashBin, Long> {
      // Find bins by name
@@ -19,4 +20,7 @@ public interface TrashBinRepository extends JpaRepository<TrashBin, Long> {
 
     // Find all bins assigned to a cleaner (many-to-many)
     List<TrashBin> findByCleaners(Cleaner cleaner);
+    
+    // Find bin by sensor
+    TrashBin findBySensor(Sensor sensor);
 }
