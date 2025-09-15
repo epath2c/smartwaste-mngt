@@ -14,6 +14,10 @@
    - Generate password for "Mail"
    - Copy the 16-character password (keep spaces!)
 
+  **Replace email addresses in code:**
+   - Update `CleanerBootstrap.java` - change `essentialbriefs@gmail.com` to your email
+   
+
 3. **Clear environment variables (if needed):**
    ```cmd
    set EMAIL_USERNAME=
