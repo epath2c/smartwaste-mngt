@@ -2,6 +2,7 @@ package ca.sheridancollege.smartwaste.web.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,12 @@ public class MailTestController {
         } catch (Exception e) {
             return ResponseEntity.ok("Error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/test-fill/{distance}")
+    public ResponseEntity<String> testFill(@PathVariable float distance) {
+        TrashBin bin = trashBinService.findAll().get(0);
+        trashBinService.trashBinFillAndAlert(bin.getSensor(), distance);
+        return ResponseEntity.ok("Test completed: distance=" + distance + "cm");
     }
 }
