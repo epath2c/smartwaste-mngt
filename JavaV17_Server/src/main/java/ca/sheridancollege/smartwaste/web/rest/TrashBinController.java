@@ -63,7 +63,18 @@ public class TrashBinController {
         trashBinService.delete(id);
     }
 
-    // Extra filters:
+    // Mark a bin as cleaned (frontend action by cleaner)
+    @PostMapping("/{id}/mark-cleaned")
+    public TrashBin markBinCleaned(@PathVariable Long id) {
+        TrashBin bin = trashBinService.findById(id);
+        if (bin != null) {
+        bin.setNeedsCleaning(false);
+        return trashBinService.save(bin);
+        }
+        return null;
+    }
+
+  
 
     // Get bins by type
     @PostMapping("/by-type")

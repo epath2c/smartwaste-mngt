@@ -35,4 +35,16 @@ export class TrashbinsListComponent implements OnInit {
       }
     });
   }
+
+  markCleaned(bin: Trashbins): void {
+    if (!bin.binId) return;
+    this.trashbinsService.markCleaned(bin.binId).subscribe({
+      next: (updated) => {
+        bin.needsCleaning = false;
+      },
+      error: (err) => {
+        console.error('Failed to mark cleaned:', err);
+      }
+    });
+  }
 }
