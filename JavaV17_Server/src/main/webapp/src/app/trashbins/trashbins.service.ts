@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Trashbins } from './trashbins';
 import { EventEmitter } from '@angular/core';
 
-const restUrl ='/api/trashbins';
+const restUrl = '/api/trashbins';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,6 +31,6 @@ export class TrashbinsService {
 
   // Mark a bin as cleaned 
   markCleaned(id:number): Observable<Trashbins> {
-    return this.update(id, { needsCleaning: false });
+    return this.http.post<Trashbins>(`${restUrl}/${id}/mark-cleaned`, {});
   }
 }

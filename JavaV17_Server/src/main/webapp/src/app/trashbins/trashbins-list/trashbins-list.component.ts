@@ -27,7 +27,6 @@ export class TrashbinsListComponent implements OnInit {
   getTrashbins(): void {
     this.trashbinsService.getAll().subscribe({
       next: (data) => {
-        console.log("📦 Trashbin data from backend:", data);
         this.trashbins = data;
       },
       error: (err) => {
@@ -37,8 +36,13 @@ export class TrashbinsListComponent implements OnInit {
   }
 
   markCleaned(bin: Trashbins): void {
-    if (!bin.binId) return;
-    this.trashbinsService.markCleaned(bin.binId).subscribe({
+    const id = bin.binId || (bin as any).binID;
+    if (!id) {
+      console.error('No bin ID found');
+      return;
+    }
+    
+    this.trashbinsService.markCleaned(id).subscribe({
       next: (updated) => {
         bin.needsCleaning = false;
       },

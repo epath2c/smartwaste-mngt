@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (trashbin of trashbins; track trashbin.binId) {
+    @for (trashbin of trashbins; track $index) {
       <tr [style.color]="trashbin.needsCleaning ? 'red' : 'green'">
         <td>{{ trashbin.name }}</td>
         <td>{{ trashbin.height }}</td>
@@ -22,7 +22,11 @@
         <td>{{ trashbin.location?.address || 'No address' }}</td>
         <td>{{ trashbin.needsCleaning ? 'Needs Cleaning' : 'Clean' }}</td>
         <td>
-          <button (click)="markCleaned(trashbin)" [disabled]="!trashbin.needsCleaning">Mark cleaned</button>
+          @if (trashbin.needsCleaning) {
+            <button (click)="markCleaned(trashbin)" class="btn btn-success">Mark cleaned</button>
+          } @else {
+            <span class="text-success">Already clean</span>
+          }
         </td>
 
       </tr>
