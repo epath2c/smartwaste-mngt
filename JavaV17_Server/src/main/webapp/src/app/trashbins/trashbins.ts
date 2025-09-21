@@ -6,6 +6,7 @@ export class Trashbins {
     height!: number;
     createdDate!: string;
     threshold?: number;
+    needsCleaning?: boolean;
     cleanerIds?: number[]; 
     //cleaners?: Cleaner[]; 
     location?: {

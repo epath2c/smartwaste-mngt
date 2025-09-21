@@ -23,4 +23,14 @@ export class TrashbinsService {
   create(data:any):Observable<any>{
     return this.http.post(restUrl, data);
   }
+
+  // Update an existing trashbin (mark cleaned )
+  update(id:number, data: Partial<Trashbins>): Observable<Trashbins> {
+    return this.http.put<Trashbins>(`${restUrl}/${id}`, data);
+  }
+
+  // Mark a bin as cleaned 
+  markCleaned(id:number): Observable<Trashbins> {
+    return this.update(id, { needsCleaning: false });
+  }
 }

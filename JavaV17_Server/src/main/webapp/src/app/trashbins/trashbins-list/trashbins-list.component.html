@@ -1,4 +1,5 @@
 <h3>Trashbin List</h3>
+<button (click)="getTrashbins()">Refresh</button>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -7,16 +8,22 @@
       <th>Created Date</th>
       <th>Threshold (%)</th>
       <th>Map</th>
+      <th>Status</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
     @for (trashbin of trashbins; track trashbin.binId) {
-      <tr>
+      <tr [style.color]="trashbin.needsCleaning ? 'red' : 'green'">
         <td>{{ trashbin.name }}</td>
         <td>{{ trashbin.height }}</td>
         <td>{{ trashbin.createdDate }}</td>
         <td>{{ trashbin.threshold }}</td>
         <td>{{ trashbin.location?.address || 'No address' }}</td>
+        <td>{{ trashbin.needsCleaning ? 'Needs Cleaning' : 'Clean' }}</td>
+        <td>
+          <button (click)="markCleaned(trashbin)" [disabled]="!trashbin.needsCleaning">Mark cleaned</button>
+        </td>
 
       </tr>
     }

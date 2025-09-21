@@ -42,4 +42,10 @@ public class TrashBin {
 
     private LocalDate createdDate;
     private float threshold;
+
+    // Whether the bin currently needs cleaning (set when threshold first exceeded, manual reset)
+    // true  = alert has been triggered and bin is awaiting cleaning (frontend can show RED, will implement later)
+    // false = normal or already cleaned (frontend can show GREEN, will implement later)
+    private boolean needsCleaning;
+
 }

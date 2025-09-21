@@ -20,6 +20,9 @@ public class TrashBinServiceImpl implements TrashBinService {
     private TrashBinRepository trashBinRepository;
     
     private MailService mailService;
+    
+    // no-op placeholder removed as we now persist aboveThreshold on entity
+
 
     @Override
     public List<TrashBin> findAll() {
@@ -47,6 +50,7 @@ public class TrashBinServiceImpl implements TrashBinService {
             existingBin.setType(updatedBin.getType()); // Update bin type
             existingBin.setLocation(updatedBin.getLocation()); // Update location
             existingBin.setCleaners(updatedBin.getCleaners()); // Update list of assigned cleaners
+            existingBin.setNeedsCleaning(updatedBin.isNeedsCleaning()); // Allow frontend to reset cleaning state
 
             return trashBinRepository.save(existingBin);
         }).orElse(null);
@@ -75,11 +79,18 @@ public class TrashBinServiceImpl implements TrashBinService {
     @Override
     public void trashBinFillAndAlert(Sensor sensor, float distanceReading) {
         TrashBin bin = trashBinRepository.findBySensor(sensor);
-        if (bin != null) {
-            float fill = (bin.getHeight() - distanceReading) / bin.getHeight() * 100f;
-            if (fill >= bin.getThreshold()) {
-                mailService.sendThresholdAlertToCleaners(bin, fill);
-            }
+        if (bin == null) return;
+
+        float fill = (bin.getHeight() - distanceReading) / bin.getHeight() * 100f;
+        float threshold = bin.getThreshold();
+
+        // Send once when first reaching the threshold:
+        // - only if the bin is not already marked as needing cleaning (needsCleaning=false)
+        // - and the current fill is at or above the threshold
+        if (!bin.isNeedsCleaning() && fill >= threshold) {
+            mailService.sendThresholdAlertToCleaners(bin, fill);
+            bin.setNeedsCleaning(true);
+            trashBinRepository.save(bin);
         }
     }
 }
