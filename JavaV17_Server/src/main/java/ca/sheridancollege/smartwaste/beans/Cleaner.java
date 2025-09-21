@@ -39,4 +39,11 @@ public class Cleaner {
     )
     @JsonIgnore
     private List<TrashBin> bins;
+
+    // Many-to-many with Shift
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "shift_cleaner", // name of the join table JPA will auto-create
+            joinColumns = @JoinColumn(name = "cleaner_id"), inverseJoinColumns = @JoinColumn(name = "shift_id"))
+    @JsonIgnore
+    private List<Shift> shifts;
 }
