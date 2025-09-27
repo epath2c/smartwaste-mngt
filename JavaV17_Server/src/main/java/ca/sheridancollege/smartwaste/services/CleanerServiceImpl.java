@@ -1,9 +1,12 @@
 package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.HashSet;
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.Cleaner;
+import ca.sheridancollege.smartwaste.beans.Shift;
 import ca.sheridancollege.smartwaste.repositories.CleanerRepository;
 import lombok.AllArgsConstructor;
 
@@ -12,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class CleanerServiceImpl implements CleanerService {
 
 	private CleanerRepository cleanerRepository;
+	private ShiftService shiftService;
 
 	@Override
 	public List<Cleaner> findAll() {
@@ -38,9 +42,17 @@ public class CleanerServiceImpl implements CleanerService {
 
 	@Override
 	public Cleaner save(Cleaner cleaner) {
+		// Map shiftIds to Shift entities 
+		if ( cleaner.getShiftIds() != null){
+			List<Shift> shifts = shiftService.findAllById(cleaner.getShiftIds());
+			cleaner.setShifts(shifts);
+			for (Shift s : shifts){
+				s.getCleaners().add(cleaner);
+			}
+		}
 		return cleanerRepository.save(cleaner);
 	}
-
+	// need to update 
 	@Override
 	public Cleaner update(Long id, Cleaner updatedCleaner) {
 		return cleanerRepository.findById(id).map(existingCleaner -> {
@@ -53,6 +65,19 @@ public class CleanerServiceImpl implements CleanerService {
 
 	@Override
 	public void delete(Long id) {
-		cleanerRepository.deleteById(id);
+		Optional<Cleaner> cleanerSelected = cleanerRepository.findById(id);
+		if (cleanerSelected.isPresent()) {
+			Cleaner cleaner = cleanerSelected.get();
+			List<Shift> shifts = cleaner.getShifts();
+
+			// Detach both 
+			for (Shift s : shifts) {
+				s.getCleaners().remove(cleaner);
+			}
+			cleaner.getShifts().clear();
+
+			// Now delete the cleaner
+			cleanerRepository.delete(cleaner);
+		}
 	}
 }

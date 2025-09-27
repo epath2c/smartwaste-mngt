@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Transient;
 
 @Entity
 @Data
@@ -46,4 +47,7 @@ public class Cleaner {
             joinColumns = @JoinColumn(name = "cleaner_id"), inverseJoinColumns = @JoinColumn(name = "shift_id"))
     @JsonIgnore
     private List<Shift> shifts;
+
+    @Transient
+    private List<Long> shiftIds;
 }

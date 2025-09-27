@@ -3,6 +3,7 @@ package ca.sheridancollege.smartwaste.services;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.Shift;
 import ca.sheridancollege.smartwaste.repositories.ShiftRepository;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,10 @@ public class ShiftServiceImpl implements ShiftService {
         // TODO Auto-generated method stub
         return shiftRepository.findAll();
     }
-
+	@Override
+	public List<Shift> findAllById(List<Long> ids) {
+		return shiftRepository.findAllById(ids);
+	}
     @Override
     public Shift findById(Long id) {
         if (shiftRepository.findById(id).isPresent())
@@ -31,18 +35,19 @@ public class ShiftServiceImpl implements ShiftService {
         return shiftRepository.save(shift);
     }
 
+    // need to update
     @Override
     public Shift update(Long id, Shift updatedShift) {
         return shiftRepository.findById(id).map(existingShift -> {
             existingShift.setDayOfWeek(updatedShift.getDayOfWeek());
-            existingShift.setStartTime(updatedShift.getStartTime());
-            existingShift.setEndTime(updatedShift.getEndTime());
+            existingShift.setShiftTime(updatedShift.getShiftTime());
             return shiftRepository.save(existingShift);
         }).orElse(null);
     }
-
+    // need to update 
     @Override
     public void delete(Long id) {
+
         shiftRepository.deleteById(id);
     }
 }
