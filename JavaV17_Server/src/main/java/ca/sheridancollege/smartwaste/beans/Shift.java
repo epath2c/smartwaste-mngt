@@ -16,8 +16,10 @@ public class Shift {
     private Long id;
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
-    private String startTime;
-    private String endTime;
+    //private String startTime;
+    //private String endTime;
+    @Enumerated(EnumType.STRING)
+    private ShiftTime shiftTime;
     @ManyToMany(mappedBy = "shifts", fetch = FetchType.LAZY)
     private List<Cleaner> cleaners;
     @Transient
