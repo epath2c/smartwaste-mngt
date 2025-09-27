@@ -25,7 +25,17 @@
       name="phoneNumber"
       [(ngModel)]="cleaner.phoneNumber"
     />
+    <mat-form-field>
+      <mat-label>Selected Shifts:</mat-label>
+      <mat-select [formControl]="shiftsSelected" multiple>
+        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+          {{shift.dayOfWeek }}, {{shift.shiftTime }}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+    
     <button class="btn btn-success" (click)="saveCleaner()">Submit</button>
   </div>
+  <p><a routerLink="/cleaners">Back to cleaner page</a></p>
 </div>
-<p><a routerLink="/cleaners">Back to cleaner page</a></p>
+
