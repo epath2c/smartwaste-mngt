@@ -1,25 +1,26 @@
 <h3>Trashbin List</h3>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Height (cm)</th>
-      <th>Created Date</th>
-      <th>Threshold (%)</th>
-      <th>Map</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (trashbin of trashbins; track trashbin.binId) {
+<div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle">
+    <thead>
       <tr>
-        <td>{{ trashbin.name }}</td>
-        <td>{{ trashbin.height }}</td>
-        <td>{{ trashbin.createdDate }}</td>
-        <td>{{ trashbin.threshold }}</td>
-        <td>{{ trashbin.location?.address || 'No address' }}</td>
-
+        <th>Name</th>
+        <th>Height (cm)</th>
+        <th>Created Date</th>
+        <th>Threshold (%)</th>
+        <th>Map</th>
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (trashbin of trashbins; track trashbin.binId) {
+        <tr>
+          <td>{{ trashbin.name }}</td>
+          <td>{{ trashbin.height }}</td>
+          <td>{{ trashbin.createdDate }}</td>
+          <td>{{ trashbin.threshold }}</td>
+          <td>{{ trashbin.location?.address || 'No address' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
 <p><a routerLink="/trashbins">Back to trash bin page</a></p>

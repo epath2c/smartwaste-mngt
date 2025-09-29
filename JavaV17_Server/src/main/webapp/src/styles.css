@@ -1,2 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* ===== App-wide look & feel ===== */
+:root{
+  --app-max: 1100px;
+  --app-gap: 1rem;
+  --app-radius: 12px;
+  --app-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+/* Layout */
+.container,
+.about-container {
+  max-width: var(--app-max);
+}
+
+/* Headings */
+h1, .display-4 { letter-spacing: .2px; }
+h1 { margin-bottom: .75rem; }
+.lead { color: #6c757d; }
+
+/* Cards */
+.card { border-radius: var(--app-radius); box-shadow: var(--app-shadow); }
+.card .card-title { margin-bottom: .5rem; }
+
+/* Panels (legacy) -> make them look like cards */
+.panel { border: none; border-radius: var(--app-radius); box-shadow: var(--app-shadow); background:#fff; }
+.panel-heading { padding:.75rem 1rem; border-bottom:1px solid rgba(0,0,0,.06); }
+.panel-title { margin:0; font-weight:600; }
+.panel-body { padding:1rem; }
+
+/* Buttons */
+.btn { border-radius: 999px; padding:.45rem 1rem; }
+.btn + .btn { margin-left:.5rem; }
+
+/* Tables */
+.table { margin-top:.5rem; border-radius: var(--app-radius); overflow:hidden; }
+.table thead th { background:#f8f9fa; font-weight:600; }
+.table-hover tbody tr:hover { background: #fafafa; }
+
+/* Forms */
+.form-group > label, .form-group > .mat-form-field {
+  margin-top: .75rem;
+}
+.form-control, .mat-mdc-form-field { border-radius: 8px; }
+
+/* Utilities */
+.section { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+.centered { text-align:center; }
+
+/* Google Maps wrapper spacing */
+google-map { display:block; border-radius: var(--app-radius); overflow:hidden; box-shadow: var(--app-shadow); }
+
+/* Responsive helper for overflow tables */
+.table-responsive { border-radius: var(--app-radius); box-shadow: var(--app-shadow); }
