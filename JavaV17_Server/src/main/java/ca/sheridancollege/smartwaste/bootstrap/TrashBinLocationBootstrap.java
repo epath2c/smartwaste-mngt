@@ -1,3 +1,5 @@
+  // Commented out to prevent automatic location creation
+        /*
 package ca.sheridancollege.smartwaste.bootstrap;
 
 import org.springframework.boot.CommandLineRunner;
@@ -7,7 +9,7 @@ import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.services.TrashBinLocationService;
 import lombok.AllArgsConstructor;
 
-@Component
+// @Component  
 @AllArgsConstructor
 public class TrashBinLocationBootstrap implements CommandLineRunner {
 
@@ -15,6 +17,7 @@ public class TrashBinLocationBootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        
         if (locationService.findAll().isEmpty()) {
             locationService.save(TrashBinLocation.builder()
                     .address("Building A - Main Entrance")
@@ -34,6 +37,6 @@ public class TrashBinLocationBootstrap implements CommandLineRunner {
                     .longitude(-79.229800)
                     .build());
         }
-
+        
     }
-}
+}*/

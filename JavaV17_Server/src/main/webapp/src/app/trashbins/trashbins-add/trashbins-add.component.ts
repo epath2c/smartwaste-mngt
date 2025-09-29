@@ -7,6 +7,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { CleanerService } from '../../cleaners/cleaner.service';
 import { Cleaner } from '../../cleaners/cleaner';
+import { SensorService } from '../../sensors/sensor.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -23,8 +24,10 @@ export class TrashbinsAddComponent {
   // store an array of selected cleaners
   
   cleanersSelected = new FormControl<number[] | null>([]);
+  sensorSelected = new FormControl<number | null>(null);
   //cleanersSelected = new FormControl<Cleaner[] | null>([]);
   cleanerList: Cleaner[] = [];
+  availableSensors: any[] = []; 
 
   trashbins: Trashbins ={
     binId:0,
@@ -44,9 +47,11 @@ export class TrashbinsAddComponent {
   constructor(
     private trashbinsService: TrashbinsService,
     private cleanerService: CleanerService,
+    private sensorService: SensorService,
     private router: Router
   ) {}
   ngOnInit(): void {
+        // Load cleaners
         this.cleanerService.getAll().subscribe({
           next: (data) => {
             console.log('📋 cleaners loaded:', data);
@@ -56,8 +61,10 @@ export class TrashbinsAddComponent {
             console.error('Failed to load cleaners:', err);
           }
         });
-        this.cleanersSelected.valueChanges.subscribe(value => {
-          console.log('🖊️ Selected cleaner IDs changed:', value);
+        
+        // Load available sensors only
+        this.sensorService.getAvailable().subscribe(data => {
+          this.availableSensors = data;
         });
       }
 
@@ -101,7 +108,7 @@ export class TrashbinsAddComponent {
       createdDate: this.trashbins.createdDate,
       threshold: this.trashbins.threshold,
       cleanerIds: this.cleanersSelected.value ?? [],
-      //cleaners: this.cleanersSelected.value ?? [],
+      sensor: this.sensorSelected.value ? { id: this.sensorSelected.value } : null,
       location: {
         address: this.trashbins.location!.address,
         latitude: this.trashbins.location!.latitude,

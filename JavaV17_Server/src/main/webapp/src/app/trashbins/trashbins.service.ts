@@ -24,13 +24,15 @@ export class TrashbinsService {
     return this.http.post(restUrl, data);
   }
 
-  // Update an existing trashbin (mark cleaned )
+  // Update an existing trashbin
   update(id:number, data: Partial<Trashbins>): Observable<Trashbins> {
     return this.http.put<Trashbins>(`${restUrl}/${id}`, data);
   }
 
-  // Mark a bin as cleaned 
+  // Mark a bin as cleaned (for future use)
+  /*
   markCleaned(id:number): Observable<Trashbins> {
     return this.http.post<Trashbins>(`${restUrl}/${id}/mark-cleaned`, {});
   }
+  */
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class TrashBin {
     private TrashBinType type;
 
     // Many bins can be in the same location
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "geo_id")
     private TrashBinLocation location;
 
@@ -43,9 +44,11 @@ public class TrashBin {
     private LocalDate createdDate;
     private float threshold;
 
-    // Whether the bin currently needs cleaning (set when threshold first exceeded, manual reset)
-    // true  = alert has been triggered and bin is awaiting cleaning (frontend can show RED, will implement later)
-    // false = normal or already cleaned (frontend can show GREEN, will implement later)
-    private boolean needsCleaning;
+    
+    // record the time of the last alert
+    private LocalDateTime lastAlertTime; 
+    
+    // Current fill percentage
+    private float currentFillPercentage; 
 
 }

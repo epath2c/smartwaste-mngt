@@ -35,6 +35,8 @@ export class TrashbinsListComponent implements OnInit {
     });
   }
 
+  // Mark cleaned functionality (for future use )
+  /*
   markCleaned(bin: Trashbins): void {
     const id = bin.binId || (bin as any).binID;
     if (!id) {
@@ -44,11 +46,14 @@ export class TrashbinsListComponent implements OnInit {
     
     this.trashbinsService.markCleaned(id).subscribe({
       next: (updated) => {
-        bin.needsCleaning = false;
+        console.log('Bin marked as cleaned, alert timer reset');
+        // Refresh the list to show updated data
+        this.getTrashbins();
       },
       error: (err) => {
         console.error('Failed to mark cleaned:', err);
       }
     });
   }
+  */
 }

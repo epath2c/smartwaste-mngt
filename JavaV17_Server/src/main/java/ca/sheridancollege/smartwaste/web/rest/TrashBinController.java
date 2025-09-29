@@ -10,6 +10,8 @@ import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
 import ca.sheridancollege.smartwaste.services.CleanerService;
 import ca.sheridancollege.smartwaste.services.TrashBinService;
+import ca.sheridancollege.smartwaste.services.SensorService;
+ import ca.sheridancollege.smartwaste.services.TrashBinLocationService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -19,6 +21,8 @@ public class TrashBinController {
 
     private TrashBinService trashBinService;
     private CleanerService cleanerService;
+    private SensorService sensorService;
+    private TrashBinLocationService trashBinLocationService;
 
     // Get all trash bins
     @GetMapping
@@ -37,8 +41,12 @@ public class TrashBinController {
     public TrashBin createBin(@RequestBody TrashBin bin) {
         System.out.println("📥 Received location: " + bin.getLocation());
         bin.setBinID(null); // prevent accidental updates
+        
+        // Handle location - create new location for each trash bin
         if (bin.getLocation() != null) {
-            bin.getLocation().setGeoID(null);
+            bin.getLocation().setGeoID(null); // Ensure new location is created
+            TrashBinLocation savedLocation = trashBinLocationService.save(bin.getLocation());
+            bin.setLocation(savedLocation);
         }
         // Map cleanerIds to Cleaner entities
         if (bin.getCleanerIds() != null && !bin.getCleanerIds().isEmpty()) {
@@ -47,6 +55,11 @@ public class TrashBinController {
             for (Cleaner c : cleaners) {
                 c.getBins().add(bin);
             }
+        }
+        
+        // Map sensorId to Sensor entity 
+        if (bin.getSensor() != null && bin.getSensor().getId() != null) {
+            bin.setSensor(sensorService.findById(bin.getSensor().getId()));
         }
         return trashBinService.save(bin);
     }
@@ -63,18 +76,18 @@ public class TrashBinController {
         trashBinService.delete(id);
     }
 
-    // Mark a bin as cleaned (frontend action by cleaner)
+    // Mark a bin as cleaned (for future use)
+    /*
     @PostMapping("/{id}/mark-cleaned")
     public TrashBin markBinCleaned(@PathVariable Long id) {
         TrashBin bin = trashBinService.findById(id);
         if (bin != null) {
-        bin.setNeedsCleaning(false);
-        return trashBinService.save(bin);
+            bin.setLastAlertTime(null);  // Reset alert time - allows immediate re-alerting if still above threshold
+            return trashBinService.save(bin);
         }
         return null;
     }
-
-  
+    */
 
     // Get bins by type
     @PostMapping("/by-type")

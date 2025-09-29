@@ -25,4 +25,9 @@ return this.http.get<Sensor[]>(restUrl);
 create(data:any):Observable<any>{
 return this.http.post(restUrl, data);
 }
+
+//Get available sensors (not assigned to trash bins)
+getAvailable(): Observable<any[]>{
+return this.http.get<any[]>(`${restUrl}/available`);
+}
 }

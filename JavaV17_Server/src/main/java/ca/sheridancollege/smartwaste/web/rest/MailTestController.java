@@ -22,25 +22,22 @@ public class MailTestController {
     @Autowired
     private TrashBinService trashBinService;
 
-    @GetMapping("/send-test-email")
-    public ResponseEntity<String> sendTestEmail(@RequestParam Long binId) {
-        try {
-            TrashBin bin = trashBinService.findById(binId);
-            if (bin == null) return ResponseEntity.ok("Error: bin not found: " + binId);
-            // Use the bin's threshold (set from frontend) as the fillLevel in test email
-            mailService.sendThresholdAlertToCleaners(bin, bin.getThreshold());
-            return ResponseEntity.ok("Email sent successfully");
-        } catch (Exception e) {
-            return ResponseEntity.ok("Error: " + e.getMessage());
-        }
-    }
-
     @GetMapping("/test-fill/{distance}")
     public ResponseEntity<String> testFill(@PathVariable float distance,
             @RequestParam Long binId) {
         TrashBin bin = trashBinService.findById(binId);
         if (bin == null) return ResponseEntity.ok("Error: bin not found: " + binId);
+        
         trashBinService.trashBinFillAndAlert(bin.getSensor(), distance);
-        return ResponseEntity.ok("OK");
+        
+        TrashBin updatedBin = trashBinService.findById(binId);
+        return ResponseEntity.ok(String.format(
+            "Test completed: distance=%.1fcm, fill=%.1f%%, lastAlert=%s",
+            distance, 
+            updatedBin.getCurrentFillPercentage(),
+            updatedBin.getLastAlertTime()
+        ));
     }
+    
+  
 }

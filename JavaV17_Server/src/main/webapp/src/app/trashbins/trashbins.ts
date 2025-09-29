@@ -6,7 +6,7 @@ export class Trashbins {
     height!: number;
     createdDate!: string;
     threshold?: number;
-    needsCleaning?: boolean;
+    currentFillPercentage?: number;  // current fill percentage
     cleanerIds?: number[]; 
     //cleaners?: Cleaner[]; 
     location?: {

@@ -1,8 +1,8 @@
 package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
- 
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.TrashBin;
@@ -50,7 +50,6 @@ public class TrashBinServiceImpl implements TrashBinService {
             existingBin.setType(updatedBin.getType()); // Update bin type
             existingBin.setLocation(updatedBin.getLocation()); // Update location
             existingBin.setCleaners(updatedBin.getCleaners()); // Update list of assigned cleaners
-            existingBin.setNeedsCleaning(updatedBin.isNeedsCleaning()); // Allow frontend to reset cleaning state
 
             return trashBinRepository.save(existingBin);
         }).orElse(null);
@@ -82,14 +81,28 @@ public class TrashBinServiceImpl implements TrashBinService {
         if (bin == null) return;
 
         float fill = (bin.getHeight() - distanceReading) / bin.getHeight() * 100f;
-        float threshold = bin.getThreshold();
-
-        // Send once when first reaching the threshold:
-        // - only if the bin is not already marked as needing cleaning (needsCleaning=false)
-        // - and the current fill is at or above the threshold
-        if (!bin.isNeedsCleaning() && fill >= threshold) {
-            mailService.sendThresholdAlertToCleaners(bin, fill);
-            bin.setNeedsCleaning(true);
+        
+        // Update current fill percentage
+        bin.setCurrentFillPercentage(fill);
+        
+        if (fill >= bin.getThreshold()) {
+            LocalDateTime now = LocalDateTime.now();
+             
+            // First time or over 1 hour later
+            if (bin.getLastAlertTime() == null || 
+                // bin.getLastAlertTime().isBefore(now.minusHours(1))) { //  1 hour
+                bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
+                mailService.sendThresholdAlertToCleaners(bin, fill);
+                bin.setLastAlertTime(now);
+            }
+            // Save updated fill percentage
+            trashBinRepository.save(bin);
+        } else {
+            // Fill level is normal, reset alert time
+            if (bin.getLastAlertTime() != null) {
+                bin.setLastAlertTime(null);
+            }
+            // save updated fill percentage
             trashBinRepository.save(bin);
         }
     }

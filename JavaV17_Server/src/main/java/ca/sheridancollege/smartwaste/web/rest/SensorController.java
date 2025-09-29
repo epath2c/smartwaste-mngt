@@ -53,5 +53,11 @@ public class SensorController {
     public void deleteSensor(@PathVariable Long id) {
         sensorService.delete(id);
     }
+    
+    // Get available sensors (not assigned to any trash bin)
+    @GetMapping("/available")
+    public List<Sensor> getAvailableSensors() {
+        return sensorService.findAvailableSensors();
+    }
 
 }
