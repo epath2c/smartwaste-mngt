@@ -20,4 +20,6 @@ public interface SensorService {
 	public Sensor update(Long id, Sensor updatedSensor);
 
 	public void delete(Long id);
+	
+	public List<Sensor> findAvailableSensors();
 }

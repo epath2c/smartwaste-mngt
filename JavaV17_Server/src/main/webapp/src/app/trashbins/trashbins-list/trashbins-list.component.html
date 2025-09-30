@@ -8,16 +8,27 @@
         <th>Created Date</th>
         <th>Threshold (%)</th>
         <th>Map</th>
+        <th>Fill Level (%)</th>
+        <!-- <th>Action</th> --> <!-- for future use -->
       </tr>
     </thead>
     <tbody>
-      @for (trashbin of trashbins; track trashbin.binId) {
+    @for (trashbin of trashbins; track $index) {
         <tr>
           <td>{{ trashbin.name }}</td>
           <td>{{ trashbin.height }}</td>
           <td>{{ trashbin.createdDate }}</td>
           <td>{{ trashbin.threshold }}</td>
           <td>{{ trashbin.location?.address || 'No address' }}</td>
+        <td [style.color]="(trashbin.currentFillPercentage || 0) >= (trashbin.threshold || 0) ? 'red' : 'green'">
+          {{ (trashbin.currentFillPercentage || 0).toFixed(1) }}%
+        </td>
+        <!-- for future use - Mark cleaned functionality -->
+        <!--
+        <td>
+          <button (click)="markCleaned(trashbin)" class="btn btn-success">Mark cleaned</button>
+        </td>
+        -->
         </tr>
       }
     </tbody>

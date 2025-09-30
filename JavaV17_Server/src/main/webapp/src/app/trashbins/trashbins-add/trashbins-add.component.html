@@ -23,7 +23,16 @@
         </mat-select>
       </mat-form-field>
 
-      <label class="mt-2">Select Location on Map:</label>
+  
+    <mat-form-field>
+      <mat-label>Select Sensor:</mat-label>
+      <mat-select [formControl]="sensorSelected">
+        <mat-option *ngFor="let sensor of availableSensors" [value]="sensor.id">
+          Sensor ID: {{sensor.id}} (MAC Address: {{sensor.macAddress}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <label class="mt-2">Select Location on Map:</label>
       <google-map height="300px" width="100%" [center]="center" [zoom]="15" (mapClick)="updateMarker($event)">
         <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
       </google-map>

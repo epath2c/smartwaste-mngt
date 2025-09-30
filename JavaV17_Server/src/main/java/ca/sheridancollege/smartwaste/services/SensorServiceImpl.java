@@ -1,10 +1,13 @@
 package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
+import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.Sensor;
+import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.repositories.SensorRepository;
+import ca.sheridancollege.smartwaste.services.TrashBinService;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -12,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class SensorServiceImpl implements SensorService {
 
 	private SensorRepository sensorRepository;
+	private TrashBinService trashBinService;
 
 	@Override
 	public List<Sensor> findAll() {
@@ -55,6 +59,27 @@ public class SensorServiceImpl implements SensorService {
 	@Override
 	public void delete(Long id) {
 		sensorRepository.deleteById(id);
+	}
+	
+	@Override
+	public List<Sensor> findAvailableSensors() {
+		List<Sensor> allSensors = sensorRepository.findAll();
+		List<Sensor> availableSensors = new ArrayList<>();
+		
+		for (Sensor sensor : allSensors) {
+			boolean isUsed = false;
+			for (TrashBin bin : trashBinService.findAll()) {
+				if (bin.getSensor() != null && bin.getSensor().getId().equals(sensor.getId())) {
+					isUsed = true;
+					break;
+				}
+			}
+			if (!isUsed) {
+				availableSensors.add(sensor);
+			}
+		}
+		
+		return availableSensors;
 	}
 
 }

@@ -27,7 +27,6 @@ export class TrashbinsListComponent implements OnInit {
   getTrashbins(): void {
     this.trashbinsService.getAll().subscribe({
       next: (data) => {
-        console.log("📦 Trashbin data from backend:", data);
         this.trashbins = data;
       },
       error: (err) => {
@@ -35,4 +34,26 @@ export class TrashbinsListComponent implements OnInit {
       }
     });
   }
+
+  // Mark cleaned functionality (for future use )
+  /*
+  markCleaned(bin: Trashbins): void {
+    const id = bin.binId || (bin as any).binID;
+    if (!id) {
+      console.error('No bin ID found');
+      return;
+    }
+    
+    this.trashbinsService.markCleaned(id).subscribe({
+      next: (updated) => {
+        console.log('Bin marked as cleaned, alert timer reset');
+        // Refresh the list to show updated data
+        this.getTrashbins();
+      },
+      error: (err) => {
+        console.error('Failed to mark cleaned:', err);
+      }
+    });
+  }
+  */
 }

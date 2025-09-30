@@ -1,3 +1,4 @@
+/*
 package ca.sheridancollege.smartwaste.bootstrap;
 
 import java.time.LocalDate;
@@ -75,3 +76,4 @@ public class TrashBinBootstrap implements CommandLineRunner {
         }
     }
 }
+*/
