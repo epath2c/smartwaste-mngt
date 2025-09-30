@@ -1,24 +1,25 @@
 <h3>Trashbin List</h3>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Height (cm)</th>
-      <th>Created Date</th>
-      <th>Threshold (%)</th>
-      <th>Map</th>
-      <th>Fill Level (%)</th>
-      <!-- <th>Action</th> --> <!-- for future use -->
-    </tr>
-  </thead>
-  <tbody>
-    @for (trashbin of trashbins; track $index) {
+<div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle">
+    <thead>
       <tr>
-        <td>{{ trashbin.name }}</td>
-        <td>{{ trashbin.height }}</td>
-        <td>{{ trashbin.createdDate }}</td>
-        <td>{{ trashbin.threshold }}</td>
-        <td>{{ trashbin.location?.address || 'No address' }}</td>
+        <th>Name</th>
+        <th>Height (cm)</th>
+        <th>Created Date</th>
+        <th>Threshold (%)</th>
+        <th>Map</th>
+        <th>Fill Level (%)</th>
+        <!-- <th>Action</th> --> <!-- for future use -->
+      </tr>
+    </thead>
+    <tbody>
+    @for (trashbin of trashbins; track $index) {
+        <tr>
+          <td>{{ trashbin.name }}</td>
+          <td>{{ trashbin.height }}</td>
+          <td>{{ trashbin.createdDate }}</td>
+          <td>{{ trashbin.threshold }}</td>
+          <td>{{ trashbin.location?.address || 'No address' }}</td>
         <td [style.color]="(trashbin.currentFillPercentage || 0) >= (trashbin.threshold || 0) ? 'red' : 'green'">
           {{ (trashbin.currentFillPercentage || 0).toFixed(1) }}%
         </td>
@@ -28,9 +29,9 @@
           <button (click)="markCleaned(trashbin)" class="btn btn-success">Mark cleaned</button>
         </td>
         -->
-
-      </tr>
-    }
-  </tbody>
-</table>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
 <p><a routerLink="/trashbins">Back to trash bin page</a></p>
