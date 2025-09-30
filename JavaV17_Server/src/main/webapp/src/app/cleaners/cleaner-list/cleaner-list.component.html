@@ -1,16 +1,18 @@
 <h3>Cleaner List</h3>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Phone Number</th>
-  </tr>
-  @for (cleaner of cleaners; track cleaner.id) {
-    <tr>
-      <td>{{ cleaner.name }}</td>
-      <td>{{ cleaner.email }}</td>
-      <td>{{ cleaner.phoneNumber }}</td>
-    </tr>
-  }
-</table>
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Phone Number</th></tr>
+    </thead>
+    <tbody>
+      @for (cleaner of cleaners; track cleaner.id) {
+        <tr>
+          <td>{{ cleaner.name }}</td>
+          <td>{{ cleaner.email }}</td>
+          <td>{{ cleaner.phoneNumber }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
 <p><a routerLink="/cleaners">Back to cleaner page</a></p>

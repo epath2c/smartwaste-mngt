@@ -1,22 +1,26 @@
 <h3>Sensor List</h3>
-<table class="table table-striped">
-  <tr>
-    <th>Sensor ID</th>
-    <th>Mac Address</th>
-    <th>Triger Pin</th>
-    <th>Echo Pin</th>
-  </tr>
-  @for (sensor of sensors; track sensor.id) {
-    <tr>
-      <td>{{ sensor.id }}</td>
-      <td>{{ sensor.macAddress }}</td>
-      <td>{{ sensor.trigerPin }}</td>
-      <td>{{ sensor.echoPin }}</td>
-      <td>
-        <a [routerLink]="['/view/sensors', sensor.id, 'history']">Go to History</a>
-      </td>
-    </tr>
-  }
-</table>
-<p><a routerLink="/view/sensors">Back to sensor page</a></p>
-
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Sensor ID</th>
+        <th>MAC Address</th>
+        <th>Trigger Pin</th>
+        <th>Echo Pin</th>
+        <th>History</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (sensor of sensors; track sensor.id) {
+        <tr>
+          <td>{{ sensor.id }}</td>
+          <td>{{ sensor.macAddress }}</td>
+          <td>{{ sensor.trigerPin }}</td>
+          <td>{{ sensor.echoPin }}</td>
+          <td><a [routerLink]="['/view/sensors', sensor.id, 'history']">Go to History</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<p><a routerLink="/sensors">Back to sensor page</a></p>

@@ -3,6 +3,7 @@ package ca.sheridancollege.smartwaste.web.rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,21 +22,22 @@ public class MailTestController {
     @Autowired
     private TrashBinService trashBinService;
 
-    @GetMapping("/send-test-email")
-    public ResponseEntity<String> sendTestEmail() {
-        try {
-            TrashBin testBin = trashBinService.findAll().get(0);
-            mailService.sendThresholdAlertToCleaners(testBin, 80.0f);
-            return ResponseEntity.ok("Email sent successfully");
-        } catch (Exception e) {
-            return ResponseEntity.ok("Error: " + e.getMessage());
-        }
-    }
-
     @GetMapping("/test-fill/{distance}")
-    public ResponseEntity<String> testFill(@PathVariable float distance) {
-        TrashBin bin = trashBinService.findAll().get(0);
+    public ResponseEntity<String> testFill(@PathVariable float distance,
+            @RequestParam Long binId) {
+        TrashBin bin = trashBinService.findById(binId);
+        if (bin == null) return ResponseEntity.ok("Error: bin not found: " + binId);
+        
         trashBinService.trashBinFillAndAlert(bin.getSensor(), distance);
-        return ResponseEntity.ok("Test completed: distance=" + distance + "cm");
+        
+        TrashBin updatedBin = trashBinService.findById(binId);
+        return ResponseEntity.ok(String.format(
+            "Test completed: distance=%.1fcm, fill=%.1f%%, lastAlert=%s",
+            distance, 
+            updatedBin.getCurrentFillPercentage(),
+            updatedBin.getLastAlertTime()
+        ));
     }
+    
+  
 }

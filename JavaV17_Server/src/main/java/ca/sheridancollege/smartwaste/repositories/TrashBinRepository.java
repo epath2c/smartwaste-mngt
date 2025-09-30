@@ -23,4 +23,7 @@ public interface TrashBinRepository extends JpaRepository<TrashBin, Long> {
     
     // Find bin by sensor
     TrashBin findBySensor(Sensor sensor);
+
+    // find bins that currently need cleaning
+   // List<TrashBin> findByNeedsCleaningTrue();
 }
