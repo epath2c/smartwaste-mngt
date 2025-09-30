@@ -10,12 +10,18 @@ import { TrashbinsAddComponent } from './trashbins/trashbins-add/trashbins-add.c
 import { TrashbinsComponent } from './trashbins/trashbins.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { ShiftsComponent } from './shifts/shifts.component';
+import { ShiftListComponent } from './shifts/shift-list/shift-list.component';
+import { ShiftAddComponent } from './shifts/shift-add/shift-add.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent }, // Default route
     { path: 'home', component: HomeComponent },
     { path: 'sensors', component: SensorsComponent },
     { path: 'cleaners', component: CleanersComponent },
+    { path: 'shifts', component: ShiftsComponent },
+    { path: 'view/shifts', component: ShiftListComponent },
+    { path: 'add/shifts', component: ShiftAddComponent },
     { path: 'trashbins', component: TrashbinsComponent },
     { path: 'view/sensors', component: SensorListComponent },
     { path: 'view/sensors/:id/history', component: SensorHistoryComponent },

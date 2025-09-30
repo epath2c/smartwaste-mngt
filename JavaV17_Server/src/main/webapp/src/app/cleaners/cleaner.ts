@@ -3,4 +3,5 @@ export class Cleaner {
     name!: string;
     email!: string;
     phoneNumber!: string;
+    shiftIds?: number[]; 
 }

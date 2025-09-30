@@ -54,11 +54,11 @@ export class TrashbinsAddComponent {
         // Load cleaners
         this.cleanerService.getAll().subscribe({
           next: (data) => {
-            console.log('📋 cleaners loaded:', data);
+            //console.log('cleaners loaded:', data);
             this.cleanerList = data;
           },
           error: (err) => {
-            console.error('Failed to load cleaners:', err);
+            //console.error('Failed to load cleaners:', err);
           }
         });
         
@@ -98,9 +98,9 @@ export class TrashbinsAddComponent {
   //Method called by the HTML button
   // trashbins-add.component.ts
   saveTrashbins(): void {
-    console.log("🔄 Starting save process...");
-    console.log("📝 Form data:", this.trashbins);
-    console.log("📝 Cleaner selected:", this.cleanersSelected.value,);
+    //console.log("🔄 Starting save process...");
+    //console.log("📝 Form data:", this.trashbins);
+    //console.log("📝 Cleaner selected:", this.cleanersSelected.value,);
 
     const data = {
       name: this.trashbins.name,
@@ -115,7 +115,7 @@ export class TrashbinsAddComponent {
         longitude: this.trashbins.location!.longitude }
     };
 
-    console.log("Sending data:", data);
+    //console.log("Sending data:", data);
 
     this.trashbinsService.create(data).subscribe({
       next: (response: Trashbins) => {
