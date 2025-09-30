@@ -9,6 +9,11 @@
   --app-shadow: 0 6px 18px rgba(0,0,0,.06);
 }
 
+.page-container {
+  margin: 20px;
+}
+
+
 /* Layout */
 .container,
 .about-container {
