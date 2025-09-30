@@ -9,6 +9,7 @@ import { TrashbinsListComponent } from './trashbins/trashbins-list/trashbins-lis
 import { TrashbinsAddComponent } from './trashbins/trashbins-add/trashbins-add.component';
 import { TrashbinsComponent } from './trashbins/trashbins.component';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent }, // Default route
@@ -22,5 +23,8 @@ export const routes: Routes = [
     { path: 'add/cleaners', component: CleanerAddComponent },
     { path: 'view/trashbins', component: TrashbinsListComponent },
     { path: 'add/trashbins', component: TrashbinsAddComponent },
+	{ path: 'about', component: AboutComponent},
     { path: '**', redirectTo: '' } // Catch all route
+	
+
 ];
