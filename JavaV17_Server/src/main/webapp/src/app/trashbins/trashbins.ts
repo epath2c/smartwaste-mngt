@@ -13,4 +13,5 @@ export class Trashbins {
       address?: string;
       latitude?: number;
       longitude?: number;
-}}
+    };
+}
