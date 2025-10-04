@@ -2,6 +2,7 @@ package ca.sheridancollege.smartwaste.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,9 +25,13 @@ public class SecurityConfig {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.cors(cors -> cors.disable())
-				.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/api/auth/**").permitAll()
-				.anyRequest().authenticated()
+				.authorizeHttpRequests(
+						authorize -> authorize
+					.requestMatchers("/api/auth/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/trashbins/**").permitAll()
+//					.requestMatchers(HttpMethod.GET, "/api/readings/**").permitAll()
+					.requestMatchers("/view/sensors").permitAll()
+					.anyRequest().authenticated()
 				)
 				.sessionManagement(session ->
 				session.sessionCreationPolicy

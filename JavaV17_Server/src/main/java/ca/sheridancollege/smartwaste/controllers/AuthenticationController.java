@@ -26,6 +26,6 @@ public class AuthenticationController {
 	// map incoming POST requests to authenticate an existing user
 	@PostMapping(value = "/authenticate", consumes = "application/json")
 	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-		return ResponseEntity.ok(authenticationService.authenticate(request));
+		return ResponseEntity.ok(authenticationService.authenticateAPI(request));
 	}
 }
