@@ -1,0 +1,40 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Register</h2>
+
+    <form (ngSubmit)="register()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn" [disabled]="loading">
+        {{ loading ? "Registering..." : "Register" }}
+      </button>
+
+      <p class="redirect-text">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+      </p>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

@@ -13,24 +13,58 @@ import { AboutComponent } from './about/about.component';
 import { ShiftsComponent } from './shifts/shifts.component';
 import { ShiftListComponent } from './shifts/shift-list/shift-list.component';
 import { ShiftAddComponent } from './shifts/shift-add/shift-add.component';
+import { AuthGuard } from './authentication/auth.guard';
+import { LoginComponent } from './authentication/login/login.component';
+import { RegisterComponent } from './authentication/register/register.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent }, // Default route
-    { path: 'home', component: HomeComponent },
-    { path: 'sensors', component: SensorsComponent },
-    { path: 'cleaners', component: CleanersComponent },
-    { path: 'shifts', component: ShiftsComponent },
-    { path: 'view/shifts', component: ShiftListComponent },
-    { path: 'add/shifts', component: ShiftAddComponent },
-    { path: 'trashbins', component: TrashbinsComponent },
-    { path: 'view/sensors', component: SensorListComponent },
-    { path: 'view/sensors/:id/history', component: SensorHistoryComponent },
-    { path: 'view/cleaners', component: CleanerListComponent },
-    { path: 'add/cleaners', component: CleanerAddComponent },
-    { path: 'view/trashbins', component: TrashbinsListComponent },
-    { path: 'add/trashbins', component: TrashbinsAddComponent },
-	{ path: 'about', component: AboutComponent},
-    { path: '**', redirectTo: '' } // Catch all route
-	
-
+  { path: '', component: HomeComponent }, // Default route
+  { path: 'home', component: HomeComponent },
+  { path: 'sensors', component: SensorsComponent, canActivate: [AuthGuard] },
+  { path: 'cleaners', component: CleanersComponent, canActivate: [AuthGuard] },
+  { path: 'shifts', component: ShiftsComponent, canActivate: [AuthGuard] },
+  {
+    path: 'view/shifts',
+    component: ShiftListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'add/shifts',
+    component: ShiftAddComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'trashbins',
+    component: TrashbinsComponent,
+  },
+  {
+    path: 'view/sensors',
+    component: SensorListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'view/sensors/:id/history',
+    component: SensorHistoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'view/cleaners',
+    component: CleanerListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'add/cleaners',
+    component: CleanerAddComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'view/trashbins', component: TrashbinsListComponent },
+  {
+    path: 'add/trashbins',
+    component: TrashbinsAddComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'about', component: AboutComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: '**', redirectTo: '' }, // Catch all route
 ];
