@@ -4,7 +4,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.Cleaner;
+import ca.sheridancollege.smartwaste.beans.DayOfWeek;
 import ca.sheridancollege.smartwaste.beans.Shift;
+import ca.sheridancollege.smartwaste.beans.ShiftTime;
 import ca.sheridancollege.smartwaste.repositories.ShiftRepository;
 import lombok.AllArgsConstructor;
 
@@ -28,6 +30,16 @@ public class ShiftServiceImpl implements ShiftService {
             return shiftRepository.findById(id).get();
         else
             return null;
+    }
+
+    @Override 
+    public DayOfWeek[] findAllDayOfWeek(){
+        return DayOfWeek.values();
+    }
+
+    @Override 
+    public ShiftTime[] findAllShiftTime(){
+        return ShiftTime.values();
     }
 
     @Override
