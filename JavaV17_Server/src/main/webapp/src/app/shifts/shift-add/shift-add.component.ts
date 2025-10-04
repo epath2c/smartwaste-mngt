@@ -27,23 +27,23 @@ export class ShiftAddComponent {
   ngOnInit(): void {
         this.shiftService.getAllDayOfWeek().subscribe({
           next: (data) => {
-            console.log('Day of Week loaded:', data);
+            //console.log('Day of Week loaded:', data);
             this.dayOfWeek = data;
             
           },
           error: (err) => {
-            console.error('Failed to load shifts:', err);
+            //console.error('Failed to load shifts:', err);
           }
         });
 
         this.shiftService.getAllShiftTime().subscribe({
           next: (data) => {
-            console.log('shift Time loaded:', data);
+            //console.log('shift Time loaded:', data);
             this.shiftTime = data;
             
           },
           error: (err) => {
-            console.error('Failed to load shifts:', err);
+            //console.error('Failed to load shifts:', err);
           }
         });
       }
