@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import {Cleaner} from '../cleaner';
 import {CleanerService} from '../cleaner.service';
+import { Shift } from '../../shifts/shift';
 
 @Component({
   selector: 'app-cleaner-list',
@@ -12,6 +13,7 @@ import {CleanerService} from '../cleaner.service';
 })
 export class CleanerListComponent implements OnInit {
     cleaners: Cleaner[] = [];
+    
   @Input() id = 0;
   constructor(
     private cleanerService: CleanerService,
@@ -35,5 +37,23 @@ export class CleanerListComponent implements OnInit {
       }
     });
   }
+	  deleteCleaner(id: number): void {
+      if (confirm("Are you sure you want to delete " + id + "?")){
 
+        this.cleanerService.delete(id).subscribe(() => {
+	      this.cleaners = this.cleaners.filter((p) => p.id !== id);
+	    });
+      } 
+
+	  }
+    // need to implement 
+	  editCleaner(id: number): void {
+      if (confirm("Are you sure you want to delete " + id + "?")){
+
+        this.cleanerService.delete(id).subscribe(() => {
+	      this.cleaners = this.cleaners.filter((p) => p.id !== id);
+	    });
+      } 
+
+	  }
 }

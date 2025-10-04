@@ -2,7 +2,7 @@
 <div class="table-responsive">
   <table class="table table-striped table-hover align-middle">
     <thead>
-      <tr><th>Name</th><th>Email</th><th>Phone Number</th></tr>
+      <tr><th>Name</th><th>Email</th><th>Phone Number</th><th>Shift</th><th>Delete</th><th>Edit</th></tr>
     </thead>
     <tbody>
       @for (cleaner of cleaners; track cleaner.id) {
@@ -10,6 +10,13 @@
           <td>{{ cleaner.name }}</td>
           <td>{{ cleaner.email }}</td>
           <td>{{ cleaner.phoneNumber }}</td>
+          <td>{{ cleaner.shiftIds }}</td>
+          <td>
+          <a href="#" (click)="deleteCleaner(cleaner.id!); $event.preventDefault()">Delete</a>
+          </td>
+          <td>
+          <a href="#" (click)="editCleaner(cleaner.id!); $event.preventDefault()">Edit</a>
+          </td>
         </tr>
       }
     </tbody>
