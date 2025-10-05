@@ -17,10 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.sheridancollege.smartwaste.beans.Role;
 import ca.sheridancollege.smartwaste.beans.User;
+import ca.sheridancollege.smartwaste.exceptions.EmailAlreadyExistsException;
 import ca.sheridancollege.smartwaste.models.AuthenticationRequest;
 import ca.sheridancollege.smartwaste.models.AuthenticationResponse;
 import ca.sheridancollege.smartwaste.repositories.UserRepository;
-import lombok.AllArgsConstructor;
 
 @Service
 public class AuthenticationService {
@@ -29,9 +29,17 @@ public class AuthenticationService {
 	private JWTService jwtService;
 	private AuthenticationManager authenticationManager;
 
+	public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTService jwtService,
+			AuthenticationManager authenticationManager) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.jwtService = jwtService;
+		this.authenticationManager = authenticationManager;
+	}
+
 	// Email and Password for testing (Must already exist)
-	final private String EMAIL = "iris@iris.ca";
-	final private String PASSWORD = "1234";
+	final private String EMAIL = "";
+	final private String PASSWORD = "";
 	private String token = null;
 
 	// Build an Authentication Request (.model) with credentials
@@ -54,6 +62,9 @@ public class AuthenticationService {
 
 	// a method to register a new user in our database, and generate a JWT for them
 	public AuthenticationResponse register(AuthenticationRequest request) {
+		if (userRepository.existsByEmail(request.getEmail())) {
+			throw new EmailAlreadyExistsException("Email already exists");
+		}
 		User user = User.builder().email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
 				.role(Role.USER).build();
 		userRepository.save(user);

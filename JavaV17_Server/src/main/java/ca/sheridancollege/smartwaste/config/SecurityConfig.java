@@ -33,12 +33,15 @@ public class SecurityConfig {
 					.requestMatchers("/view/sensors").permitAll()
 					.anyRequest().authenticated()
 				)
-				.sessionManagement(session ->
-				session.sessionCreationPolicy
-				(SessionCreationPolicy.STATELESS))
+				.sessionManagement(
+						session -> session
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				)
 				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(jwtAuthenticationFilter,
-				UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(
+						jwtAuthenticationFilter,
+						UsernamePasswordAuthenticationFilter.class
+				)
 				.build();
 	}
 }
