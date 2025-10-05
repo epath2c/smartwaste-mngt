@@ -3,8 +3,12 @@
     <a class="navbar-brand" routerLink="/"></a>
 
     <div class="d-flex ms-auto">
-      <!-- ✅ Conditional Buttons -->
+      <a routerLink="/" class="btn btn-primary">Home</a>
       <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
+        <a routerLink="/sensors" class="btn btn-primary">Sensors</a>
+        <a routerLink="/trashbins" class="btn btn-primary">Trash Bin</a>
+        <a routerLink="/cleaners" class="btn btn-primary">Cleaner</a>
+        <a routerLink="/shifts" class="btn btn-primary">Shifts</a>
         <button class="btn btn-danger" (click)="logout()">Logout</button>
       </ng-container>
 
