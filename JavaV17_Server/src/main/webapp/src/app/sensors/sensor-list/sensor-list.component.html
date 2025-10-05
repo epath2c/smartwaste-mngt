@@ -1,6 +1,6 @@
 <h3>Sensor List</h3>
 <div class="table-responsive">
-  <table class="table table-striped table-hover align-middle">
+  <table class="table table-striped table-hover align-middle table-sm">
     <thead>
       <tr>
         <th>Sensor ID</th>
@@ -17,10 +17,10 @@
           <td>{{ sensor.macAddress }}</td>
           <td>{{ sensor.trigerPin }}</td>
           <td>{{ sensor.echoPin }}</td>
-          <td><a [routerLink]="['/view/sensors', sensor.id, 'history']">Go to History</a></td>
+          <td><a [routerLink]="['/view/sensors', sensor.id, 'history']" class="history-link">Go to History</a></td>
         </tr>
       }
     </tbody>
   </table>
 </div>
-<p><a routerLink="/sensors">Back to sensor page</a></p>
+<p><a routerLink="/sensors" class="back-link"><i class="bi bi-arrow-left"></i> Back to sensor page</a></p>

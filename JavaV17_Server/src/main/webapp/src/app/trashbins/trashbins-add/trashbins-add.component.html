@@ -1,5 +1,5 @@
 <h3>Add Trashbin</h3>
-<div class="card">
+<div class="card form-card">
   <div class="card-body">
     <div class="form-group">
       <label for="name">Name:</label>
@@ -38,8 +38,8 @@
       </google-map>
 
       <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbins.location!.address }}</p>
-      <button class="btn btn-success mt-2" (click)="saveTrashbins()">Submit</button>
+      <button class="btn btn-submit mt-2" (click)="saveTrashbins()">Submit</button>
     </div>
   </div>
 </div>
-<p class="mt-3"><a routerLink="/trashbins">Back to trash bin page</a></p>
+<p class="mt-3"><a routerLink="/trashbins" class="back-link"> <i class="bi bi-arrow-left"></i> Back to trash bin page</a></p>
