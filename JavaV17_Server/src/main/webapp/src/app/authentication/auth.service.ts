@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +12,26 @@ export class AuthService {
   private tokenKey = 'jwt-token';
   private userRoleKey = 'user-role';
 
-  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.loggedIn.next(this.hasToken());
+  }
 
   login(email: string, password: string): Observable<any> {
     return this.http
       .post(`${this.authUrl}/authenticate`, { email, password })
       .pipe(
         tap((res: any) => {
-          localStorage.setItem(this.tokenKey, res.token);
-          // localStorage.setItem(this.userRoleKey, res.role); // assuming backend returns role
+          if (
+            isPlatformBrowser(this.platformId) &&
+            typeof localStorage !== 'undefined'
+          ) {
+            localStorage.setItem(this.tokenKey, res.token);
+          }
           this.loggedIn.next(true);
         })
       );
@@ -32,8 +42,13 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userRoleKey);
+    if (
+      isPlatformBrowser(this.platformId) &&
+      typeof localStorage !== 'undefined'
+    ) {
+      localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.userRoleKey);
+    }
     this.loggedIn.next(false);
   }
   getToken(): string | null {
@@ -58,6 +73,12 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+    if (
+      isPlatformBrowser(this.platformId) &&
+      typeof localStorage !== 'undefined'
+    ) {
+      return !!localStorage.getItem(this.tokenKey);
+    }
+    return false;
   }
 }

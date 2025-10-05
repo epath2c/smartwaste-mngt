@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/"></a>
+
+    <div class="d-flex ms-auto">
+      <!-- ✅ Conditional Buttons -->
+      <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
+        <button class="btn btn-danger" (click)="logout()">Logout</button>
+      </ng-container>
+
+      <ng-template #notLoggedIn>
+        <a routerLink="/login" class="btn btn-primary">Login</a>
+        <a routerLink="/register" class="btn btn-primary">Register</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>
+
+<!-- ✅ Logout Success Modal -->
+<div
+  class="modal fade show"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ display: showLogoutModal ? 'block' : 'none' }"
+  *ngIf="showLogoutModal"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content p-4 text-center">
+      <h5>✅ Successfully logged out!</h5>
+      <button class="btn btn-secondary mt-3" (click)="closeModal()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

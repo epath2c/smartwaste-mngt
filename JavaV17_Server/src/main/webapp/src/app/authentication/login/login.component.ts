@@ -6,13 +6,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
