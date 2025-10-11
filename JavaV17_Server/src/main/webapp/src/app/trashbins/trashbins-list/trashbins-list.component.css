@@ -135,8 +135,22 @@
   border-bottom: 1px solid #e9ecef;
 }
 
+.bins-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
 .bins-table tbody tr:hover {
   background-color: #f8f9fa;
+}
+
+.bins-table tbody tr.selected {
+  background-color: #d4edff;
+  border-left: 4px solid #007bff;
+}
+
+.bins-table tbody tr.selected:hover {
+  background-color: #c1e4ff;
 }
 
 /* Fill level display */
@@ -189,6 +203,30 @@
 google-map {
   width: 100%;
   height: 100%;
+}
+
+/* Info window content */
+.info-window-content {
+  padding: 10px;
+  min-width: 200px;
+}
+
+.info-window-content h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.info-window-content p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.info-window-content strong {
+  color: #333;
+  font-weight: 600;
 }
 
 /* Back link */
