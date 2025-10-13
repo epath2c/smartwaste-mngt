@@ -3,6 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs'; 
 import { Shift } from './shift'; 
 import { EventEmitter } from '@angular/core'; 
+import { DayOfWeek } from './day-of-week';
+import { ShiftTime } from './shift-time';
 //Match the URL pattern in the @RestController 
 const restUrl ='/api/shifts'; 
 @Injectable({
@@ -18,6 +20,12 @@ export class ShiftService {
   getAll(): Observable<Shift[]>{ 
     return this.http.get<Shift[]>(restUrl); 
   } 
+  getAllDayOfWeek(): Observable<DayOfWeek[]>{ 
+    return this.http.get<DayOfWeek[]>(`${restUrl}/dayOfWeek`);
+  } 
+  getAllShiftTime(): Observable<ShiftTime[]>{
+    return this.http.get<ShiftTime[]>(`${restUrl}/shiftTime`);
+  }
   //Create a connection to the POST mapping in the 
   //rest controller.  "data" will be the new Shift. 
   create(data:any):Observable<any>{ 

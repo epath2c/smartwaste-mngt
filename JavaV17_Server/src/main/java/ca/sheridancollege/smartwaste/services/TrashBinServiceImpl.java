@@ -16,6 +16,10 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class TrashBinServiceImpl implements TrashBinService {
+    
+    // Constants
+    private static final int ALERT_INTERVAL_HOURS = 1;
+    private static final float PERCENTAGE_MULTIPLIER = 100f;
 
     private TrashBinRepository trashBinRepository;
     
@@ -75,12 +79,28 @@ public class TrashBinServiceImpl implements TrashBinService {
         return trashBinRepository.findByCleaners(cleaner);
     }
 
+    /**
+     * Calculate fill percentage based on bin height and distance reading
+     * Formula: (height - distance) / height * 100
+     */
+    private float calculateFillPercentage(float height, float distanceReading) {
+        if (height <= 0) {
+            System.out.println("Invalid bin height: " + height);
+            return 0f;
+        }
+        return (height - distanceReading) / height * PERCENTAGE_MULTIPLIER;
+    }
+
     @Override
     public void trashBinFillAndAlert(Sensor sensor, float distanceReading) {
         TrashBin bin = trashBinRepository.findBySensor(sensor);
-        if (bin == null) return;
+        if (bin == null) {
+            System.out.println("No bin found for sensor ID: " + sensor.getId());
+            return;
+        }
 
-        float fill = (bin.getHeight() - distanceReading) / bin.getHeight() * 100f;
+        float fill = calculateFillPercentage(bin.getHeight(), distanceReading);
+        System.out.println("Bin: " + bin.getName() + ", Fill: " + fill + "%");
         
         // Update current fill percentage
         bin.setCurrentFillPercentage(fill);
@@ -90,19 +110,18 @@ public class TrashBinServiceImpl implements TrashBinService {
              
             // First time or over 1 hour later
             if (bin.getLastAlertTime() == null || 
-                // bin.getLastAlertTime().isBefore(now.minusHours(1))) { //  1 hour
-                bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
+                bin.getLastAlertTime().isBefore(now.minusHours(ALERT_INTERVAL_HOURS))) { //  1 hour
+                //bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
                 mailService.sendThresholdAlertToCleaners(bin, fill);
                 bin.setLastAlertTime(now);
+                System.out.println("Alert sent: " + bin.getName());
             }
-            // Save updated fill percentage
             trashBinRepository.save(bin);
         } else {
             // Fill level is normal, reset alert time
             if (bin.getLastAlertTime() != null) {
                 bin.setLastAlertTime(null);
             }
-            // save updated fill percentage
             trashBinRepository.save(bin);
         }
     }

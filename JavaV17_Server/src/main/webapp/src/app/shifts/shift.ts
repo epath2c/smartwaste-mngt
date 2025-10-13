@@ -1,3 +1,4 @@
+import { DayOfWeek } from "./day-of-week";
 
 export class Shift {
     id?: number;

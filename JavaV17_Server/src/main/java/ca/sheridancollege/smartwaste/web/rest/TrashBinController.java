@@ -45,6 +45,12 @@ public class TrashBinController {
         // Handle location - create new location for each trash bin
         if (bin.getLocation() != null) {
             bin.getLocation().setGeoID(null); // Ensure new location is created
+            
+            // Simplify address before saving
+            String fullAddress = bin.getLocation().getAddress();
+            String shortAddress = simplifyAddress(fullAddress);
+            bin.getLocation().setAddress(shortAddress);
+            
             TrashBinLocation savedLocation = trashBinLocationService.save(bin.getLocation());
             bin.setLocation(savedLocation);
         }
@@ -62,6 +68,19 @@ public class TrashBinController {
             bin.setSensor(sensorService.findById(bin.getSensor().getId()));
         }
         return trashBinService.save(bin);
+    }
+
+    // Helper method to simplify address
+    private String simplifyAddress(String fullAddress) {
+        if (fullAddress == null || fullAddress.trim().isEmpty()) {
+            return "No address";
+        }
+        
+        // Split by comma and take only the first part (street address)
+        String[] parts = fullAddress.split(",");
+        String streetAddress = parts[0].trim();
+        
+        return streetAddress;
     }
 
     // Update a bin

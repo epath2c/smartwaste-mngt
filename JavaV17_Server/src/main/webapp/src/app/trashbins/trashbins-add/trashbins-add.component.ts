@@ -21,6 +21,29 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 export class TrashbinsAddComponent {
   center = { lat: 43.4673, lng: -79.7000 };
   markerPosition = { lat: 43.4673, lng: -79.7000 };
+
+  // Map options to hide unnecessary elements 
+  mapOptions: any = {
+    disableDefaultUI: true,           // Hide all default controls
+    zoomControl: true,                // Keep only zoom control
+    mapTypeControl: false,            // Hide map type control
+    scaleControl: false,              // Hide scale
+    streetViewControl: false,         // Hide street view
+    styles: [
+      {
+        featureType: 'poi.business',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]  // Hide business POI only
+      },
+      {
+        featureType: 'transit',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]  // Hide transit stations
+      }
+    ]
+  };
+
+  
   // store an array of selected cleaners
   
   cleanersSelected = new FormControl<number[] | null>([]);

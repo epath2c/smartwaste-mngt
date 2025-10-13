@@ -1,3 +1,28 @@
-<p>shift-add works!</p>
-<button class="btn btn-submit mt-2">Submit</button>
-<p><a routerLink="/shifts" class="back-link"><i class="bi bi-arrow-left"></i> Back to shift page</a></p>
+<h3>Add Shift</h3>
+<div class="card">
+  <div class="card-body">
+    <div class="form-group">
+      <label>day of Week:</label>
+        <div class = "form-group">
+            <select [(ngModel)]="shift.dayOfWeek">
+            <option *ngFor="let d of dayOfWeek" 
+                        [ngValue]="d">
+                        {{d}}
+            </option>
+            </select>
+        </div>
+
+      <label>shift Time:</label>
+        <div class = "form-group">
+            <select [(ngModel)]="shift.shiftTime">
+            <option *ngFor="let t of shiftTime" 
+                        [ngValue]="t">
+                        {{t}}
+            </option>
+            </select>
+        </div>
+    <button class="btn btn-success mt-3" (click)="saveShift()">Submit</button>
+    </div>
+  </div>
+</div>
+<p class="mt-3"><a routerLink="/shifts">Back to shift page</a></p>

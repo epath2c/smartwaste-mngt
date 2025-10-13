@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import ca.sheridancollege.smartwaste.beans.DayOfWeek;
 import ca.sheridancollege.smartwaste.beans.Shift;
+import ca.sheridancollege.smartwaste.beans.ShiftTime;
 
 @Service
 public interface ShiftService {
@@ -17,5 +19,9 @@ public interface ShiftService {
     public Shift update(Long id, Shift updatedShift);
 
     public void delete(Long id);
+
+    public DayOfWeek[] findAllDayOfWeek(); 
+
+    public ShiftTime[] findAllShiftTime();
 
 }
