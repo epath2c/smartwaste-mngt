@@ -44,8 +44,8 @@ public class ShiftController {
     @PostMapping(value = { "", "/" }, headers = { "Content-type=application/json" })
     public Shift postshift(@RequestBody Shift shift) {
         shift.setId(null);
-        if (shift.getCleanerIds() != null && !shift.getCleanerIds().isEmpty()) {
-            List<Cleaner> cleaners = cleanerService.findAllById(shift.getCleanerIds());
+        if (shift.getCleaners() != null ) {
+            List<Cleaner> cleaners = shift.getCleaners();
             shift.setCleaners(cleaners);
             for (Cleaner c : cleaners) {
                 c.getShifts().add(shift);

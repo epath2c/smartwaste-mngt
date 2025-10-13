@@ -2,6 +2,7 @@ package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.HashSet;
 import org.springframework.stereotype.Service;
 
@@ -43,24 +44,57 @@ public class CleanerServiceImpl implements CleanerService {
 	@Override
 	public Cleaner save(Cleaner cleaner) {
 		// Map shiftIds to Shift entities 
+		//System.out.println("[DEBUG] Saving Cleaner 111: " + cleaner.getShiftIds());
 		if ( cleaner.getShiftIds() != null){
+			//System.out.println("[DEBUG] Saving Cleaner: " + cleaner.getShiftIds());
 			List<Shift> shifts = shiftService.findAllById(cleaner.getShiftIds());
 			cleaner.setShifts(shifts);
-			for (Shift s : shifts){
+			for (Shift s : new ArrayList<>(shifts)){
 				s.getCleaners().add(cleaner);
+				// cleaner.getShiftIds().add(s.getId());
 			}
 		}
 		return cleanerRepository.save(cleaner);
 	}
-	// need to update 
+
 	@Override
 	public Cleaner update(Long id, Cleaner updatedCleaner) {
-		return cleanerRepository.findById(id).map(existingCleaner -> {
-			existingCleaner.setName(updatedCleaner.getName());
-			existingCleaner.setEmail(updatedCleaner.getEmail());
-			existingCleaner.setPhoneNumber(updatedCleaner.getPhoneNumber());
-			return cleanerRepository.save(existingCleaner);
-		}).orElse(null);
+    Optional<Cleaner> existingCleanerOpt = cleanerRepository.findById(id);
+		if (existingCleanerOpt.isEmpty()) {
+			throw new RuntimeException("Cleaner not found with ID: " + id);
+		}
+
+		Cleaner cleaner = existingCleanerOpt.get();
+		//System.out.println("[DEBUG] Found existing Cleaner: " + cleaner.getName());
+
+		// Remove from old shifts
+		List<Shift> oldshifts = cleaner.getShifts();
+		if (oldshifts != null) {
+			System.out.println("[DEBUG] Removing cleaner from old shifts: " + cleaner.getShiftIds());
+			for (Shift s : new ArrayList<>(oldshifts)) {
+				//System.out.println("   -> Removing from Shift ID: " + s.getId());
+				s.getCleaners().remove(cleaner);
+			}
+		} else {
+			//System.out.println("[DEBUG] No old shifts found for cleaner.");
+		}
+		// Update fields
+		cleaner.setName(updatedCleaner.getName());
+		cleaner.setEmail(updatedCleaner.getEmail());
+		cleaner.setPhoneNumber(updatedCleaner.getPhoneNumber());
+		cleaner.setShiftIds(updatedCleaner.getShiftIds());
+
+		// Add to new shifts
+		if (updatedCleaner.getShiftIds() != null) {
+			List<Shift> newShifts = shiftService.findAllById(updatedCleaner.getShiftIds());
+			cleaner.setShifts(newShifts);
+			for (Shift s :  new ArrayList<>(newShifts)) {
+				s.getCleaners().add(cleaner);
+			}
+		}
+
+		return cleanerRepository.save(cleaner);
+
 	}
 
 	@Override
@@ -68,10 +102,8 @@ public class CleanerServiceImpl implements CleanerService {
 		Optional<Cleaner> cleanerSelected = cleanerRepository.findById(id);
 		if (cleanerSelected.isPresent()) {
 			Cleaner cleaner = cleanerSelected.get();
-			List<Shift> shifts = cleaner.getShifts();
-
 			// Detach both 
-			for (Shift s : shifts) {
+			for (Shift s : new ArrayList<>(cleaner.getShifts())) {
 				s.getCleaners().remove(cleaner);
 			}
 			cleaner.getShifts().clear();

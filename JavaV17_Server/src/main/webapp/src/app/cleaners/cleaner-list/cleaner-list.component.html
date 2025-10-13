@@ -2,15 +2,75 @@
 <div class="table-responsive">
   <table class="table table-striped table-hover align-middle table-sm">
     <thead>
-      <tr><th>Name</th><th>Email</th><th>Phone Number</th></tr>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Shift</th>
+        <th>Action</th>
+      </tr>
     </thead>
     <tbody>
-      @for (cleaner of cleaners; track cleaner.id) {
-        <tr>
-          <td>{{ cleaner.name }}</td>
-          <td>{{ cleaner.email }}</td>
-          <td>{{ cleaner.phoneNumber }}</td>
-        </tr>
+      @for (cleaner of cleaners; track cleaner.id ?? $index) {
+      <tr>
+        <td>
+          <div *ngIf="cleaner.isEdit">
+            <input class="form-control" id="name" type="text" name="name" [(ngModel)]="cleaner.name" />
+          </div>
+          <div *ngIf="!cleaner.isEdit">
+            {{ cleaner.name }}
+          </div>
+        </td>
+        <td>
+          <div *ngIf="cleaner.isEdit">
+            <input class="form-control" id="email" type="text" name="email" [(ngModel)]="cleaner.email" />
+          </div>
+          <div *ngIf="!cleaner.isEdit">
+            {{ cleaner.email }}
+          </div>
+        </td>
+        <td>
+          <div *ngIf="cleaner.isEdit">
+            <input class="form-control" id="phoneNumber" type="text" name="phoneNumber"
+              [(ngModel)]="cleaner.phoneNumber" />
+          </div>
+          <div *ngIf="!cleaner.isEdit">
+            {{ cleaner.phoneNumber }}
+          </div>
+        </td>
+        <td>
+          <div *ngIf="cleaner.isEdit">
+            <mat-form-field>
+              <mat-label>Selected Shifts:</mat-label>
+              <mat-select [formControl]="shiftsSelected" multiple>
+                <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                  {{shift.dayOfWeek }}, {{shift.shiftTime }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="!cleaner.isEdit">
+            @if (cleaner.shifts?.length) {
+            @for (s of cleaner.shifts; track s.id ?? $index) {
+            <span>{{ s.dayOfWeek }}, {{ s.shiftTime }} </span>
+            }
+            } @else {
+            —
+            }
+          </div>
+        </td>
+        <td>
+          <div *ngIf="cleaner.isEdit">
+            <button class="btn btn-success" (click)="onUpdate(cleaner.id!, cleaner)">Update</button>
+            <button class="btn btn-secondary mx-2" (click)="onCancle(cleaner)">Cancel</button>
+          </div>
+          <div *ngIf="!cleaner.isEdit">
+            <button class="btn btn-primary" (click)="onEdit(cleaner)">Edit</button>
+            <button class="btn btn-danger mx-2" (click)="deleteCleaner(cleaner.id!)">Delete</button>
+          </div>
+
+        </td>
+      </tr>
       }
     </tbody>
   </table>
