@@ -1,14 +1,21 @@
 <div class="container section">
   <div class="card">
     <div class="card-body">
-      <h3 class="card-title">Trashbins</h3>
-      <a routerLink="/view/trashbins" class="btn btn-primary">View Trashbins</a>
-      <a routerLink="/add/trashbins" class="btn btn-outline-primary">Add Trashbin</a>
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+        <h3 class="card-title mb-3 mb-md-0">Trashbins</h3>
+        <div class="btn-row">
+          <a routerLink="/view/trashbins" class="btn btn-theme">View Trashbins</a>
+          <a routerLink="/add/trashbins"  class="btn btn-theme-outline">Add Trashbin</a>
+        </div>
+      </div>
 
       <div class="section">
         <router-outlet></router-outlet>
       </div>
     </div>
   </div>
-  <p class="mt-3"><a routerLink="/">Back to main page</a></p>
+
+<p class="mt-3">
+    <a routerLink="/" class="back-link"><i class="bi bi-arrow-left"></i> Back to main page</a>
+  </p>
 </div>
