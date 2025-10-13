@@ -30,7 +30,7 @@ public class SecurityConfig {
 					.requestMatchers("/api/auth/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/api/trashbins/**").permitAll()
 //					.requestMatchers(HttpMethod.GET, "/api/readings/**").permitAll()
-					.requestMatchers("/view/sensors").permitAll()
+//					.requestMatchers("/view/sensors").permitAll()
 					.anyRequest().authenticated()
 				)
 				.sessionManagement(

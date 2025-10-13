@@ -89,6 +89,7 @@ public class AuthenticationService {
 		// create headers and body specifying that it is
 		// JSON request and include JSON details
 		HttpHeaders authenticationHeaders = getHeaders();
+		System.out.println("restTemplate in the server: " + restTemplate);
 		String authenticationBody = getAuthenticationBody();
 		HttpEntity<String> authenticationEntity = new HttpEntity<String>(authenticationBody, authenticationHeaders);
 		// Authenticate User and get JWT
@@ -99,6 +100,7 @@ public class AuthenticationService {
 		// if the authentication is successful, get the JWT token from the response
 		if (authenticationResponse.getStatusCode().equals(HttpStatus.OK))
 			token = authenticationResponse.getBody().getToken();
+		System.out.println("token in the server: " + token);
 	}
 
 	// Do a request based on the specified HTTP method and return
