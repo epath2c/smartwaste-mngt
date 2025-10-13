@@ -1,37 +1,121 @@
-<h3>Trashbin List</h3>
-<div class="table-responsive">
-  <table class="table table-bordered table-hover align-middle">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Height (cm)</th>
-        <th>Created Date</th>
-        <th>Threshold (%)</th>
-        <th>Map</th>
-        <th>Fill Level (%)</th>
-        <!-- <th>Action</th> --> <!-- for future use -->
-      </tr>
-    </thead>
-    <tbody>
-    @for (trashbin of trashbins; track $index) {
-        <tr>
-          <td>{{ trashbin.name }}</td>
-          <td>{{ trashbin.height }}</td>
-          <td>{{ trashbin.createdDate }}</td>
-          <td>{{ trashbin.threshold }}</td>
-          <td>{{ trashbin.location?.address || 'No address' }}</td>
-        <td [style.color]="(trashbin.currentFillPercentage || 0) >= (trashbin.threshold || 0) ? 'red' : 'green'">
-          {{ (trashbin.currentFillPercentage || 0).toFixed(1) }}%
-        </td>
-        <!-- for future use - Mark cleaned functionality -->
-        <!--
-        <td>
-          <button (click)="markCleaned(trashbin)" class="btn btn-success">Mark cleaned</button>
-        </td>
-        -->
-        </tr>
-      }
-    </tbody>
-  </table>
+<div class="trashbins-dashboard">
+  <!-- Page Title -->
+  <div class="page-header">
+    <h1>Trashbin List Page</h1>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Left Panel - Bins List -->
+    <div class="bins-panel">
+      <!-- Overview Cards -->
+      <div class="overview-cards">
+        <div class="card stat-card" 
+             [class.active]="activeFilter === 'all'"
+             (click)="filterBy('all')">
+          <div class="card-body">
+            <div class="stat-icon total">
+              <i class="fas fa-trash-alt"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ getTotalBinsCount() }}</h3>
+              <p>Total Bins</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card stat-card" 
+             [class.active]="activeFilter === 'full'"
+             (click)="filterBy('full')">
+          <div class="card-body">
+            <div class="stat-icon fullness">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ getFullBinsCount() }}</h3>
+              <p>Fullness</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card stat-card" (click)="addTrashbin()">
+          <div class="card-body">
+            <div class="stat-icon add">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Add</h3>
+              <p>New Bin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bins Table -->
+      <div class="table-container">
+        <table class="bins-table">
+          <thead>
+            <tr>
+              <th>Bin Name</th>
+              <th>Address</th>
+              <th>Created Date</th>
+              <th>Height (cm)</th>
+              <th>Threshold (%)</th>
+              <th>Fullness (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (trashbin of filteredTrashbins; track $index) {
+              <tr (click)="selectTrashbin(trashbin)" [class.selected]="isTrashbinSelected(trashbin)">
+                <td>{{ trashbin.name }}</td>
+                <td>{{ trashbin.location?.address || 'No address' }}</td>
+                <td>{{ trashbin.createdDate || 'N/A' }}</td>
+                <td>{{ trashbin.height || 'N/A' }}</td>
+                <td>{{ trashbin.threshold || 80 }}</td>
+                <td>
+                  <span class="fill-percentage" 
+                        [class.critical]="isBinFull(trashbin)">
+                    {{ (trashbin.currentFillPercentage || 0).toFixed(0) }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Panel - Map -->
+    <div class="map-panel">
+      <div class="panel-header">
+        <h3>Map View</h3>
+      </div>
+      
+      <div class="map-container">
+        <google-map 
+          height="100%" 
+          width="100%"
+          [center]="mapCenter"
+          [zoom]="mapZoom"
+          [options]="mapOptions">
+          
+          @for (trashbin of trashbinsWithLocation; track $index) {
+            <map-marker
+              [position]="{lat: trashbin.location!.latitude!, lng: trashbin.location!.longitude!}"
+              [options]="getMarkerOptions(trashbin)"
+              [title]="getMarkerTitle(trashbin)"
+              (mapClick)="selectTrashbin(trashbin)">
+            </map-marker>
+          }
+        </google-map>
+      </div>
+    </div>
+  </div>
 </div>
-<p><a routerLink="/trashbins">Back to trash bin page</a></p>
+
+<!-- Back Link -->
+<p class="back-link">
+  <a routerLink="/trashbins">
+    <i class="fas fa-arrow-left"></i> Back to trash bin page
+  </a>
+</p>
