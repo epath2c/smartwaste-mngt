@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -38,14 +39,12 @@ public class Cleaner {
             joinColumns = @JoinColumn(name = "cleaner_id"), // FK to Cleaner
             inverseJoinColumns = @JoinColumn(name = "bin_id") // FK to TrashBin
     )
-    @JsonIgnore
     private List<TrashBin> bins;
 
     // Many-to-many with Shift
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "shift_cleaner", // name of the join table JPA will auto-create
-            joinColumns = @JoinColumn(name = "cleaner_id"), inverseJoinColumns = @JoinColumn(name = "shift_id"))
-    @JsonIgnore
+            joinColumns = @JoinColumn(name = "cleaner_id"), inverseJoinColumns = @JoinColumn(name = "shift_id"))      
     private List<Shift> shifts;
 
     @Transient

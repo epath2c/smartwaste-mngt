@@ -2,6 +2,8 @@ package ca.sheridancollege.smartwaste.beans;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +23,6 @@ public class Shift {
     @Enumerated(EnumType.STRING)
     private ShiftTime shiftTime;
     @ManyToMany(mappedBy = "shifts", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Cleaner> cleaners;
-    @Transient
-    private List<Long> cleanerIds;
 }
