@@ -39,6 +39,7 @@ public class Cleaner {
             joinColumns = @JoinColumn(name = "cleaner_id"), // FK to Cleaner
             inverseJoinColumns = @JoinColumn(name = "bin_id") // FK to TrashBin
     )
+    @JsonIgnore
     private List<TrashBin> bins;
 
     // Many-to-many with Shift
