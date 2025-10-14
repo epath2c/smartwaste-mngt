@@ -59,17 +59,18 @@
             }
           </div>
         </td>
-        <td>
-          <div *ngIf="cleaner.isEdit">
-            <button class="btn btn-success" (click)="onUpdate(cleaner.id!, cleaner)">Update</button>
-            <button class="btn btn-secondary mx-2" (click)="onCancle(cleaner)">Cancel</button>
-          </div>
-          <div *ngIf="!cleaner.isEdit">
-            <button class="btn btn-primary" (click)="onEdit(cleaner)">Edit</button>
-            <button class="btn btn-danger mx-2" (click)="deleteCleaner(cleaner.id!)">Delete</button>
-          </div>
+<td>
+  <div *ngIf="cleaner.isEdit">
+    <button class="btn btn-update btn-sm" (click)="onUpdate(cleaner.id!, cleaner)">Update</button>
+    <button class="btn btn-cancel btn-sm mx-2" (click)="onCancle(cleaner)">Cancel</button>
+  </div>
 
-        </td>
+  <div *ngIf="!cleaner.isEdit">
+    <button class="btn btn-edit btn-sm" (click)="onEdit(cleaner)">Edit</button>
+    <button class="btn btn-danger-soft btn-sm mx-2" (click)="deleteCleaner(cleaner.id!)">Delete</button>
+  </div>
+</td>
+
       </tr>
       }
     </tbody>
