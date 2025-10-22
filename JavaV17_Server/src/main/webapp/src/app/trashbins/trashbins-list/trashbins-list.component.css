@@ -16,12 +16,20 @@
   margin-bottom: 20px;
 }
 
-.stat-card {
+/* .stat-card {
   background: white;
   border-radius: var(--app-radius);
   box-shadow: var(--app-shadow);
   cursor: pointer;
   transition: transform 0.2s;
+} */
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.18);       /* ★ changed */
+  border: 1px solid rgba(255, 255, 255, 0.35); /* ★ new */
+  backdrop-filter: blur(12px);                 /* ★ new */
+  -webkit-backdrop-filter: blur(12px);         /* ★ new */
+  box-shadow: 0 10px 30px rgba(2, 62, 138, 0.10); /* ★ subtle glassy shadow */
 }
 
 .stat-card:hover {
@@ -84,11 +92,20 @@
 }
 
 /* Panels */
-.bins-panel,
+/* .bins-panel,
 .map-panel {
   background: white;
   border-radius: var(--app-radius);
   box-shadow: var(--app-shadow);
+  padding: 20px;
+} */
+.bins-panel,
+.map-panel {
+  background: rgba(255, 255, 255, 0.20);       /* ★ changed */
+  border: 1px solid rgba(255, 255, 255, 0.35); /* ★ new */
+  backdrop-filter: blur(14px);                 /* ★ new */
+  -webkit-backdrop-filter: blur(14px);         /* ★ new */
+  box-shadow: 0 12px 34px rgba(2, 62, 138, 0.12); /* ★ subtle glassy shadow */
   padding: 20px;
 }
 
@@ -123,11 +140,18 @@
   border-collapse: collapse;
 }
 
-.bins-table th {
+/* .bins-table th {
   background: #f8f9fa;
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #dee2e6;
+} */
+
+.bins-table th {
+  background: rgba(255, 255, 255, 0.35);   
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 12px;
+  text-align: left;
 }
 
 .bins-table td {
