@@ -12,9 +12,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class NavigationComponent {
   isLoggedIn$: Observable<boolean>;
+  userEmail$: Observable<string | null>;
   showLogoutModal = false;
   constructor(private authService: AuthService, private router: Router) {
     this.isLoggedIn$ = this.authService.isLoggedIn();
+    this.userEmail$ = this.authService.getUserEmail();
   }
 
   logout() {

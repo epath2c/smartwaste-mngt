@@ -1,19 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/"></a>
+    <span class="me-3 fw-semibold text-secondary">
+      {{ userEmail$ | async }}
+    </span>
+    <div class="d-flex ms-auto align-items-center">
+      <a routerLink="/" class="btn btn-primary me-2">Home</a>
 
-    <div class="d-flex ms-auto">
-      <a routerLink="/" class="btn btn-primary">Home</a>
       <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
-        <a routerLink="/sensors" class="btn btn-primary">Sensors</a>
-        <a routerLink="/trashbins" class="btn btn-primary">Trash Bin</a>
-        <a routerLink="/cleaners" class="btn btn-primary">Cleaner</a>
-        <a routerLink="/shifts" class="btn btn-primary">Shifts</a>
+        <a routerLink="/sensors" class="btn btn-primary me-2">Sensors</a>
+        <a routerLink="/trashbins" class="btn btn-primary me-2">Trash Bin</a>
+        <a routerLink="/cleaners" class="btn btn-primary me-2">Cleaner</a>
+        <a routerLink="/shifts" class="btn btn-primary me-3">Shifts</a>
+
+        <!-- Display user email -->
+
         <button class="btn btn-danger" (click)="logout()">Logout</button>
       </ng-container>
 
       <ng-template #notLoggedIn>
-        <a routerLink="/login" class="btn btn-primary">Login</a>
+        <a routerLink="/login" class="btn btn-primary me-2">Login</a>
         <a routerLink="/register" class="btn btn-primary">Register</a>
       </ng-template>
     </div>

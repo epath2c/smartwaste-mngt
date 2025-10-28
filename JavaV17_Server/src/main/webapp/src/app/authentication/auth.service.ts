@@ -14,11 +14,21 @@ export class AuthService {
 
   private loggedIn = new BehaviorSubject<boolean>(false);
 
+  private userEmailKey = 'user-email';
+  private userEmail = new BehaviorSubject<string | null>(null);
+
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.loggedIn.next(this.hasToken());
+    if (
+      isPlatformBrowser(this.platformId) &&
+      typeof localStorage !== 'undefined'
+    ) {
+      const email = localStorage.getItem(this.userEmailKey);
+      this.userEmail.next(email);
+    }
   }
 
   login(email: string, password: string): Observable<any> {
@@ -31,7 +41,9 @@ export class AuthService {
             typeof localStorage !== 'undefined'
           ) {
             localStorage.setItem(this.tokenKey, res.token);
+            localStorage.setItem(this.userEmailKey, email);
           }
+          this.userEmail.next(email);
           this.loggedIn.next(true);
         })
       );
@@ -48,7 +60,9 @@ export class AuthService {
     ) {
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.userRoleKey);
+      localStorage.removeItem(this.userEmailKey);
     }
+    this.userEmail.next(null);
     this.loggedIn.next(false);
   }
   getToken(): string | null {
@@ -68,6 +82,9 @@ export class AuthService {
     return localStorage.getItem(this.userRoleKey);
   }
 
+  getUserEmail(): Observable<string | null> {
+    return this.userEmail.asObservable();
+  }
   isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
