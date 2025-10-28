@@ -26,11 +26,21 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.cors(cors -> cors.disable())
 				.authorizeHttpRequests(
-						authorize -> authorize
+						authorize -> authorize		
+						.requestMatchers(
+						        "/", 
+						        "/index.html", 
+						        "/assets/**", 
+						        "/favicon.ico", 
+						        "/login", 
+						        "/register", 
+						        "/*.js", 
+						        "/*.css", 
+						        "/*.png", 
+						        "/*.jpg"	
+						    ).permitAll()
 					.requestMatchers("/api/auth/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/api/trashbins/**").permitAll()
-//					.requestMatchers(HttpMethod.GET, "/api/readings/**").permitAll()
-//					.requestMatchers("/view/sensors").permitAll()
 					.anyRequest().authenticated()
 				)
 				.sessionManagement(

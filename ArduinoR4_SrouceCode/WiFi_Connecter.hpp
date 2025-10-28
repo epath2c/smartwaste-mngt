@@ -6,8 +6,10 @@
 
 class WiFiConnecter {
 private:
-  char ssid[30] = "Benny";  // network SSID
-  char pass[30] = "sandra1000";   // network password
+  // char ssid[30] = "Benny";  // network SSID
+  // char pass[30] = "sandra1000";   // network password
+  char ssid[30] = "Pixel0723"; 
+  char pass[30] = "hsyhsy000"; 
   int status = WL_IDLE_STATUS;
 
 public:
