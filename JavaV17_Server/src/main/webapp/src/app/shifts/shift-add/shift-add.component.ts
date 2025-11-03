@@ -60,7 +60,7 @@ export class ShiftAddComponent {
         //console.log("SUCCESS! Response:", response);
         this.shiftService.onShiftAdded.emit(response);
         alert("Shift saved successfully!");
-        this.router.navigate(['/shifts']);
+        this.router.navigate(['/view/shifts']);
       },
       error: (error) => {
         //console.error("ERROR:", error);

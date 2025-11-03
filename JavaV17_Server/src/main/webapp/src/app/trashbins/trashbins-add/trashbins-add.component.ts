@@ -145,7 +145,7 @@ export class TrashbinsAddComponent {
         console.log("SUCCESS! Response:", response);
         this.trashbinsService.onTrashbinsAdded.emit(response);
         alert("Trashbin saved successfully!");
-        this.router.navigate(['/trashbins']);
+        this.router.navigate(['view/trashbins']);
       },
       error: (error) => {
         console.error("ERROR:", error);

@@ -61,7 +61,7 @@ export class CleanerAddComponent {
         //console.log("SUCCESS! Response:", response);
         this.cleanerService.onCleanerAdded.emit(response);
         alert("Cleaner saved successfully!");
-        this.router.navigate(['/cleaners']);
+        this.router.navigate(['/view/cleaners']);
       },
       error: (error) => {
         //console.error("ERROR:", error);
