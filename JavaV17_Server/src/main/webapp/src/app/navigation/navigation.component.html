@@ -7,10 +7,10 @@
       <a routerLink="/" class="btn btn-primary me-2">Home</a>
 
       <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
-        <a routerLink="/sensors" class="btn btn-primary me-2">Sensors</a>
-        <a routerLink="/trashbins" class="btn btn-primary me-2">Trash Bin</a>
-        <a routerLink="/cleaners" class="btn btn-primary me-2">Cleaner</a>
-        <a routerLink="/shifts" class="btn btn-primary me-3">Shifts</a>
+        <a routerLink="/view/sensors" class="btn btn-primary me-2">Sensors</a>
+        <a routerLink="/view/trashbins" class="btn btn-primary me-2">Trash Bin</a>
+        <a routerLink="/view/cleaners" class="btn btn-primary me-2">Cleaner</a>
+        <a routerLink="/view/shifts" class="btn btn-primary me-3">Shifts</a>
 
         <!-- Display user email -->
 
