@@ -11,17 +11,61 @@ import { ShiftService } from '../shift.service';
 })
 export class ShiftListComponent {
     shifts: Shift[]=[];
+    shift: Shift ={
+      id: 0,
+      dayOfWeek: "",
+      shiftTime: "",
+      isEdit: false 
+    }
+
+    constructor(
+      private shiftService: ShiftService
+  ) {}
     //Update the list of students with the web service info.
     getShifts(): void{
-    this.shiftService.getAll().subscribe({
-    next: (data) =>{
-    this.shifts=data;
+      this.shiftService.getAll().subscribe({
+      next: (data) =>{
+      this.shifts=data;
+      }
+      });
     }
-    });
+    onEdit(shift: Shift){
+      shift.isEdit = true;
+      // detatch the reference 
+      this.shift = { ...shift };
     }
-    //Connect to the Web Service
-    constructor(private shiftService: ShiftService){} // <-- Use the correct type
-    ngOnInit():void{
-      this.getShifts();
+    deleteShift(id: number): void {
+      if (confirm('Are you sure you want to delete ' + id + '?')) {
+        this.shiftService.delete(id).subscribe(() => {
+          this.shifts = this.shifts.filter((p) => p.id !== id);
+        });
+      }
+    }
+
+    onCancle(shift: Shift){
+      shift.isEdit = false;
+      shift.dayOfWeek = this.shift.dayOfWeek;
+      shift.shiftTime = this.shift.shiftTime;
+    }
+
+    onUpdate(id: number, updatedshift: Shift): void {
+      const data = {
+        dayOfWeek: updatedshift.dayOfWeek,
+        shiftTime: updatedshift.shiftTime
+        };
+
+      if (confirm('Are you sure you want to edit ' + id + '?')) {
+        this.shiftService.update(id, data).subscribe({
+          next: () => {
+          alert("Shift Updated")
+          this.getShifts(); 
+          this.shift.isEdit = false;
+          }
+          ,error: (err) => {
+              console.error('Failed to update shift:', err);
+            }
+          
+        });
+      }
     }
 }

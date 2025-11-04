@@ -30,5 +30,12 @@ export class ShiftService {
   //rest controller.  "data" will be the new Shift. 
   create(data:any):Observable<any>{ 
     return this.http.post(restUrl, data); 
-  } 
+  }
+  delete(id: number): Observable<void> {
+	  return this.http.delete<void>(`${restUrl}/${id}`);
+	}
+
+  update(id: number, data: any): Observable<Shift> {
+	  return this.http.put<Shift>(`${restUrl}/${id}`, data);
+	} 
 }

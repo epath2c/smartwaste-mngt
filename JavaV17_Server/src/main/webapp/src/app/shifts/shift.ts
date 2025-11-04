@@ -5,4 +5,5 @@ export class Shift {
     dayOfWeek!: string;
     shiftTime!: string;
     cleanerIds?: number[]; 
+    isEdit?: boolean
 }
