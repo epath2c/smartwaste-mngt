@@ -14,4 +14,5 @@ export class Trashbins {
       latitude?: number;
       longitude?: number;
     };
+    isEdit?: boolean
 }

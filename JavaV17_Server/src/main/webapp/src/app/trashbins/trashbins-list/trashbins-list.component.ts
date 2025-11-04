@@ -3,17 +3,35 @@ import { RouterLink, Router } from '@angular/router';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { Trashbins } from '../trashbins';
 import { TrashbinsService } from '../trashbins.service';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-trashbins-list',
   standalone: true,
-  imports: [RouterLink, GoogleMapsModule],
+  imports: [RouterLink, GoogleMapsModule, CommonModule, ReactiveFormsModule, FormsModule ],
   templateUrl: './trashbins-list.component.html',
   styleUrl: './trashbins-list.component.css'
 })
 export class TrashbinsListComponent implements OnInit {
   // Data
   trashbins: Trashbins[] = [];
+  trashbin: Trashbins ={
+    binId:0,
+    name:'',
+    height:0,
+    createdDate:'',
+    threshold: 0,
+    cleanerIds: [],
+    //cleaners: [],
+    location: {
+      address: '',
+      latitude: 0,
+      longitude: 0
+    },
+    isEdit: false 
+
+  };
   filteredTrashbins: Trashbins[] = [];
   
   // Filter state
@@ -86,6 +104,7 @@ export class TrashbinsListComponent implements OnInit {
   // Load data when component initializes
   ngOnInit(): void {
     this.getTrashbins();
+    this.trashbinsService.onTrashbinsAdded.subscribe((data: Trashbins) => this.trashbins.push(data));
   }
 
   // Get trashbins data from server
@@ -170,6 +189,46 @@ export class TrashbinsListComponent implements OnInit {
     }
   }
 
+  // // functions to enable edit and delete buttons 
+  //     onEdit(trashbin: Trashbins){
+  //     trashbin.isEdit = true;
+  //     // detatch the reference 
+  //     this.trashbin = { ...trashbin };
+  //   }
+  //   deleteTrashbins(id: number): void {
+  //     if (confirm('Are you sure you want to delete ' + id + '?')) {
+  //       this.trashbinService.delete(id).subscribe(() => {
+  //         this.trashbins = this.trashbins.filter((p) => p.id !== id);
+  //       });
+  //     }
+  //   }
+
+  //   onCancle(trashbin: Trashbins){
+  //     trashbin.isEdit = false;
+  //     trashbin.dayOfWeek = this.trashbin.dayOfWeek;
+  //     trashbin.trashbinTime = this.trashbin.trashbinTime;
+  //   }
+
+  //   onUpdate(id: number, updatedtrashbin: Trashbins): void {
+  //     const data = {
+  //       dayOfWeek: updatedtrashbin.dayOfWeek,
+  //       trashbinTime: updatedtrashbin.trashbinTime
+  //       };
+
+  //     if (confirm('Are you sure you want to edit ' + id + '?')) {
+  //       this.trashbinService.update(id, data).subscribe({
+  //         next: () => {
+  //         alert("Trashbins Updated")
+  //         this.getTrashbinss(); 
+  //         this.trashbin.isEdit = false;
+  //         }
+  //         ,error: (err) => {
+  //             console.error('Failed to update trashbin:', err);
+  //           }
+          
+  //       });
+  //     }
+  //   }
 
   // Mark cleaned functionality (for future use)
   /*

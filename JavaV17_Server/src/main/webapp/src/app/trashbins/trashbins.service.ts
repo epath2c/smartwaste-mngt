@@ -28,7 +28,9 @@ export class TrashbinsService {
   update(id:number, data: Partial<Trashbins>): Observable<Trashbins> {
     return this.http.put<Trashbins>(`${restUrl}/${id}`, data);
   }
-
+  delete(id: number): Observable<void> {
+	  return this.http.delete<void>(`${restUrl}/${id}`);
+	}
   // Mark a bin as cleaned (for future use)
   /*
   markCleaned(id:number): Observable<Trashbins> {
