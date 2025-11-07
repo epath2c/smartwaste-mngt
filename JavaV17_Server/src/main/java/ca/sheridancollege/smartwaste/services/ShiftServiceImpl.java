@@ -1,12 +1,15 @@
 package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.DayOfWeek;
 import ca.sheridancollege.smartwaste.beans.Shift;
 import ca.sheridancollege.smartwaste.beans.ShiftTime;
+import ca.sheridancollege.smartwaste.repositories.CleanerRepository;
 import ca.sheridancollege.smartwaste.repositories.ShiftRepository;
 import lombok.AllArgsConstructor;
 
@@ -14,16 +17,18 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ShiftServiceImpl implements ShiftService {
     private ShiftRepository shiftRepository;
+    private final CleanerRepository cleanerRepository;
 
     @Override
     public List<Shift> findAll() {
-        // TODO Auto-generated method stub
         return shiftRepository.findAll();
     }
-	@Override
-	public List<Shift> findAllById(List<Long> ids) {
-		return shiftRepository.findAllById(ids);
-	}
+
+    @Override
+    public List<Shift> findAllById(List<Long> ids) {
+        return shiftRepository.findAllById(ids);
+    }
+
     @Override
     public Shift findById(Long id) {
         if (shiftRepository.findById(id).isPresent())
@@ -32,13 +37,13 @@ public class ShiftServiceImpl implements ShiftService {
             return null;
     }
 
-    @Override 
-    public DayOfWeek[] findAllDayOfWeek(){
+    @Override
+    public DayOfWeek[] findAllDayOfWeek() {
         return DayOfWeek.values();
     }
 
-    @Override 
-    public ShiftTime[] findAllShiftTime(){
+    @Override
+    public ShiftTime[] findAllShiftTime() {
         return ShiftTime.values();
     }
 
@@ -47,7 +52,6 @@ public class ShiftServiceImpl implements ShiftService {
         return shiftRepository.save(shift);
     }
 
-    // need to update
     @Override
     public Shift update(Long id, Shift updatedShift) {
         return shiftRepository.findById(id).map(existingShift -> {
@@ -56,10 +60,23 @@ public class ShiftServiceImpl implements ShiftService {
             return shiftRepository.save(existingShift);
         }).orElse(null);
     }
-    // need to update 
+
     @Override
     public void delete(Long id) {
+        // find the shift to delete by id
+        Optional<Shift> shiftOpt = shiftRepository.findById(id);
+        if (shiftOpt.isPresent()) {
+            Shift shift = shiftOpt.get();
+            // remove the shift from all associated cleaners
+            List<Cleaner> cleaners = shift.getCleaners();
+            for (Cleaner cleaner : cleaners) {
+                cleaner.getShifts().remove(shift);
 
-        shiftRepository.deleteById(id);
+            }
+            cleanerRepository.saveAll(cleaners);
+            // delete the shift from the repository
+            shiftRepository.delete(shift);
+        }
+
     }
 }

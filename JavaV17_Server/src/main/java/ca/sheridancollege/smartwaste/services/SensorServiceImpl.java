@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ca.sheridancollege.smartwaste.beans.Sensor;
 import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.repositories.SensorRepository;
-import ca.sheridancollege.smartwaste.services.TrashBinService;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -60,12 +59,12 @@ public class SensorServiceImpl implements SensorService {
 	public void delete(Long id) {
 		sensorRepository.deleteById(id);
 	}
-	
+
 	@Override
 	public List<Sensor> findAvailableSensors() {
 		List<Sensor> allSensors = sensorRepository.findAll();
 		List<Sensor> availableSensors = new ArrayList<>();
-		
+
 		for (Sensor sensor : allSensors) {
 			boolean isUsed = false;
 			for (TrashBin bin : trashBinService.findAll()) {
@@ -78,7 +77,7 @@ public class SensorServiceImpl implements SensorService {
 				availableSensors.add(sensor);
 			}
 		}
-		
+
 		return availableSensors;
 	}
 

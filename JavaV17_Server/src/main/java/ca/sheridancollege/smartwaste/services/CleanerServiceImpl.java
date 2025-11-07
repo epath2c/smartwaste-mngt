@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.Shift;
 import ca.sheridancollege.smartwaste.repositories.CleanerRepository;
+import ca.sheridancollege.smartwaste.repositories.ShiftRepository;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -16,7 +17,7 @@ import lombok.AllArgsConstructor;
 public class CleanerServiceImpl implements CleanerService {
 
 	private CleanerRepository cleanerRepository;
-	private ShiftService shiftService;
+	private ShiftRepository shiftRepository;
 
 	@Override
 	public List<Cleaner> findAll() {
@@ -43,13 +44,13 @@ public class CleanerServiceImpl implements CleanerService {
 
 	@Override
 	public Cleaner save(Cleaner cleaner) {
-		// Map shiftIds to Shift entities 
-		//System.out.println("[DEBUG] Saving Cleaner 111: " + cleaner.getShiftIds());
-		if ( cleaner.getShiftIds() != null){
-			//System.out.println("[DEBUG] Saving Cleaner: " + cleaner.getShiftIds());
-			List<Shift> shifts = shiftService.findAllById(cleaner.getShiftIds());
+		// Map shiftIds to Shift entities
+		// System.out.println("[DEBUG] Saving Cleaner 111: " + cleaner.getShiftIds());
+		if (cleaner.getShiftIds() != null) {
+			// System.out.println("[DEBUG] Saving Cleaner: " + cleaner.getShiftIds());
+			List<Shift> shifts = shiftRepository.findAllById(cleaner.getShiftIds());
 			cleaner.setShifts(shifts);
-			for (Shift s : new ArrayList<>(shifts)){
+			for (Shift s : new ArrayList<>(shifts)) {
 				s.getCleaners().add(cleaner);
 				// cleaner.getShiftIds().add(s.getId());
 			}
@@ -59,24 +60,24 @@ public class CleanerServiceImpl implements CleanerService {
 
 	@Override
 	public Cleaner update(Long id, Cleaner updatedCleaner) {
-    Optional<Cleaner> existingCleanerOpt = cleanerRepository.findById(id);
+		Optional<Cleaner> existingCleanerOpt = cleanerRepository.findById(id);
 		if (existingCleanerOpt.isEmpty()) {
 			throw new RuntimeException("Cleaner not found with ID: " + id);
 		}
 
 		Cleaner cleaner = existingCleanerOpt.get();
-		//System.out.println("[DEBUG] Found existing Cleaner: " + cleaner.getName());
+		// System.out.println("[DEBUG] Found existing Cleaner: " + cleaner.getName());
 
 		// Remove from old shifts
 		List<Shift> oldshifts = cleaner.getShifts();
 		if (oldshifts != null) {
 			System.out.println("[DEBUG] Removing cleaner from old shifts: " + cleaner.getShiftIds());
 			for (Shift s : new ArrayList<>(oldshifts)) {
-				//System.out.println("   -> Removing from Shift ID: " + s.getId());
+				// System.out.println(" -> Removing from Shift ID: " + s.getId());
 				s.getCleaners().remove(cleaner);
 			}
 		} else {
-			//System.out.println("[DEBUG] No old shifts found for cleaner.");
+			// System.out.println("[DEBUG] No old shifts found for cleaner.");
 		}
 		// Update fields
 		cleaner.setName(updatedCleaner.getName());
@@ -86,9 +87,9 @@ public class CleanerServiceImpl implements CleanerService {
 
 		// Add to new shifts
 		if (updatedCleaner.getShiftIds() != null) {
-			List<Shift> newShifts = shiftService.findAllById(updatedCleaner.getShiftIds());
+			List<Shift> newShifts = shiftRepository.findAllById(updatedCleaner.getShiftIds());
 			cleaner.setShifts(newShifts);
-			for (Shift s :  new ArrayList<>(newShifts)) {
+			for (Shift s : new ArrayList<>(newShifts)) {
 				s.getCleaners().add(cleaner);
 			}
 		}
@@ -102,7 +103,7 @@ public class CleanerServiceImpl implements CleanerService {
 		Optional<Cleaner> cleanerSelected = cleanerRepository.findById(id);
 		if (cleanerSelected.isPresent()) {
 			Cleaner cleaner = cleanerSelected.get();
-			// Detach both 
+			// Detach both
 			for (Shift s : new ArrayList<>(cleaner.getShifts())) {
 				s.getCleaners().remove(cleaner);
 			}

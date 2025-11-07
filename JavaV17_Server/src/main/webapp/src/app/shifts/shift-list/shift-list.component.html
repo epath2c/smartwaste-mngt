@@ -7,7 +7,6 @@
     <tbody>
       @for (shift of shifts; track shift.id) {
         <tr>
-          <td>{{ shift.id }}</td>
           <td>
             <div *ngIf="shift.isEdit">
                     <select id="dayOfWeek" class="form-control" [(ngModel)]="shift.dayOfWeek">
