@@ -40,7 +40,7 @@ public class TrashBinController {
     @PostMapping(headers = { "Content-type=application/json" })
     public TrashBin createBin(@RequestBody TrashBin bin) {
         System.out.println("📥 Received location: " + bin.getLocation());
-        bin.setBinID(null); // prevent accidental updates
+        bin.setBinId(null); // prevent accidental updates
         
         // Handle location - create new location for each trash bin
         if (bin.getLocation() != null) {
@@ -88,7 +88,7 @@ public class TrashBinController {
     public TrashBin updateBin(@PathVariable Long id, @RequestBody TrashBin bin) {
         return trashBinService.update(id, bin);
     }
-
+    // need a logic to detach the relationship between sensor and cleaner 
     // Delete a bin
     @DeleteMapping("/{id}")
     public void deleteBin(@PathVariable Long id) {

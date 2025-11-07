@@ -66,7 +66,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (trashbin of filteredTrashbins; track $index) {
+            @for (trashbin of filteredTrashbins; track trashbin.binId ?? $index) {
               <tr (click)="selectTrashbin(trashbin)" [class.selected]="isTrashbinSelected(trashbin)">
                 <td>{{ trashbin.name }}</td>
                 <td>{{ trashbin.location?.address || 'No address' }}</td>

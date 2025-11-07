@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 public class ShiftController {
 
     private ShiftService shiftService;
-    private CleanerService cleanerService;
 
     // Get all shifts
     @GetMapping({ "", "/" })

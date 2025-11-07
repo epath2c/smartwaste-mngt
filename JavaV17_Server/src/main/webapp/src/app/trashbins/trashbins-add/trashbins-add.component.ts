@@ -126,6 +126,7 @@ export class TrashbinsAddComponent {
     //console.log("📝 Cleaner selected:", this.cleanersSelected.value,);
 
     const data = {
+      binId: this.trashbins.binId,
       name: this.trashbins.name,
       height: this.trashbins.height,
       createdDate: this.trashbins.createdDate,

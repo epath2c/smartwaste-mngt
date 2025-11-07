@@ -16,7 +16,7 @@ public class TrashBin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long binID;
+    private Long binId;
 
     // Many-to-many with Cleaner (inverse side)
     @ManyToMany(mappedBy = "bins")

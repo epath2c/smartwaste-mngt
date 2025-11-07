@@ -190,45 +190,56 @@ export class TrashbinsListComponent implements OnInit {
   }
 
   // // functions to enable edit and delete buttons 
-  //     onEdit(trashbin: Trashbins){
-  //     trashbin.isEdit = true;
-  //     // detatch the reference 
-  //     this.trashbin = { ...trashbin };
-  //   }
-  //   deleteTrashbins(id: number): void {
-  //     if (confirm('Are you sure you want to delete ' + id + '?')) {
-  //       this.trashbinService.delete(id).subscribe(() => {
-  //         this.trashbins = this.trashbins.filter((p) => p.id !== id);
-  //       });
-  //     }
-  //   }
+      onEdit(trashbin: Trashbins){
+      trashbin.isEdit = true;
+      // detatch the reference 
+      this.trashbin = { ...trashbin };
+    }
+    deleteTrashbin(binId: number): void {
+      if (confirm('Are you sure you want to delete ' + binId + '?')) {
+        this.trashbinsService.delete(binId).subscribe(() => {
+          this.trashbins = this.trashbins.filter((p) => p.binId !== binId);
+        });
+      }
+    }
 
-  //   onCancle(trashbin: Trashbins){
-  //     trashbin.isEdit = false;
-  //     trashbin.dayOfWeek = this.trashbin.dayOfWeek;
-  //     trashbin.trashbinTime = this.trashbin.trashbinTime;
-  //   }
+    onCancle(trashbin: Trashbins){
+      trashbin.isEdit = false;
+      
+    }
+    // edit the trashbin
+    onUpdate(trashbin: Trashbins): void {
+      trashbin.isEdit = true;
+      this.router.navigate(['/add/trashbins']);
+    }
+    // onUpdate(id: number, updatedtrashbin: Trashbins): void {
+    //   const data = {
+    //   name: this.trashbins.name,
+    //   height: this.trashbins.height,
+    //   createdDate: this.trashbins.createdDate,
+    //   threshold: this.trashbins.threshold,
+    //   cleanerIds: this.cleanersSelected.value ?? [],
+    //   sensor: this.sensorSelected.value ? { id: this.sensorSelected.value } : null,
+    //   location: {
+    //     address: this.trashbins.location!.address,
+    //     latitude: this.trashbins.location!.latitude,
+    //     longitude: this.trashbins.location!.longitude }
+    //     };
 
-  //   onUpdate(id: number, updatedtrashbin: Trashbins): void {
-  //     const data = {
-  //       dayOfWeek: updatedtrashbin.dayOfWeek,
-  //       trashbinTime: updatedtrashbin.trashbinTime
-  //       };
-
-  //     if (confirm('Are you sure you want to edit ' + id + '?')) {
-  //       this.trashbinService.update(id, data).subscribe({
-  //         next: () => {
-  //         alert("Trashbins Updated")
-  //         this.getTrashbinss(); 
-  //         this.trashbin.isEdit = false;
-  //         }
-  //         ,error: (err) => {
-  //             console.error('Failed to update trashbin:', err);
-  //           }
+    //   if (confirm('Are you sure you want to edit ' + id + '?')) {
+    //     this.trashbinsService.update(id, data).subscribe({
+    //       next: () => {
+    //       alert("Trashbins Updated")
+    //       this.getTrashbinss(); 
+    //       this.trashbin.isEdit = false;
+    //       }
+    //       ,error: (err) => {
+    //           console.error('Failed to update trashbin:', err);
+    //         }
           
-  //       });
-  //     }
-  //   }
+    //     });
+    //   }
+    // }
 
   // Mark cleaned functionality (for future use)
   /*
