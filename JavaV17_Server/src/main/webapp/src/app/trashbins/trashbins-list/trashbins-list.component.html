@@ -62,6 +62,7 @@
               <th>Height (cm)</th>
               <th>Threshold (%)</th>
               <th>Fullness (%)</th>
+              <th>Action </th>
             </tr>
           </thead>
           <tbody>
@@ -77,6 +78,17 @@
                         [class.critical]="isBinFull(trashbin)">
                     {{ (trashbin.currentFillPercentage || 0).toFixed(0) }}
                   </span>
+                </td>
+                <td>
+          <div *ngIf="trashbin.isEdit">
+            <button class="btn btn-edit btn-sm" (click)="onEdit(trashbin)">Edit</button>
+            <button class="btn btn-cancel btn-sm mx-2" (click)="onCancle(trashbin)">Cancel</button>
+          </div>
+
+          <div *ngIf="!trashbin.isEdit">
+            <button class="btn btn-edit btn-sm" (click)="onEdit(trashbin)">Edit</button>
+            <button class="btn btn-danger-soft btn-sm mx-2" (click)="deleteTrashbin(trashbin.binId!)">Delete</button>
+          </div>                          
                 </td>
               </tr>
             }

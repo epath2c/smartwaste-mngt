@@ -3,7 +3,6 @@ package ca.sheridancollege.smartwaste.services;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
-import java.util.HashSet;
 import org.springframework.stereotype.Service;
 
 import ca.sheridancollege.smartwaste.beans.Cleaner;
