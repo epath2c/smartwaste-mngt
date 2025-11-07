@@ -4,6 +4,7 @@ import java.util.List;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
@@ -13,6 +14,7 @@ import ca.sheridancollege.smartwaste.beans.TrashBinType;
 import ca.sheridancollege.smartwaste.repositories.TrashBinRepository;
 import lombok.AllArgsConstructor;
 
+@Transactional
 @Service
 @AllArgsConstructor
 public class TrashBinServiceImpl implements TrashBinService {
@@ -84,11 +86,21 @@ public class TrashBinServiceImpl implements TrashBinService {
      * Formula: (height - distance) / height * 100
      */
     private float calculateFillPercentage(float height, float distanceReading) {
-        if (height <= 0) {
+        if (height <= 0.0F) {
             System.out.println("Invalid bin height: " + height);
-            return 0f;
+            return 0.0F;
         }
-        return (height - distanceReading) / height * PERCENTAGE_MULTIPLIER;
+
+        // Prevent distance reading from exceeding bin height
+        if (distanceReading > height) {
+            System.out.println("Distance reading (" + distanceReading + "cm) exceeds bin height (" + height + "cm). Setting to height.");
+            distanceReading = height;
+        }
+
+        float fillPercentage = (height - distanceReading) / height * PERCENTAGE_MULTIPLIER;
+
+        // Ensure percentage is within valid range (0-100%)
+        return Math.max(0.0F, Math.min(100.0F, fillPercentage));
     }
 
     @Override
