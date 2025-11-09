@@ -1,4 +1,4 @@
-package ca.sheridancollege.smartwaste.controllers;
+package ca.sheridancollege.smartwaste.controllers.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

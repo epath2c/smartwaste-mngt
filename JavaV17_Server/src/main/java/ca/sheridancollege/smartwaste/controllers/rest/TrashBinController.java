@@ -1,4 +1,4 @@
-package ca.sheridancollege.smartwaste.web.rest;
+package ca.sheridancollege.smartwaste.controllers.rest;
 
 import java.util.List;
 

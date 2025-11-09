@@ -1,4 +1,4 @@
-package ca.sheridancollege.smartwaste.web;
+package ca.sheridancollege.smartwaste.controllers.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
