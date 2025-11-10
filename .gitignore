@@ -145,10 +145,11 @@ lib/
 sketch.json
 JavaV17_Server/src/test*
 
-# Angular 
+# Angular
 *.tsbuildinfo
 .angular/
 
 # Ignore secret env files
 secrets.properties
 application-local.properties
+**/dist/webapp/*.zip

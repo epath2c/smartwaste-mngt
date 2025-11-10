@@ -36,7 +36,7 @@ public class JWTService {
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)).signWith(getSignInKey()).compact();
+				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)).signWith(getSignInKey()).compact();
 	}
 
 	public boolean isTokenValid(String token, UserDetails userDetails) {
