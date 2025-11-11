@@ -1,0 +1,44 @@
+<h3>Edit Trashbin</h3>
+<div class="card form-card">
+  <div class="card-body">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input class="form-control" id="name" type="text" name="name" [(ngModel)]="trashbin.name" />
+
+      <label for="height">Height (in cm):</label>
+      <input class="form-control" id="height" type="number" name="height" [(ngModel)]="trashbin" />
+
+      <label for="createdDate">Created Date:</label>
+      <input class="form-control" id="createdDate" type="date" name="createdDate" [(ngModel)]="trashbin.createdDate" />
+
+      <label for="threshold">Threshold (in %):</label>
+      <input class="form-control" id="threshold" type="number" name="threshold" [(ngModel)]="trashbin.threshold" />
+
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Selected Cleaners:</mat-label>
+        <mat-select [formControl]="cleanersSelected" multiple>
+          <mat-option *ngFor="let cleaner of cleanerList" [value]="cleaner.id">
+            {{ cleaner.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+  
+    <mat-form-field>
+      <mat-label>Select Sensor:</mat-label>
+      <mat-select [formControl]="sensorSelected">
+        <mat-option *ngFor="let sensor of availableSensors" [value]="sensor.id">
+          Sensor ID: {{sensor.id}} (MAC Address: {{sensor.macAddress}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <label class="mt-2">Select Location on Map:</label>
+      <google-map height="300px" width="100%" [center]="center" [zoom]="15" [options]="mapOptions" (mapClick)="updateMarker($event)">
+        <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
+      </google-map>
+
+      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbin.location!.address }}</p>
+      <button class="btn btn-submit mt-2" (click)="updateTrashbins()">Submit</button>
+    </div>
+  </div>
+</div>

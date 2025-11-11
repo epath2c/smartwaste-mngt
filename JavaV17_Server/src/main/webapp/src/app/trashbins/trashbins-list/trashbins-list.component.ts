@@ -194,6 +194,7 @@ export class TrashbinsListComponent implements OnInit {
       trashbin.isEdit = true;
       // detatch the reference 
       this.trashbin = { ...trashbin };
+      this.router.navigate(['/edit/trashbins', trashbin.binId]);
     }
     deleteTrashbin(binId: number): void {
       if (confirm('Are you sure you want to delete ' + binId + '?')) {
