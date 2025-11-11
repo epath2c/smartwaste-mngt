@@ -199,6 +199,7 @@ export class TrashbinsListComponent implements OnInit {
       if (confirm('Are you sure you want to delete ' + binId + '?')) {
         this.trashbinsService.delete(binId).subscribe(() => {
           this.trashbins = this.trashbins.filter((p) => p.binId !== binId);
+          this.applyFilters();
         });
       }
     }

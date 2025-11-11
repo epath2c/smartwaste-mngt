@@ -1,6 +1,7 @@
 package ca.sheridancollege.smartwaste.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.Sensor;
 import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
+import ca.sheridancollege.smartwaste.repositories.CleanerRepository;
 import ca.sheridancollege.smartwaste.repositories.TrashBinRepository;
 import lombok.AllArgsConstructor;
 
@@ -24,6 +26,7 @@ public class TrashBinServiceImpl implements TrashBinService {
     private static final float PERCENTAGE_MULTIPLIER = 100f;
 
     private TrashBinRepository trashBinRepository;
+    private final CleanerRepository cleanerRepository;
     
     private MailService mailService;
     
@@ -63,7 +66,28 @@ public class TrashBinServiceImpl implements TrashBinService {
 
     @Override
     public void delete(Long id) {
-        trashBinRepository.deleteById(id);
+        // find the trashbin to delete by id 
+        Optional<TrashBin> trashBinOpt = trashBinRepository.findById(id);
+        if (trashBinOpt.isPresent()){
+            TrashBin bin = trashBinOpt.get();
+            // Two things need to be done 
+
+            // 1. detatch cleaner 
+            List<Cleaner> cleaners = bin.getCleaners();
+            for (Cleaner cleaner : cleaners) {
+                cleaner.getBins().remove(bin);
+
+            }
+            cleanerRepository.saveAll(cleaners);           
+            // 2. detatch sensor 
+            bin.setSensor(null);
+            trashBinRepository.delete(bin);
+            System.out.println("it has been deleted");
+        }
+        else {
+            System.out.println("cannot find it");
+        }
+
     }
 
     @Override
