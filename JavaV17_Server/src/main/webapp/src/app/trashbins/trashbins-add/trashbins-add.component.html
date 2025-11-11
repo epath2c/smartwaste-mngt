@@ -1,45 +1,68 @@
 <h3>Add Trashbin</h3>
 <div class="card form-card">
   <div class="card-body">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input class="form-control" id="name" type="text" name="name" [(ngModel)]="trashbins.name" />
+    <form [formGroup]="trashbinForm" (ngSubmit)="saveTrashbins()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input class="form-control" id="name" type="text" formControlName="name" [class.is-invalid]="isInvalid('name')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('name')">
+          <small *ngIf="hasError('name', 'required')">Name is required</small>
+        </div>
+      </div>
 
-      <label for="height">Height (in cm):</label>
-      <input class="form-control" id="height" type="number" name="height" [(ngModel)]="trashbins.height" />
+      <div class="form-group">
+        <label for="height">Height (in cm):</label>
+        <input class="form-control" id="height" type="number" formControlName="height" [class.is-invalid]="isInvalid('height')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('height')">
+          <small *ngIf="hasError('height', 'required')">Height is required</small>
+          <small *ngIf="hasError('height', 'min')">Height must be greater than 0</small>
+        </div>
+      </div>
 
-      <label for="createdDate">Created Date:</label>
-      <input class="form-control" id="createdDate" type="date" name="createdDate" [(ngModel)]="trashbins.createdDate" />
+      <div class="form-group">
+        <label for="createdDate">Created Date:</label>
+        <input class="form-control" id="createdDate" type="date" formControlName="createdDate" />
+      </div>
 
-      <label for="threshold">Threshold (in %):</label>
-      <input class="form-control" id="threshold" type="number" name="threshold" [(ngModel)]="trashbins.threshold" />
+      <div class="form-group">
+        <label for="threshold">Threshold (in %):</label>
+        <input class="form-control" id="threshold" type="number" formControlName="threshold" [class.is-invalid]="isInvalid('threshold')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('threshold')">
+          <small *ngIf="hasError('threshold', 'required')">Threshold is required</small>
+          <small *ngIf="hasError('threshold', 'min')">Threshold must be at least 0</small>
+          <small *ngIf="hasError('threshold', 'max')">Threshold cannot exceed 100</small>
+        </div>
+      </div>
 
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Selected Cleaners:</mat-label>
-        <mat-select [formControl]="cleanersSelected" multiple>
+        <mat-select formControlName="cleaners" multiple>
           <mat-option *ngFor="let cleaner of cleanerList" [value]="cleaner.id">
             {{ cleaner.name }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="isInvalid('cleaners')">
+          <small *ngIf="hasError('cleaners', 'required')">Please select at least one cleaner</small>
+        </mat-error>
       </mat-form-field>
 
-  
-    <mat-form-field>
-      <mat-label>Select Sensor:</mat-label>
-      <mat-select [formControl]="sensorSelected">
-        <mat-option *ngFor="let sensor of availableSensors" [value]="sensor.id">
-          Sensor ID: {{sensor.id}} (MAC Address: {{sensor.macAddress}})
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <label class="mt-2">Select Location on Map:</label>
+      <mat-form-field>
+        <mat-label>Select Sensor:</mat-label>
+        <mat-select formControlName="sensor">
+          <mat-option *ngFor="let sensor of availableSensors" [value]="sensor.id">
+            Sensor ID: {{sensor.id}} (MAC Address: {{sensor.macAddress}})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <label class="mt-2">Select Location on Map:</label>
       <google-map height="300px" width="100%" [center]="center" [zoom]="15" [options]="mapOptions" (mapClick)="updateMarker($event)">
         <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
       </google-map>
 
-      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbins.location!.address }}</p>
-      <button class="btn btn-submit mt-2" (click)="saveTrashbins()">Submit</button>
-    </div>
+      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ locationAddress }}</p>
+      <button type="submit" class="btn btn-submit mt-2">Submit</button>
+    </form>
   </div>
 </div>
 <p class="mt-3"><a routerLink="/" class="back-link"> <i class="bi bi-arrow-left"></i> Back to main page</a></p>
