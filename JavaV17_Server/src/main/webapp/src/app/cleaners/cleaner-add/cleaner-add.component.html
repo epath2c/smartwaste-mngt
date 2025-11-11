@@ -1,27 +1,44 @@
 <h3>Add Cleaner</h3>
 <div class="card form-card">
   <div class="card-body">
-    <div class="form-group">
-      <label>Name:</label>
-      <input class="form-control" id="name" type="text" name="name" [(ngModel)]="cleaner.name" />
+    <form [formGroup]="cleanerForm" (ngSubmit)="saveCleaner()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" [class.is-invalid]="isInvalid('name')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('name')">
+          <small *ngIf="hasError('name', 'required')">Name is required</small>
+        </div>
+      </div>
 
-      <label>Email:</label>
-      <input class="form-control" id="email" type="text" name="email" [(ngModel)]="cleaner.email" />
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" [class.is-invalid]="isInvalid('email')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('email')">
+          <small *ngIf="hasError('email', 'required')">Email is required</small>
+          <small *ngIf="hasError('email', 'email')">Please enter a valid email</small>
+        </div>
+      </div>
 
-      <label>Phone Number:</label>
-      <input class="form-control" id="phoneNumber" type="text" name="phoneNumber" [(ngModel)]="cleaner.phoneNumber" />
-		<br>
-      <mat-form-field>
-      <mat-label>Selected Shifts:</mat-label>
-      <mat-select [formControl]="shiftsSelected" multiple>
-        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
-          {{shift.dayOfWeek }}, {{shift.shiftTime }}
-        </mat-option>
-    </mat-select>
-    </mat-form-field>
-    <br>
-    <button class="btn btn-submit mt-2" (click)="saveCleaner()">Submit</button>
-    </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" formControlName="phoneNumber" [class.is-invalid]="isInvalid('phoneNumber')" placeholder="1234567890" />
+        <div class="invalid-feedback" *ngIf="isInvalid('phoneNumber')">
+          <small *ngIf="hasError('phoneNumber', 'required')">Phone number is required</small>
+          <small *ngIf="hasError('phoneNumber', 'pattern')">Phone must be 10 digits</small>
+        </div>
+      </div>
+
+      <mat-form-field class="w-100">
+        <mat-label>Selected Shifts:</mat-label>
+        <mat-select formControlName="shifts" multiple>
+          <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+            {{shift.dayOfWeek}}, {{shift.shiftTime}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button type="submit" class="btn btn-submit mt-3">Submit</button>
+    </form>
   </div>
 </div>
 <div class="d-flex align-items-center justify-content-between mb-3">
