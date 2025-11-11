@@ -73,7 +73,7 @@ export class ShiftListComponent {
       }
     }
 
-    onCancle(shift: Shift){
+    onCancel(shift: Shift){
       shift.isEdit = false;
       shift.dayOfWeek = this.shift.dayOfWeek;
       shift.shiftTime = this.shift.shiftTime;

@@ -1,60 +1,59 @@
-<h3>Shift List</h3>
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <h3>Shift List</h3>
+  <a routerLink="/add/shifts" class="btn btn-theme-outline">Add Shift</a>
+</div>
+
 <div class="table-responsive">
   <table class="table table-striped table-hover align-middle table-sm">
     <thead>
-      <tr><th>Day Of Week</th><th>Shift Time</th><th>Action</th></tr>
+      <tr>
+        <th>Day Of Week</th>
+        <th>Shift Time</th>
+        <th>Action</th>
+      </tr>
     </thead>
     <tbody>
       @for (shift of shifts; track shift.id) {
         <tr>
+          <!-- Day Of Week -->
           <td>
-            <div *ngIf="shift.isEdit">
-                    <select id="dayOfWeek" class="form-control" [(ngModel)]="shift.dayOfWeek">
-                    <option *ngFor="let d of dayOfWeek" [ngValue]="d">
-                      {{ d }}
-                    </option>
-                  </select>
-            </div>  
-            <div *ngIf="!shift.isEdit">
-              {{ shift.dayOfWeek }}
+            <div *ngIf="shift.isEdit; else dayRead">
+              <select
+                [attr.id]="'dayOfWeek-' + shift.id"
+                class="form-select"
+                [(ngModel)]="shift.dayOfWeek">
+                <option *ngFor="let d of dayOfWeek" [ngValue]="d">{{ d }}</option>
+              </select>
             </div>
+            <ng-template #dayRead>{{ shift.dayOfWeek }}</ng-template>
           </td>
-          <td>
-          <td>
-            <div *ngIf="shift.isEdit">
-                    <select id="shiftTime" class="form-control" [(ngModel)]="shift.shiftTime">
-                    <option *ngFor="let t of shiftTime" [ngValue]="t">
-                      {{ t }}
-                    </option>
-                  </select>
-            </div>  
-            <div *ngIf="!shift.isEdit">
-              {{ shift.shiftTime }}
-            </div>
-          </td>
-          <td>
-          <div *ngIf="shift.isEdit">
-            <button class="btn btn-update btn-sm" (click)="onUpdate(shift.id!, shift)">Update</button>
-            <button class="btn btn-cancel btn-sm mx-2" (click)="onCancle(shift)">Cancel</button>
-          </div>
 
-          <div *ngIf="!shift.isEdit">
-            <button class="btn btn-edit btn-sm" (click)="onEdit(shift)">Edit</button>
-            <button class="btn btn-danger-soft btn-sm mx-2" (click)="deleteShift(shift.id!)">Delete</button>
-          </div>
-        </td>
+          <!-- Shift Time -->
+          <td>
+            <div *ngIf="shift.isEdit; else timeRead">
+              <select
+                [attr.id]="'shiftTime-' + shift.id"
+                class="form-select"
+                [(ngModel)]="shift.shiftTime">
+                <option *ngFor="let t of shiftTime" [ngValue]="t">{{ t }}</option>
+              </select>
+            </div>
+            <ng-template #timeRead>{{ shift.shiftTime }}</ng-template>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div *ngIf="shift.isEdit; else viewBtns">
+              <button class="btn btn-update btn-sm" (click)="onUpdate(shift.id!, shift)">Update</button>
+              <button class="btn btn-cancel btn-sm mx-2" (click)="onCancel(shift)">Cancel</button>
+            </div>
+            <ng-template #viewBtns>
+              <button class="btn btn-edit btn-sm" (click)="onEdit(shift)">Edit</button>
+              <button class="btn btn-danger-soft btn-sm mx-2" (click)="deleteShift(shift.id!)">Delete</button>
+            </ng-template>
+          </td>
         </tr>
       }
     </tbody>
   </table>
-</div>
-<div class="d-flex align-items-center justify-content-between mb-3">
-  <a routerLink="/" class="back-link d-inline-flex align-items-center">
-    <i class="bi bi-arrow-left"></i>
-    <span class="ms-1">Back to main page</span>
-  </a>
-
-  <a routerLink="/add/shifts" class="btn btn-theme-outline">
-    Add Shift
-  </a>
 </div>

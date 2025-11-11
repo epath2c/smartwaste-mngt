@@ -1,4 +1,10 @@
+
+<div class="d-flex align-items-center justify-content-between mt-4 mb-4">
 <h3>Add Cleaner</h3>
+  <a routerLink="/view/cleaners" class="btn btn-theme-outline">
+    View Cleaners
+  </a>
+</div>
 <div class="card form-card">
   <div class="card-body">
     <div class="form-group">
@@ -23,14 +29,4 @@
     <button class="btn btn-submit mt-2" (click)="saveCleaner()">Submit</button>
     </div>
   </div>
-</div>
-<div class="d-flex align-items-center justify-content-between mb-3">
-  <a routerLink="/" class="back-link d-inline-flex align-items-center">
-    <i class="bi bi-arrow-left"></i>
-    <span class="ms-1">Back to main page</span>
-  </a>
-
-  <a routerLink="/view/cleaners" class="btn btn-theme-outline">
-    View Cleaners
-  </a>
 </div>
