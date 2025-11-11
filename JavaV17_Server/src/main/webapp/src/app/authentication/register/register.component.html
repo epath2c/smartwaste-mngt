@@ -2,27 +2,36 @@
   <div class="auth-card">
     <h2>Register</h2>
 
-    <form (ngSubmit)="register()">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          [(ngModel)]="email"
-          required
-        />
+        <input type="email" id="email" formControlName="email" [class.is-invalid]="isInvalid('email')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('email')">
+          <small *ngIf="hasError('email', 'required')">Email is required</small>
+          <small *ngIf="hasError('email', 'email')">Please enter a valid email</small>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-        />
+        <input type="password" id="password" formControlName="password" [class.is-invalid]="isInvalid('password')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('password')">
+          <small *ngIf="hasError('password', 'required')">Password is required</small>
+          <small *ngIf="hasError('password', 'minlength')">At least 6 characters</small>
+          <small *ngIf="hasError('password', 'pattern')">Must contain one uppercase letter</small>
+        </div>
+        <div class="password-hint">
+          <small>6+ characters with one uppercase letter</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" [class.is-invalid]="isInvalid('confirmPassword')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('confirmPassword')">
+          <small *ngIf="hasError('confirmPassword', 'required')">Please confirm password</small>
+          <small *ngIf="hasError('confirmPassword', 'mismatch')">Passwords do not match</small>
+        </div>
       </div>
 
       <button type="submit" class="btn" [disabled]="loading">
