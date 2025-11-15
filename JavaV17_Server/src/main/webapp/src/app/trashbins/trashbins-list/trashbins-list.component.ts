@@ -190,12 +190,10 @@ export class TrashbinsListComponent implements OnInit {
   }
 
   // // functions to enable edit and delete buttons 
-      onEdit(trashbin: Trashbins){
-      trashbin.isEdit = true;
-      // detatch the reference 
-      this.trashbin = { ...trashbin };
+    onEdit(trashbin: Trashbins) {
       this.router.navigate(['/edit/trashbins', trashbin.binId]);
     }
+
     deleteTrashbin(binId: number): void {
       if (confirm('Are you sure you want to delete ' + binId + '?')) {
         this.trashbinsService.delete(binId).subscribe(() => {
