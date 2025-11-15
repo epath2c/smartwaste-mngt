@@ -37,7 +37,17 @@
         <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
       </google-map>
 
-      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbin?.location?.address}}</p>
+      <div class="form-group mt-2" *ngIf="trashbin.location">
+        <label for="locationAddress">Selected Address:</label>
+        <input 
+          type="text" 
+          id="locationAddress" 
+          class="form-control" 
+          [(ngModel)]="trashbin.location.address" 
+          placeholder="Click on map to get address or enter manually"
+        />
+        <small class="form-text text-muted">You can edit the address manually if needed</small>
+      </div>
       <button class="btn btn-submit mt-2" (click)="updateTrashbins()">Update</button>
     </div>
   </div>
