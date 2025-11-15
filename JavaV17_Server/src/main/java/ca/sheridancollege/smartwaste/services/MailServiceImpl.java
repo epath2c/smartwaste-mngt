@@ -20,8 +20,24 @@ public class MailServiceImpl implements MailService {
             if (cleaner.getEmail() != null) {
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(cleaner.getEmail());
-                message.setSubject("Trash Bin Alert");
-                message.setText("Trash bin " + bin.getName() + " is " + fillLevel + "% full. Please empty it.");
+                
+                // Improved subject line with bin name and fill level
+                message.setSubject("Alert: " + bin.getName() + " - " + String.format("%.1f", fillLevel) + "% Full");
+                
+                // Improved email body with cleaner greeting and location details
+                String emailBody = String.format(
+                    "Hi %s,\n\n" +
+                    "Trash bin \"%s\" is %.1f%% full and requires attention.\n\n" +
+                    "Location: %s\n\n" +
+                    "Thanks,\n" +
+                    "Smart Waste Management System",
+                    cleaner.getName(),
+                    bin.getName(),
+                    fillLevel,
+                    bin.getLocation() != null ? bin.getLocation().getAddress() : "Location not available"
+                );
+                
+                message.setText(emailBody);
                 
                 try {
                     mailSender.send(message);
