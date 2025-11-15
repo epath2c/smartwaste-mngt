@@ -16,6 +16,7 @@ import { ShiftAddComponent } from './shifts/shift-add/shift-add.component';
 import { AuthGuard } from './authentication/auth.guard';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
+import { TrashbinEditComponent } from './trashbins/trashbin-edit/trashbin-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Default route
@@ -61,6 +62,11 @@ export const routes: Routes = [
   {
     path: 'add/trashbins',
     component: TrashbinsAddComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit/trashbins/:id',
+    component: TrashbinEditComponent,
     canActivate: [AuthGuard],
   },
   { path: 'about', component: AboutComponent },

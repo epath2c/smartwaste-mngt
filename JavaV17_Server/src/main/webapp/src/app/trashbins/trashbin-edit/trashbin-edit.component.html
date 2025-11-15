@@ -1,18 +1,18 @@
-<h3>Add Trashbin</h3>
+<h3>Edit Trashbin</h3>
 <div class="card form-card">
   <div class="card-body">
     <div class="form-group">
       <label for="name">Name:</label>
-      <input class="form-control" id="name" type="text" name="name" [(ngModel)]="trashbins.name" />
+      <input class="form-control" id="name" type="text" name="name" [(ngModel)]="trashbin.name" />
 
       <label for="height">Height (in cm):</label>
-      <input class="form-control" id="height" type="number" name="height" [(ngModel)]="trashbins.height" />
+      <input class="form-control" id="height" type="number" name="height" [(ngModel)]="trashbin.height" />
 
       <label for="createdDate">Created Date:</label>
-      <input class="form-control" id="createdDate" type="date" name="createdDate" [(ngModel)]="trashbins.createdDate" />
+      <input class="form-control" id="createdDate" type="date" name="createdDate" [(ngModel)]="trashbin.createdDate" />
 
       <label for="threshold">Threshold (in %):</label>
-      <input class="form-control" id="threshold" type="number" name="threshold" [(ngModel)]="trashbins.threshold" />
+      <input class="form-control" id="threshold" type="number" name="threshold" [(ngModel)]="trashbin.threshold" />
 
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Selected Cleaners:</mat-label>
@@ -37,8 +37,8 @@
         <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
       </google-map>
 
-      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbins.location!.address }}</p>
-      <button class="btn btn-submit mt-2" (click)="saveTrashbins()">Submit</button>
+      <p class="mt-2"><strong>Selected Coordinates:</strong> {{ trashbin?.location?.address}}</p>
+      <button class="btn btn-submit mt-2" (click)="updateTrashbins()">Update</button>
     </div>
   </div>
 </div>

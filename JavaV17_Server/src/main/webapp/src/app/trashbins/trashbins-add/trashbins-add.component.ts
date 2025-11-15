@@ -10,6 +10,7 @@ import { Cleaner } from '../../cleaners/cleaner';
 import { SensorService } from '../../sensors/sensor.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { Sensor } from '../../sensors/sensor';
 
 @Component({
   selector: 'app-Trashbins-add',

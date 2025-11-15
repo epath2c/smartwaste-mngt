@@ -1,6 +1,8 @@
 package ca.sheridancollege.smartwaste.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
@@ -9,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.sheridancollege.smartwaste.beans.TrashBin;
 import ca.sheridancollege.smartwaste.beans.Cleaner;
 import ca.sheridancollege.smartwaste.beans.Sensor;
+import ca.sheridancollege.smartwaste.beans.Shift;
 import ca.sheridancollege.smartwaste.beans.TrashBinLocation;
 import ca.sheridancollege.smartwaste.beans.TrashBinType;
+import ca.sheridancollege.smartwaste.repositories.CleanerRepository;
 import ca.sheridancollege.smartwaste.repositories.TrashBinRepository;
 import lombok.AllArgsConstructor;
 
@@ -18,17 +22,17 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class TrashBinServiceImpl implements TrashBinService {
-    
+
     // Constants
     private static final int ALERT_INTERVAL_HOURS = 1;
     private static final float PERCENTAGE_MULTIPLIER = 100f;
 
     private TrashBinRepository trashBinRepository;
-    
-    private MailService mailService;
-    
-    // no-op placeholder removed as we now persist aboveThreshold on entity
+    private final CleanerRepository cleanerRepository;
 
+    private MailService mailService;
+
+    // no-op placeholder removed as we now persist aboveThreshold on entity
 
     @Override
     public List<TrashBin> findAll() {
@@ -45,25 +49,71 @@ public class TrashBinServiceImpl implements TrashBinService {
         return trashBinRepository.save(trashBin);
     }
 
+    // check two things with other entities
+    // 1. check if there's any change regarding cleaner's id
+    // 2. check if there's any change in sensor
     @Override
     public TrashBin update(Long id, TrashBin updatedBin) {
-        return trashBinRepository.findById(id).map(existingBin -> {
-            existingBin.setName(updatedBin.getName());
-            existingBin.setHeight(updatedBin.getHeight());
-            existingBin.setCreatedDate(updatedBin.getCreatedDate());
 
-            existingBin.setSensor(updatedBin.getSensor()); // Update sensor
-            existingBin.setType(updatedBin.getType()); // Update bin type
-            existingBin.setLocation(updatedBin.getLocation()); // Update location
-            existingBin.setCleaners(updatedBin.getCleaners()); // Update list of assigned cleaners
+        Optional<TrashBin> existingBinOpt = trashBinRepository.findById(id);
+        if (existingBinOpt.isEmpty()) {
+            throw new RuntimeException("Trashbin not found with ID: " + id);
+        }
+        TrashBin existingBin = existingBinOpt.get();
+        // Remove from old cleaners
+        List<Cleaner> oldCleaners = existingBin.getCleaners();
+        if (oldCleaners != null) {
 
-            return trashBinRepository.save(existingBin);
-        }).orElse(null);
+            for (Cleaner c : new ArrayList<>(oldCleaners)) {
+                // System.out.println(" -> Removing from Shift ID: " + s.getId());
+                c.getBins().remove(existingBin);
+            }
+        } else {
+            // System.out.println("[DEBUG] No old shifts found for Trashbins.");
+        }
+
+        existingBin.setName(updatedBin.getName());
+        existingBin.setHeight(updatedBin.getHeight());
+        existingBin.setCreatedDate(updatedBin.getCreatedDate());
+
+        existingBin.setSensor(updatedBin.getSensor()); // Update sensor
+        existingBin.setType(updatedBin.getType()); // Update bin type
+        existingBin.setLocation(updatedBin.getLocation()); // Update location
+        // Add new cleaners
+        if (updatedBin.getCleanerIds() != null) {
+            List<Cleaner> newCleaners = cleanerRepository.findAllById(updatedBin.getCleanerIds());
+            existingBin.setCleaners(newCleaners);
+            for (Cleaner c : new ArrayList<>(newCleaners)) {
+                c.getBins().add(updatedBin);
+            }
+        }
+        return trashBinRepository.save(existingBin);
+
     }
 
     @Override
     public void delete(Long id) {
-        trashBinRepository.deleteById(id);
+        // find the trashbin to delete by id
+        Optional<TrashBin> trashBinOpt = trashBinRepository.findById(id);
+        if (trashBinOpt.isPresent()) {
+            TrashBin bin = trashBinOpt.get();
+            // Two things need to be done
+
+            // 1. detatch cleaner
+            List<Cleaner> cleaners = bin.getCleaners();
+            for (Cleaner cleaner : cleaners) {
+                cleaner.getBins().remove(bin);
+
+            }
+            cleanerRepository.saveAll(cleaners);
+            // 2. detatch sensor
+            bin.setSensor(null);
+            trashBinRepository.delete(bin);
+            System.out.println("it has been deleted");
+        } else {
+            System.out.println("cannot find it");
+        }
+
     }
 
     @Override
@@ -93,7 +143,8 @@ public class TrashBinServiceImpl implements TrashBinService {
 
         // Prevent distance reading from exceeding bin height
         if (distanceReading > height) {
-            System.out.println("Distance reading (" + distanceReading + "cm) exceeds bin height (" + height + "cm). Setting to height.");
+            System.out.println("Distance reading (" + distanceReading + "cm) exceeds bin height (" + height
+                    + "cm). Setting to height.");
             distanceReading = height;
         }
 
@@ -113,17 +164,17 @@ public class TrashBinServiceImpl implements TrashBinService {
 
         float fill = calculateFillPercentage(bin.getHeight(), distanceReading);
         System.out.println("Bin: " + bin.getName() + ", Fill: " + fill + "%");
-        
+
         // Update current fill percentage
         bin.setCurrentFillPercentage(fill);
-        
+
         if (fill >= bin.getThreshold()) {
             LocalDateTime now = LocalDateTime.now();
-             
+
             // First time or over 1 hour later
-            if (bin.getLastAlertTime() == null || 
-                bin.getLastAlertTime().isBefore(now.minusHours(ALERT_INTERVAL_HOURS))) { //  1 hour
-                //bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
+            if (bin.getLastAlertTime() == null ||
+                    bin.getLastAlertTime().isBefore(now.minusHours(ALERT_INTERVAL_HOURS))) { // 1 hour
+                // bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
                 mailService.sendThresholdAlertToCleaners(bin, fill);
                 bin.setLastAlertTime(now);
                 System.out.println("Alert sent: " + bin.getName());
