@@ -29,6 +29,7 @@ public class TrashBinServiceImpl implements TrashBinService {
 
     private TrashBinRepository trashBinRepository;
     private final CleanerRepository cleanerRepository;
+    private TrashBinLocationService locationService;
 
     private MailService mailService;
 
@@ -78,15 +79,29 @@ public class TrashBinServiceImpl implements TrashBinService {
 
         existingBin.setSensor(updatedBin.getSensor()); // Update sensor
         existingBin.setType(updatedBin.getType()); // Update bin type
-        existingBin.setLocation(updatedBin.getLocation()); // Update location
+        
+        // Handle location update 
+        if (updatedBin.getLocation() != null) {
+            // Keep the existing geoID if location already exists
+            if (existingBin.getLocation() != null && existingBin.getLocation().getGeoID() != null) {
+                updatedBin.getLocation().setGeoID(existingBin.getLocation().getGeoID());
+            }
+            // Save location (will update if ID exists, create new if not)
+            TrashBinLocation savedLocation = locationService.save(updatedBin.getLocation());
+            existingBin.setLocation(savedLocation);
+        }
         // Add new cleaners
         if (updatedBin.getCleanerIds() != null) {
             List<Cleaner> newCleaners = cleanerRepository.findAllById(updatedBin.getCleanerIds());
             existingBin.setCleaners(newCleaners);
             for (Cleaner c : new ArrayList<>(newCleaners)) {
-                c.getBins().add(updatedBin);
+                c.getBins().add(existingBin);
             }
         }
+        
+        // Update threshold
+        existingBin.setThreshold(updatedBin.getThreshold());
+        
         return trashBinRepository.save(existingBin);
 
     }
@@ -173,8 +188,8 @@ public class TrashBinServiceImpl implements TrashBinService {
 
             // First time or over 1 hour later
             if (bin.getLastAlertTime() == null ||
-                    bin.getLastAlertTime().isBefore(now.minusHours(ALERT_INTERVAL_HOURS))) { // 1 hour
-                // bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
+                 //   bin.getLastAlertTime().isBefore(now.minusHours(ALERT_INTERVAL_HOURS))) { // 1 hour
+                 bin.getLastAlertTime().isBefore(now.minusMinutes(1))) { // Testing: 1 minute
                 mailService.sendThresholdAlertToCleaners(bin, fill);
                 bin.setLastAlertTime(now);
                 System.out.println("Alert sent: " + bin.getName());
