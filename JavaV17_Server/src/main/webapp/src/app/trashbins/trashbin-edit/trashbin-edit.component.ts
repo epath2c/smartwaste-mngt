@@ -75,7 +75,7 @@ export class TrashbinEditComponent implements OnInit {
 
   this.trashbinsService.getBinByBinId(this.binId).subscribe({
     next: (data) => {
-      console.log('trashbin has been loaded', { data });
+      //console.log('trashbin has been loaded', { data });
       this.trashbin = data;
       if (this.trashbin.cleanerIds && this.trashbin.cleanerIds.length > 0) {
         this.cleanersSelected.setValue(this.trashbin.cleanerIds);
@@ -86,18 +86,18 @@ export class TrashbinEditComponent implements OnInit {
 
     },
     error: (err) => {
-      console.error('Failed to load trashbin:', err);
+      //console.error('Failed to load trashbin:', err);
     },
   });
 
   // 2. Load Cleaners
   this.cleanerService.getAll().subscribe({
     next: (data) => {
-      console.log('cleaners loaded:', data);
+      //console.log('cleaners loaded:', data);
       this.cleanerList = data;
     },
     error: (err) => {
-      console.error('Failed to load cleaners:', err);
+      //console.error('Failed to load cleaners:', err);
     },
   });
 
@@ -106,7 +106,7 @@ export class TrashbinEditComponent implements OnInit {
     this.availableSensors = data;
   });
 
-  console.log('this is bin id', this.binId);
+  //console.log('this is bin id', this.binId);
 }
 
 
@@ -164,17 +164,17 @@ export class TrashbinEditComponent implements OnInit {
       },
     };
 
-    console.log('Sending data:', data);
+    //console.log('Sending data:', data);
 
     this.trashbinsService.update(this.binId, data).subscribe({
       next: (response: Trashbins) => {
-        console.log('SUCCESS! Response:', response);
+        //console.log('SUCCESS! Response:', response);
         this.trashbinsService.onTrashbinsAdded.emit(response);
         alert('Trashbin edited successfully!');
         this.router.navigate(['view/trashbins']);
       },
       error: (error) => {
-        console.error('ERROR:', error);
+        //console.error('ERROR:', error);
         alert('Error updating trashbin: ' + error.message);
       },
     });
