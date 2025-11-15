@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Trashbins} from '../trashbins';
 import { TrashbinsService } from '../trashbins.service';
-import { ActivatedRoute, RouterLink,Router  } from '@angular/router';
+import { RouterLink,Router  } from '@angular/router';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { CleanerService } from '../../cleaners/cleaner.service';
@@ -19,7 +19,8 @@ import { Sensor } from '../../sensors/sensor';
   templateUrl: './trashbins-add.component.html',
   styleUrl: './trashbins-add.component.css'
 })
-export class TrashbinsAddComponent {
+export class TrashbinsAddComponent implements OnInit {
+  trashbinForm!: FormGroup;
   center = { lat: 43.4673, lng: -79.7000 };
   markerPosition = { lat: 43.4673, lng: -79.7000 };
 
@@ -44,53 +45,54 @@ export class TrashbinsAddComponent {
     ]
   };
 
-  
-  // store an array of selected cleaners
-  
-  cleanersSelected = new FormControl<number[] | null>([]);
-  sensorSelected = new FormControl<number | null>(null);
-  //cleanersSelected = new FormControl<Cleaner[] | null>([]);
   cleanerList: Cleaner[] = [];
-  availableSensors: any[] = []; 
+  availableSensors: any[] = [];
+  locationAddress = '';
 
-  trashbins: Trashbins ={
-    binId:0,
-    name:'',
-    height:0,
-    createdDate:'',
-    threshold: 0,
-    cleanerIds: [],
-    //cleaners: [],
-    location: {
-      address: '',
-      latitude: 0,
-      longitude: 0
-    }
-  };
-  //Connect to connect the Trashbins Service component
   constructor(
     private trashbinsService: TrashbinsService,
     private cleanerService: CleanerService,
     private sensorService: SensorService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
+
   ngOnInit(): void {
-        // Load cleaners
-        this.cleanerService.getAll().subscribe({
-          next: (data) => {
-            //console.log('cleaners loaded:', data);
-            this.cleanerList = data;
-          },
-          error: (err) => {
-            //console.error('Failed to load cleaners:', err);
-          }
-        });
-        
-        // Load available sensors only
-        this.sensorService.getAvailable().subscribe(data => {
-          this.availableSensors = data;
-        });
+    // Initialize form with validation rules
+    this.trashbinForm = this.fb.group({
+      name: ['', [Validators.required]],
+      height: [0, [Validators.required, Validators.min(0.01)]],
+      createdDate: [''],
+      threshold: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      cleaners: [[], [Validators.required]],
+      sensor: [null]
+    });
+
+    // Load cleaners
+    this.cleanerService.getAll().subscribe({
+      next: (data) => {
+        this.cleanerList = data;
+      },
+      error: (err) => {
+        console.error('Failed to load cleaners:', err);
       }
+    });
+
+    // Load available sensors
+    this.sensorService.getAvailable().subscribe(data => {
+      this.availableSensors = data;
+    });
+  }
+
+  // Check if a form field is invalid and has been touched by the user
+  isInvalid = (field: string) => {
+    const f = this.trashbinForm.get(field);
+    return !!(f?.invalid && f?.touched);
+  }
+
+  // Check if a form field has a specific validation error
+  hasError = (field: string, error: string) =>
+    !!this.trashbinForm.get(field)?.errors?.[error];
 
   updateMarker(event: google.maps.MapMouseEvent) {
     if (event.latLng) {
@@ -98,63 +100,55 @@ export class TrashbinsAddComponent {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       };
-
-      this.trashbins.location!.latitude = this.markerPosition.lat;
-      this.trashbins.location!.longitude = this.markerPosition.lng;
-
-      // get the address
       this.getAddressFromCoordinates(this.markerPosition.lat, this.markerPosition.lng);
     }
   }
+
   getAddressFromCoordinates(lat: number, lng: number) {
     const geocoder = new google.maps.Geocoder();
     const latLng = new google.maps.LatLng(lat, lng);
 
     geocoder.geocode({ location: latLng }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
-        this.trashbins.location!.address = results[0].formatted_address;
+        this.locationAddress = results[0].formatted_address;
       } else {
-        this.trashbins.location!.address = `Location at ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+        this.locationAddress = `Location at ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
       }
     });
   }
 
-  //Method called by the HTML button
-  // trashbins-add.component.ts
   saveTrashbins(): void {
-    //console.log("🔄 Starting save process...");
-    //console.log("📝 Form data:", this.trashbins);
-    //console.log("📝 Cleaner selected:", this.cleanersSelected.value,);
+    if (this.trashbinForm.invalid) {
+      this.trashbinForm.markAllAsTouched();
+      return;
+    }
+
+    const { name, height, createdDate, threshold, cleaners, sensor } = this.trashbinForm.value;
 
     const data = {
-      binId: this.trashbins.binId,
-      name: this.trashbins.name,
-      height: this.trashbins.height,
-      createdDate: this.trashbins.createdDate,
-      threshold: this.trashbins.threshold,
-      cleanerIds: this.cleanersSelected.value ?? [],
-      sensor: this.sensorSelected.value ? { id: this.sensorSelected.value } : null,
+      name,
+      height,
+      createdDate,
+      threshold,
+      cleanerIds: cleaners,
+      sensor: sensor ? { id: sensor } : null,
       location: {
-        address: this.trashbins.location!.address,
-        latitude: this.trashbins.location!.latitude,
-        longitude: this.trashbins.location!.longitude }
+        address: this.locationAddress,
+        latitude: this.markerPosition.lat,
+        longitude: this.markerPosition.lng
+      }
     };
-
-    //console.log("Sending data:", data);
 
     this.trashbinsService.create(data).subscribe({
       next: (response: Trashbins) => {
-        console.log("SUCCESS! Response:", response);
         this.trashbinsService.onTrashbinsAdded.emit(response);
         alert("Trashbin saved successfully!");
         this.router.navigate(['view/trashbins']);
       },
       error: (error) => {
-        console.error("ERROR:", error);
         alert("Error saving trashbin: " + error.message);
       }
     });
   }
-
-  }
+}
 

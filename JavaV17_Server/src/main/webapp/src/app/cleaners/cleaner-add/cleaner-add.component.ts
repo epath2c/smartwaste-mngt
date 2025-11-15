@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cleaner} from '../cleaner';
 import { CleanerService } from '../cleaner.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ShiftService } from '../../shifts/shift.service';
 import { Shift } from '../../shifts/shift';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
 
 @Component({
   selector: 'app-cleaner-add',
@@ -17,54 +16,63 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './cleaner-add.component.html',
   styleUrl: './cleaner-add.component.css'
 })
-export class CleanerAddComponent {
+export class CleanerAddComponent implements OnInit {
+  cleanerForm!: FormGroup;
+  shiftList: Shift[] = [];
 
-  shiftList: Shift[] = []; 
-  shiftsSelected = new FormControl<number[] | null>([]);
-  cleaner: Cleaner ={
-    id:0,
-    name:'',
-    email:'',
-    phoneNumber:'',
-    shiftIds: []
-  }
-  //Connect to connect the cleaner Service component
-  constructor(private cleanerService:CleanerService, private shiftService:ShiftService, private router: Router ){}
-
+  constructor(
+    private cleanerService: CleanerService,
+    private shiftService: ShiftService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-        this.shiftService.getAll().subscribe({
-          next: (data) => {
-            //console.log('shifts loaded:', data);
-            this.shiftList = data;
-          },
-          error: (err) => {
-            //console.error('Failed to load shifts:', err);
-          }
-        });
-        this.shiftsSelected.valueChanges.subscribe(value => {
-          //console.log('Selected shift IDs changed:', value);
-        });
+    // Initialize form with validation rules
+    this.cleanerForm = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      shifts: [[]]
+    });
+
+    // Load available shifts
+    this.shiftService.getAll().subscribe({
+      next: (data) => {
+        this.shiftList = data;
+      },
+      error: (err) => {
+        console.error('Failed to load shifts:', err);
       }
-  //Method called by the HTML button
-  saveCleaner():void{
-    //Read in the fields from the inputs
-    const data={
-      name:this.cleaner.name,
-      email:this.cleaner.email,
-      phoneNumber:this.cleaner.phoneNumber,
-      shiftIds: this.shiftsSelected.value ?? []
-    };
-    //Submit the cleaner record to the Rest Controller
+    });
+  }
+
+  // Check if a form field is invalid and has been touched by the user
+  isInvalid = (field: string) => {
+    const f = this.cleanerForm.get(field);
+    return !!(f?.invalid && f?.touched);
+  }
+
+  // Check if a form field has a specific validation error
+  hasError = (field: string, error: string) => 
+    !!this.cleanerForm.get(field)?.errors?.[error];
+
+  saveCleaner(): void {
+    if (this.cleanerForm.invalid) {
+      this.cleanerForm.markAllAsTouched();
+      return;
+    }
+
+    const { name, email, phoneNumber, shifts } = this.cleanerForm.value;
+    const data = { name, email, phoneNumber, shiftIds: shifts };
+
     this.cleanerService.create(data).subscribe({
       next: (response: Cleaner) => {
-        //console.log("SUCCESS! Response:", response);
         this.cleanerService.onCleanerAdded.emit(response);
         alert("Cleaner saved successfully!");
         this.router.navigate(['/view/cleaners']);
       },
       error: (error) => {
-        //console.error("ERROR:", error);
         alert("Error saving cleaner: " + error.message);
       }
     });
