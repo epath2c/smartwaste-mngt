@@ -56,7 +56,7 @@
       </mat-form-field>
 
       <label class="mt-2">Select Location on Map:</label>
-      <google-map height="300px" width="100%" [center]="center" [zoom]="15" [options]="mapOptions" (mapClick)="updateMarker($event)">
+      <google-map height="400px" width="100%" [center]="center" [zoom]="17" [options]="mapOptions" (mapClick)="updateMarker($event)">
         <map-marker [position]="markerPosition" [options]="{ draggable: false }"></map-marker>
       </google-map>
 
