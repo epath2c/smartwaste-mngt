@@ -84,6 +84,18 @@ export class TrashbinEditComponent implements OnInit {
       //   this.sensorSelected.setValue(this.trashbin.sensor.id);
       // }
 
+      // Auto-center map to trashbin location
+      if (this.trashbin.location && this.trashbin.location.latitude && this.trashbin.location.longitude) {
+        this.center = {
+          lat: this.trashbin.location.latitude,
+          lng: this.trashbin.location.longitude
+        };
+        this.markerPosition = {
+          lat: this.trashbin.location.latitude,
+          lng: this.trashbin.location.longitude
+        };
+      }
+
     },
     error: (err) => {
       //console.error('Failed to load trashbin:', err);
@@ -127,6 +139,7 @@ export class TrashbinEditComponent implements OnInit {
       );
     }
   }
+
   getAddressFromCoordinates(lat: number, lng: number) {
     const geocoder = new google.maps.Geocoder();
     const latLng = new google.maps.LatLng(lat, lng);
