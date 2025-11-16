@@ -1,11 +1,20 @@
 <div class="container section">
   <div class="card">
     <div class="card-body">
-      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+      <div
+        class="d-flex flex-column flex-md-row align-items-md-center justify-content-between"
+      >
         <h3 class="card-title mb-3 mb-md-0">Trashbins</h3>
         <div class="btn-row">
-          <a routerLink="/view/trashbins" class="btn btn-theme">View Trashbins</a>
-          <a routerLink="/add/trashbins"  class="btn btn-theme-outline">Add Trashbin</a>
+          <a routerLink="/view/trashbins" class="btn btn-theme"
+            >View Trashbins</a
+          >
+          <a
+            routerLink="/add/trashbins"
+            class="btn btn-theme-outline"
+            *ngIf="isLoggedIn$ | async"
+            >Add Trashbin</a
+          >
         </div>
       </div>
 
@@ -14,5 +23,4 @@
       </div>
     </div>
   </div>
-
 </div>
