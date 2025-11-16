@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
-
+html, body {
+  height: 100%;
+  margin: 0;
+}
 /* ===== App-wide look & feel ===== */
 :root{
   --app-max: 1100px;
@@ -21,8 +24,14 @@
   --accent-3: #e8f8fc;
 }
 
+:host {
+  background: transparent !important;
+  display: block;
+}
+
+
 .page-container {
-  margin: 20px;
+  margin: 0px;
 }
 
 
@@ -323,8 +332,8 @@ body {
 }
 
 .container {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .btn-theme {
@@ -396,6 +405,34 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+.page-main {
+  flex: 1;
+  display: flex;          /* key: makes it a flex container */
+}
+/* Inner shell that centers content when there's free space */
+.page-main-inner {
+  flex: 1;
+  display: flex;
+  align-items: center;    /* vertical center */
+  justify-content: center;/* horizontal center (optional) */
+  padding: 2rem 1rem;     /* breathing room */
+}
+
+/* Center numbers/text in the stat cards */
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* horizontal center */
+  justify-content: center;
+  text-align: center;    /* makes <h3> and <p> centered */
+}
+
+/* Optional: make sure card body doesn't fight this */
+.stat-card .card-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;          /* space between icon and text */
 }
 
 
@@ -480,3 +517,389 @@ body {
   -webkit-backdrop-filter: blur(6px);          /* ★ new */
 }
 .btn-danger-soft:hover { background:rgba(255, 207, 214, 0.7); border-color:#ffb7c0; }
+
+/* ===== App Navbar ===== */
+.app-navbar {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  border: none !important;
+  box-shadow: none !important;
+
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+
+  border-radius: 0;
+}
+
+/* Make navbar content sit nicely within your app width */
+.app-navbar .container {
+  max-width: var(--app-max);
+}
+
+/* Brand area */
+.navbar-brand span {
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.navbar-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+}
+
+/* User email text */
+.nav-user-email {
+  font-size: 0.9rem;
+  color: rgba(2, 62, 138, 0.9);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Nav chips (links) */
+.nav-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-chip:hover,
+.nav-chip:focus {
+  background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+}
+
+.nav-chip.active {
+  background: linear-gradient(180deg, var(--accent-2), #0077b6);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Align actions nicely on desktop */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;         /* space between buttons */
+  flex-wrap: wrap;     /* ⬅ important: allow wrapping */
+}
+
+
+/* Toggler styling to match theme */
+.app-navbar-toggler {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.app-navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.5);
+}
+
+.app-navbar-toggler .navbar-toggler-icon {
+  background-image: none;
+  position: relative;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.app-navbar-toggler .navbar-toggler-icon::before,
+.app-navbar-toggler .navbar-toggler-icon::after,
+.app-navbar-toggler .navbar-toggler-icon span {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  margin: auto;
+  background: var(--ink);
+  border-radius: 999px;
+}
+
+.app-navbar-toggler .navbar-toggler-icon::before {
+  top: 2px;
+}
+.app-navbar-toggler .navbar-toggler-icon::after {
+  bottom: 2px;
+}
+
+/* Mobile layout adjustments */
+@media (max-width: 767.98px) {
+  .nav-actions {
+    margin-top: 0.75rem;
+    justify-content: flex-start;
+  }
+
+  .nav-user-email {
+    order: 1;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .nav-chip,
+  .btn-theme-outline,
+  .btn-submit,
+  .btn-danger-soft {
+    width: auto;
+  }
+}
+
+/* ===== Logout Modal (glass) ===== */
+.logout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 4, 94, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.logout-modal {
+  max-width: 320px;
+  text-align: center;
+  padding: 1.75rem 1.5rem;
+  border-radius: 18px;
+  background: var(--glass-bg-strong);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.logout-modal h5 {
+  color: var(--ink);
+}
+
+.nav-home-btn {
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0,119,182,0.25);
+  transition: all 0.2s ease;
+}
+
+.nav-home-btn:hover {
+  background: linear-gradient(180deg, var(--accent-2), #0077b6);
+  box-shadow: 0 6px 16px rgba(0,119,182,0.35);
+}
+
+.nav-login-btn {
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(0,0,0,0.18);
+  background: transparent;
+  font-weight: 500;
+  font-size: 0.88rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nav-login-btn:hover {
+  background: rgba(0,0,0,0.06);
+  color: var(--ink);
+}
+
+.nav-register-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.4);
+  transition: all 0.2s ease;
+}
+
+.nav-register-btn:hover {
+  background: rgba(0,0,0,0.05);
+  color: var(--ink);
+}
+
+/* ===== Auth / Login Layout ===== */
+.auth-container {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: transparent !important; 
+}
+
+
+.auth-card {
+  max-width: 420px;
+  width: 100%;
+}
+
+/* Title */
+.auth-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--ink);
+}
+
+/* Redirect text under button */
+.redirect-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #527093;
+}
+
+.redirect-link {
+  font-weight: 600;
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.redirect-link:hover {
+  text-decoration: underline;
+  color: var(--ink-soft);
+}
+
+/* Error message under form */
+.auth-error {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: #b00020;
+  text-align: center;
+}
+
+/* Invalid field styling (works with your form-control base) */
+.form-control.is-invalid {
+  border-color: #e63946;
+  background-color: rgba(255, 245, 245, 0.7);
+}
+
+.invalid-feedback {
+  margin-top: 0.25rem;
+  color: #e63946;
+}
+
+/* New: subtle password helper text */
+.password-hint {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: #8aa9c4;
+}
+
+@media (max-width: 768px) {
+  .app-navbar .container {
+    flex-wrap: wrap;
+  }
+
+  .nav-user-email {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    justify-content: flex-start;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.35rem;
+  }
+
+  .nav-home-btn,
+  .nav-chip,
+  .nav-login-btn,
+  .nav-register-btn,
+  .btn-danger-soft {
+    padding: 0.3rem 0.75rem;
+  }
+}
+
+/* When screen is narrow, stack buttons full-width */
+@media (max-width: 576px) {
+  /* Stop using flex layout from Bootstrap on small screens */
+  .app-navbar .container {
+    display: block;
+  }
+
+  /* Email line */
+  .nav-user-email {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Wrap for all nav buttons */
+  .nav-actions {
+    display: block;
+    width: 100%;
+    margin-left: 0 !important;   /* kill ms-auto */
+    margin-top: 0.5rem;
+  }
+
+  /* Actual buttons/links: full width, stacked */
+  .nav-actions a,
+  .nav-actions button {
+    display: block !important;   /* override any flex/inline-flex */
+    width: 100% !important;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 0 0.5rem 0;        /* vertical spacing between buttons */
+  }
+}
+/* iPad Pro 12.9" width and below (1024px and smaller) */
+@media (max-width: 1024px) {
+
+  .main-content {
+    display: block;   /* break out of side-by-side layout */
+  }
+
+  .bins-panel,
+  .map-panel {
+    width: 100% !important;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .map-container {
+    height: 400px;  /* give map a nice fixed height on tablets/phones */
+  }
+}
+
+/* Even smaller screens (phones) */
+@media (max-width: 576px) {
+  .map-container {
+    height: 300px;
+  }
+}
+
+
+
+
+
+

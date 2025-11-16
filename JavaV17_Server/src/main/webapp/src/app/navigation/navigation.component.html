@@ -1,44 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light p-3 mb-4">
-  <div class="container-fluid">
-    <span class="me-3 fw-semibold text-secondary">
-      {{ userEmail$ | async }}
+<nav class="navbar navbar-expand-lg app-navbar mb-4">
+  <div class="container">
+    <!-- User email with themed pill style -->
+    <span class="nav-user-email me-3" *ngIf="userEmail$ | async as email">
+      {{ email }}
     </span>
-    <div class="d-flex ms-auto align-items-center">
-      <a routerLink="/" class="btn btn-primary me-2">Home</a>
+
+    <div class="d-flex ms-auto align-items-center nav-actions">
+      <!-- Main links -->
+      <a routerLink="/" class="nav-home-btn">Home</a>
 
       <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
-        <a routerLink="/view/sensors" class="btn btn-primary me-2">Sensors</a>
-        <a routerLink="/view/trashbins" class="btn btn-primary me-2">Trash Bin</a>
-        <a routerLink="/view/cleaners" class="btn btn-primary me-2">Cleaner</a>
-        <a routerLink="/view/shifts" class="btn btn-primary me-3">Shifts</a>
+        <a routerLink="/view/sensors" class="nav-chip">Sensors</a>
+        <a routerLink="/view/trashbins" class="nav-chip">Trash Bin</a>
+        <a routerLink="/view/cleaners" class="nav-chip">Cleaner</a>
+        <a routerLink="/view/shifts" class="nav-chip">Shifts</a>
 
-        <!-- Display user email -->
-
-        <button class="btn btn-danger" (click)="logout()">Logout</button>
+        <!-- Logout button with soft danger style -->
+        <button class="btn btn-danger-soft ms-1" (click)="logout()">
+          Logout
+        </button>
       </ng-container>
 
-      <ng-template #notLoggedIn>
-        <a routerLink="/login" class="btn btn-primary me-2">Login</a>
-        <a routerLink="/register" class="btn btn-primary">Register</a>
-      </ng-template>
+		<ng-template #notLoggedIn>
+		  <a routerLink="/login" class="nav-login-btn me-2">Login</a>
+		  <a routerLink="/register" class="nav-register-btn">Register</a>
+		</ng-template>
     </div>
   </div>
 </nav>
 
-<!-- ✅ Logout Success Modal -->
+<!-- ✅ Logout Success Modal (glass overlay version) -->
 <div
-  class="modal fade show"
-  tabindex="-1"
-  role="dialog"
-  [ngStyle]="{ display: showLogoutModal ? 'block' : 'none' }"
+  class="logout-modal-overlay"
   *ngIf="showLogoutModal"
+  (click)="closeModal()"
 >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content p-4 text-center">
-      <h5>✅ Successfully logged out!</h5>
-      <button class="btn btn-secondary mt-3" (click)="closeModal()">
-        Close
-      </button>
-    </div>
+  <div class="logout-modal card" (click)="$event.stopPropagation()">
+    <h5>✅ Successfully logged out!</h5>
+    <button class="btn btn-theme mt-3" (click)="closeModal()">
+      Close
+    </button>
   </div>
 </div>

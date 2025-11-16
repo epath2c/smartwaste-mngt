@@ -272,13 +272,67 @@ google-map {
   background: #f8f9fa;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .main-content {
-    grid-template-columns: 1fr;
+/* Base layout: side-by-side on desktop */
+.trashbins-dashboard .main-content {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.trashbins-dashboard .bins-panel {
+  flex: 2;
+}
+
+.trashbins-dashboard .map-panel {
+  flex: 1.5;
+}
+
+
+
+.trashbins-dashboard .overview-cards {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  /* keep them in one row */
+  flex-wrap: nowrap;
+  align-items: stretch;
+
+  /* if screen is very narrow, allow horizontal scroll instead of wrapping */
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.trashbins-dashboard .stat-card {
+  flex: 1 1 0;
+  min-width: 0; /* avoid weird overflow */
+}
+
+
+
+
+/* iPad Air / iPad Pro and smaller: stack bins above map */
+@media (max-width: 1180px) {
+  .trashbins-dashboard .main-content {
+    display: block;          /* force vertical stack */
   }
-  
-  .overview-cards {
-    flex-direction: column;
+
+  .trashbins-dashboard .bins-panel,
+  .trashbins-dashboard .map-panel {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .trashbins-dashboard .map-container {
+    height: 400px;
   }
 }
+
+/* Optional: phones */
+@media (max-width: 576px) {
+  .trashbins-dashboard .map-container {
+    height: 300px;
+  }
+}
+
