@@ -2,12 +2,12 @@
   <!-- Header -->
   <div class="row">
     <div class="col-12 text-center">
-     <!-- Logo -->
+      <!-- Logo -->
       <img src="logo.png" alt="Logo" class="project-logo" />
 
-
-      
-      <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
+      <div
+        class="d-flex flex-column flex-md-row align-items-center justify-content-center"
+      >
         <h1 class="display-4 mb-2 mb-md-0 me-md-3">{{ title }}</h1>
         <a
           routerLink="/about"
@@ -24,55 +24,88 @@
   </div>
 
   <!-- Feature cards -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+  <ng-container *ngIf="isLoggedIn$ | async; else notLoggedIn">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      <!-- Sensors -->
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-broadcast fs-1 text-info mb-3"></i>
+            <h5 class="card-title">Sensors</h5>
+            <p class="card-text">Monitor and manage waste bin sensors</p>
+            <a
+              routerLink="/view/sensors"
+              class="btn btn-theme mt-auto w-100 w-md-auto"
+              >View Sensors</a
+            >
+          </div>
+        </div>
+      </div>
 
-    <!-- Sensors -->
-    <div class="col">
-      <div class="card h-100">
-        <div class="card-body text-center">
-          <i class="bi bi-broadcast fs-1 text-info mb-3"></i>
-          <h5 class="card-title">Sensors</h5>
-          <p class="card-text">Monitor and manage waste bin sensors</p>
-          <a routerLink="/view/sensors" class="btn btn-theme mt-auto w-100 w-md-auto">View Sensors</a>
+      <!-- Trash Bins -->
+
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-trash3 fs-1 text-info mb-3"></i>
+            <h5 class="card-title">Trash Bins</h5>
+            <p class="card-text">Manage waste bins and their locations</p>
+            <a
+              routerLink="/view/trashbins"
+              class="btn btn-theme mt-auto w-100 w-md-auto"
+              >View Trash Bins</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Cleaners -->
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-person-lines-fill fs-1 text-info mb-3"></i>
+            <h5 class="card-title">Cleaners</h5>
+            <p class="card-text">Manage cleaning staff assignments</p>
+            <a
+              routerLink="/view/cleaners"
+              class="btn btn-theme mt-auto w-100 w-md-auto"
+              >View Cleaners</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Shifts -->
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-calendar2-week fs-1 text-info mb-3"></i>
+            <h5 class="card-title">Shifts</h5>
+            <p class="card-text">Manage cleaners' shifts</p>
+            <a
+              routerLink="/view/shifts"
+              class="btn btn-theme mt-auto w-100 w-md-auto"
+              >View Shifts</a
+            >
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Trash Bins -->
+  </ng-container>
+  <ng-template #notLoggedIn>
     <div class="col">
       <div class="card h-100">
         <div class="card-body text-center">
           <i class="bi bi-trash3 fs-1 text-info mb-3"></i>
           <h5 class="card-title">Trash Bins</h5>
           <p class="card-text">Manage waste bins and their locations</p>
-          <a routerLink="/view/trashbins" class="btn btn-theme mt-auto w-100 w-md-auto">View Trash Bins</a>
+          <a
+            routerLink="/view/trashbins"
+            class="btn btn-theme mt-auto w-100 w-md-auto"
+            >View Trash Bins</a
+          >
         </div>
       </div>
     </div>
-
-    <!-- Cleaners -->
-    <div class="col">
-      <div class="card h-100">
-        <div class="card-body text-center">
-          <i class="bi bi-person-lines-fill fs-1 text-info mb-3"></i>
-          <h5 class="card-title">Cleaners</h5>
-          <p class="card-text">Manage cleaning staff assignments</p>
-          <a routerLink="/view/cleaners" class="btn btn-theme mt-auto w-100 w-md-auto">View Cleaners</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Shifts -->
-    <div class="col">
-      <div class="card h-100">
-        <div class="card-body text-center">
-          <i class="bi bi-calendar2-week fs-1 text-info mb-3"></i>
-          <h5 class="card-title">Shifts</h5>
-          <p class="card-text">Manage cleaners' shifts</p>
-          <a routerLink="/view/shifts" class="btn btn-theme mt-auto w-100 w-md-auto">View Shifts</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  </ng-template>
 </div>

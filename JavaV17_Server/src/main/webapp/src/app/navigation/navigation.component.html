@@ -21,10 +21,10 @@
         </button>
       </ng-container>
 
-		<ng-template #notLoggedIn>
-		  <a routerLink="/login" class="nav-login-btn me-2">Login</a>
-		  <a routerLink="/register" class="nav-register-btn">Register</a>
-		</ng-template>
+      <ng-template #notLoggedIn>
+        <a routerLink="/login" class="nav-login-btn me-2">Login</a>
+        <a routerLink="/register" class="nav-register-btn">Register</a>
+      </ng-template>
     </div>
   </div>
 </nav>
@@ -37,8 +37,6 @@
 >
   <div class="logout-modal card" (click)="$event.stopPropagation()">
     <h5>✅ Successfully logged out!</h5>
-    <button class="btn btn-theme mt-3" (click)="closeModal()">
-      Close
-    </button>
+    <button class="btn btn-theme mt-3" (click)="closeModal()">Close</button>
   </div>
 </div>
