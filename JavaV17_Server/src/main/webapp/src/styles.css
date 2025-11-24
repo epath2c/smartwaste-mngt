@@ -5,24 +5,45 @@ html, body {
   margin: 0;
 }
 /* ===== App-wide look & feel ===== */
-:root{
+/* ===== Theme palettes ===== */
+:root,
+:root[data-theme='light'] {
   --app-max: 1100px;
   --app-gap: 1rem;
   --app-radius: 12px;
   --app-shadow: 0 6px 18px rgba(0,0,0,.06);
 
-  /* ★ new: glass variables */
+  /* glass variables – LIGHT */
   --glass-bg: rgba(255, 255, 255, 0.3);
   --glass-bg-strong: rgba(255, 255, 255, 0.28);
   --glass-border: 1px solid rgba(255,255,255,0.35);
   --glass-blur: 14px;
   --glass-shadow: 0 10px 30px rgba(2, 62, 138, 0.20);
+
   --ink: #023e8a;
   --ink-soft: #2a6f97;
   --accent-1: #48cae4;
   --accent-2: #0096c7;
   --accent-3: #e8f8fc;
 }
+
+/* DARK THEME OVERRIDES */
+:root[data-theme='dark'] {
+  /* darker glass */
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-bg-strong: rgba(15, 23, 42, 0.9);
+  --glass-border: 1px solid rgba(148, 163, 184, 0.55);
+  --glass-blur: 18px;
+  --glass-shadow: 0 18px 45px rgba(15,23,42,0.95);
+
+  /* ink & accents on dark */
+  --ink: #e2f3ff;
+  --ink-soft: #9fbadf;
+  --accent-1: #4cc9f0;
+  --accent-2: #4361ee;
+  --accent-3: #020617;
+}
+
 
 :host {
   background: transparent !important;
@@ -322,6 +343,56 @@ body {
   background-size: cover;
   font-family: 'Segoe UI', Roboto, sans-serif;
 }
+
+/* ===== Dark body background ===== */
+:root[data-theme='dark'] body {
+  background:
+    radial-gradient(1000px 700px at 0% 0%, rgba(99, 102, 241, 0.25), transparent 70%),
+    radial-gradient(1200px 800px at 100% 20%, rgba(72, 149, 239, 0.25), transparent 70%),
+    linear-gradient(to bottom, #0f172a 0%, #1e293b 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--ink);
+}
+
+
+/* Dark tables */
+:root[data-theme='dark'] .table,
+:root[data-theme='dark'] .table-responsive {
+  background: var(--glass-bg-strong);
+  border: var(--glass-border);
+}
+
+:root[data-theme='dark'] .table thead th {
+  border-bottom-color: rgba(148, 163, 184, 0.7);
+  background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+}
+
+:root[data-theme='dark'] .table tbody td {
+  border-bottom-color: rgba(51, 65, 85, 0.8);
+}
+
+:root[data-theme='dark'] .table-hover tbody tr:hover {
+  background: rgba(30, 64, 175, 0.45);
+}
+
+:root[data-theme='dark'] .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(15, 23, 42, 0.85);
+}
+
+/* Dark auth card / forms pick up glass vars already,
+   but we soften invalid backgrounds a bit */
+:root[data-theme='dark'] input.ng-invalid.ng-touched {
+  background-color: rgba(127, 29, 29, 0.4);
+}
+
+/* Theme toggle button (reuses nav-chip look) */
+.nav-theme-toggle {
+  cursor: pointer;
+  min-width: 80px;
+}
+
 
 .card {
   background: var(--glass-bg);                 /* ★ changed */
@@ -897,8 +968,93 @@ body {
   }
 }
 
+/* === Dark theme fixes for text & buttons === */
+:root[data-theme='dark'] .lead {
+  color: #cbd5f5; /* softer light text on dark */
+}
 
+:root[data-theme='dark'] .nav-user-email {
+  color: var(--ink); /* now light */
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.7);
+}
 
+/* Home button */
+:root[data-theme='dark'] .nav-home-btn {
+  color: #f9fdff !important;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+}
 
+:root[data-theme='dark'] .nav-home-btn:hover {
+  background: linear-gradient(180deg, var(--accent-2), #0b3b8a);
+  color: #ffffff !important;
+}
 
+/* Login / Register buttons */
+:root[data-theme='dark'] .nav-login-btn {
+  border-color: rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--ink);
+}
 
+:root[data-theme='dark'] .nav-login-btn:hover {
+  background: rgba(30, 64, 175, 0.6);
+  color: #f9fdff;
+}
+
+:root[data-theme='dark'] .nav-register-btn {
+  border-color: rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] .nav-register-btn:hover {
+  background: rgba(30, 64, 175, 0.7);
+  color: #ffffff;
+}
+
+/* Cancel button */
+:root[data-theme='dark'] .btn-cancel {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.7);
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] .btn-cancel:hover {
+  background: rgba(30, 64, 175, 0.65);
+}
+
+/* Soft danger button – keep contrast on dark */
+:root[data-theme='dark'] .btn-danger-soft {
+  background: rgba(127, 29, 29, 0.45);
+  border-color: rgba(248, 113, 113, 0.9);
+  color: #fecaca;
+}
+
+/* Redirect / helper text on auth pages */
+:root[data-theme='dark'] .redirect-text {
+  color: #cbd5f5;
+}
+
+:root[data-theme='dark'] .redirect-link {
+  color: var(--accent-1);
+}
+
+:root[data-theme='dark'] .redirect-link:hover {
+  color: var(--ink);
+}
+
+/* === Global text colors that follow theme vars === */
+
+/* Main hero/title text should track --ink */
+h1,
+.display-4 {
+  color: var(--ink);
+}
+
+/* Card titles and description text */
+.card-title,
+.card-text {
+  color: var(--ink);
+}

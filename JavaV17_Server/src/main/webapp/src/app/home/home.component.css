@@ -17,10 +17,11 @@
 }
 
 .display-4 {
-  color: #2c3e50;
+  color: var(--ink);        /* << follows light/dark theme */
   font-weight: 300;
 }
 
 .lead {
-  color: #7f8c8d;
+  color: var(--ink-soft);   /* << follows light/dark theme */
 }
+

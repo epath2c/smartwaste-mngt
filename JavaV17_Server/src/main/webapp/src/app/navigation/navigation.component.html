@@ -6,6 +6,21 @@
     </span>
 
     <div class="d-flex ms-auto align-items-center nav-actions">
+
+      <!-- 🌗 Theme toggle -->
+      <button
+        type="button"
+        class="nav-chip nav-theme-toggle me-2"
+        (click)="toggleTheme()"
+      >
+        <ng-container *ngIf="isDarkMode; else lightMode">
+          🌙 Dark
+        </ng-container>
+        <ng-template #lightMode>
+          ☀️ Light
+        </ng-template>
+      </button>
+
       <!-- Main links -->
       <a routerLink="/" class="nav-home-btn">Home</a>
 
@@ -28,15 +43,3 @@
     </div>
   </div>
 </nav>
-
-<!-- ✅ Logout Success Modal (glass overlay version) -->
-<div
-  class="logout-modal-overlay"
-  *ngIf="showLogoutModal"
-  (click)="closeModal()"
->
-  <div class="logout-modal card" (click)="$event.stopPropagation()">
-    <h5>✅ Successfully logged out!</h5>
-    <button class="btn btn-theme mt-3" (click)="closeModal()">Close</button>
-  </div>
-</div>

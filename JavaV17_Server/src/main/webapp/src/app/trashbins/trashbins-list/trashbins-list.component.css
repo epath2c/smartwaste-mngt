@@ -5,9 +5,10 @@
 
 /* Page title */
 .page-header h1 {
-  color: #2c3e50;
+  color: var(--ink);
   margin-bottom: 20px;
 }
+
 
 /* Overview cards */
 .overview-cards {
@@ -74,14 +75,15 @@
 .stat-info h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: #2c3e50;
+  color: var(--ink);
 }
 
 .stat-info p {
   margin: 0;
-  color: #7f8c8d;
+  color: var(--ink-soft);
   font-size: 0.8rem;
 }
+
 
 /* Main content area */
 .main-content {
@@ -111,8 +113,9 @@
 
 .panel-header h3 {
   margin: 0 0 15px 0;
-  color: #2c3e50;
+  color: var(--ink);
 }
+
 
 .btn-icon {
   width: 24px;
@@ -140,24 +143,20 @@
   border-collapse: collapse;
 }
 
-/* .bins-table th {
-  background: #f8f9fa;
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #dee2e6;
-} */
-
 .bins-table th {
   background: rgba(255, 255, 255, 0.35);   
   border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   padding: 12px;
   text-align: left;
+  color: var(--ink);
 }
 
 .bins-table td {
   padding: 12px;
   border-bottom: 1px solid #e9ecef;
+  color: var(--ink);
 }
+
 
 .bins-table tbody tr {
   cursor: pointer;
@@ -237,21 +236,22 @@ google-map {
 
 .info-window-content h4 {
   margin: 0 0 8px 0;
-  color: #333;
+  color: var(--ink);
   font-size: 16px;
   font-weight: 600;
 }
 
 .info-window-content p {
   margin: 4px 0;
-  color: #666;
+  color: var(--ink-soft);
   font-size: 14px;
 }
 
 .info-window-content strong {
-  color: #333;
+  color: var(--ink);
   font-weight: 600;
 }
+
 
 /* Back link */
 .back-link {
@@ -260,7 +260,7 @@ google-map {
 }
 
 .back-link a {
-  color: #6c757d;
+  color: var(--ink-soft);
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -268,9 +268,10 @@ google-map {
 }
 
 .back-link a:hover {
-  color: #495057;
-  background: #f8f9fa;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.15);
 }
+
 
 /* Base layout: side-by-side on desktop */
 .trashbins-dashboard .main-content {
@@ -334,5 +335,38 @@ google-map {
   .trashbins-dashboard .map-container {
     height: 300px;
   }
+}
+
+/* === Dark theme tweaks for trashbin page === */
+:root[data-theme='dark'] .trashbins-dashboard .stat-card,
+:root[data-theme='dark'] .trashbins-dashboard .bins-panel,
+:root[data-theme='dark'] .trashbins-dashboard .map-panel {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+:root[data-theme='dark'] .bins-table th {
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom-color: rgba(51, 65, 85, 0.9);
+}
+
+:root[data-theme='dark'] .bins-table tbody tr:hover {
+  background-color: rgba(30, 64, 175, 0.5);
+}
+
+:root[data-theme='dark'] .bins-table tbody tr.selected {
+  background-color: rgba(37, 99, 235, 0.55);
+  border-left: 4px solid var(--accent-1);
+}
+
+:root[data-theme='dark'] .back-link a {
+  color: var(--ink);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+:root[data-theme='dark'] .back-link a:hover {
+  background: rgba(37, 99, 235, 0.7);
+  color: #fff;
 }
 
