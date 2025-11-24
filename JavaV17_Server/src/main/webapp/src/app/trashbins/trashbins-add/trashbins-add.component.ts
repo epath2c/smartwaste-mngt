@@ -65,6 +65,7 @@ export class TrashbinsAddComponent implements OnInit {
       createdDate: [''],
       threshold: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
       cleaners: [[], [Validators.required]],
+      cleanerIds : [],
       sensor: [null]
     });
 

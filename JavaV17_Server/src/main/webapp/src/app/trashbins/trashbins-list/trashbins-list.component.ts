@@ -38,6 +38,7 @@ export class TrashbinsListComponent implements OnInit {
       latitude: 0,
       longitude: 0,
     },
+    sensor: null,
     isEdit: false,
   };
   filteredTrashbins: Trashbins[] = [];
