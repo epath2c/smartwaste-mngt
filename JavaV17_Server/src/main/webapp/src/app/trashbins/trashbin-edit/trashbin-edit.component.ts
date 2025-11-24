@@ -77,12 +77,21 @@ export class TrashbinEditComponent implements OnInit {
     next: (data) => {
       //console.log('trashbin has been loaded', { data });
       this.trashbin = data;
+      this.trashbin.cleanerIds = []
+      if (this.trashbin.cleaners && this.trashbin.cleaners.length > 0 ){
+          for (const cleaner of this.trashbin.cleaners) {
+            this.trashbin.cleanerIds.push(cleaner.id!);
+          }
+      }
+
       if (this.trashbin.cleanerIds && this.trashbin.cleanerIds.length > 0) {
         this.cleanersSelected.setValue(this.trashbin.cleanerIds);
       }
-      // if (this.trashbin.sensor && this.trashbin.sensor.id) {
-      //   this.sensorSelected.setValue(this.trashbin.sensor.id);
-      // }
+
+      console.log(this.trashbin.sensor)
+      if (this.trashbin.sensor && this.trashbin.sensor.id) {
+        this.sensorSelected.setValue(this.trashbin.sensor.id);
+      }
 
       // Auto-center map to trashbin location
       if (this.trashbin.location && this.trashbin.location.latitude && this.trashbin.location.longitude) {
@@ -114,7 +123,7 @@ export class TrashbinEditComponent implements OnInit {
   });
 
   // 3. Available sensors 
-  this.sensorService.getAvailable().subscribe((data) => {
+  this.sensorService.getAll().subscribe((data) => {
     this.availableSensors = data;
   });
 

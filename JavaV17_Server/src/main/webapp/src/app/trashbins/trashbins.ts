@@ -1,4 +1,5 @@
 import { Cleaner } from "../cleaners/cleaner";
+import { Sensor } from "../sensors/sensor";
 
 export class Trashbins {
     binId?: number;
@@ -8,11 +9,12 @@ export class Trashbins {
     threshold?: number;
     currentFillPercentage?: number;  // current fill percentage
     cleanerIds?: number[]; 
-    //cleaners?: Cleaner[]; 
+    cleaners?: Cleaner[]; 
     location?: {
       address?: string;
       latitude?: number;
       longitude?: number;
     };
+    sensor: { id: number; } | null = null;
     isEdit?: boolean
 }
