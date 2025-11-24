@@ -153,3 +153,4 @@ JavaV17_Server/src/test*
 secrets.properties
 application-local.properties
 **/dist/webapp/*.zip
+/ArduinoR4_SrouceCode/libraries
