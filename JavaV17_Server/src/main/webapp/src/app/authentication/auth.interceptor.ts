@@ -13,6 +13,8 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isHandlingSessionExpiry = false;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
@@ -22,13 +24,17 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.authService.getToken();
     let cloned = req;
     if (token) {
-      const cloned = req.clone({
+      cloned = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`),
       });
       return next.handle(cloned).pipe(
         catchError((error: HttpErrorResponse) => {
           // Check for 401 Unauthorized (token expired or invalid)
-          if (error.status === 401) {
+          if (
+            (error.status === 401 || error.status === 403) &&
+            !this.isHandlingSessionExpiry
+          ) {
+            this.isHandlingSessionExpiry = true;
             // Optionally read message from server
             const msg =
               error.error?.message ||
@@ -39,7 +45,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
             // Clear token and redirect to login
             this.authService.logout();
-            this.router.navigate(['/login']);
+            const currentUrl = this.router.url;
+            this.router.navigate(['/login'], {
+              queryParams: { returnUrl: currentUrl },
+            });
           }
 
           return throwError(() => error);
