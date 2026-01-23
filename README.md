@@ -1,4 +1,4 @@
-2025 Sheridan Capstone Project Team15
+2025 Sheridan Capstone Project Team 15
 
 Project Name: Smart Waste Management System
 
